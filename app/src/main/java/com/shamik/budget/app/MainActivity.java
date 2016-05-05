@@ -2,12 +2,14 @@ package com.shamik.budget.app;
 
 import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -68,15 +70,15 @@ public class MainActivity extends ActionBarActivity {
             }
 
             // Create a new Fragment to be placed in the activity layout
-            BudgetListFragment firstFragment = new BudgetListFragment();
+            BudgetListFragment budgetListFragment = new BudgetListFragment();
 
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
-            firstFragment.setArguments(getIntent().getExtras());
+            budgetListFragment.setArguments(getIntent().getExtras());
 
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, firstFragment).commit();
+                    .add(R.id.fragment_container, budgetListFragment).commit();
         }
 
 
@@ -127,6 +129,34 @@ public class MainActivity extends ActionBarActivity {
         String[] osArray = { "Android", "iOS", "Windows", "OS X", "Linux" };
         mDrawerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
         mDrawerList.setAdapter(mDrawerAdapter);
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
     }
 
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView parent, View view, int position, long id) {
+            selectItem(position);
+        }
+    }
+
+    /** Swaps fragments in the main content view */
+    private void selectItem(int position) {
+        // Create a new fragment and specify the planet to show based on position
+        Fragment fragment;
+        if(position == 0) {
+            fragment = new BudgetListFragment();
+        }
+        else {
+            fragment = new BudgetListFragment();
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+
+        // Highlight the selected item, update the title, and close the drawer
+        mDrawerList.setItemChecked(position, true);
+        mDrawerLayout.closeDrawer(mDrawerList);
+    }
 }
