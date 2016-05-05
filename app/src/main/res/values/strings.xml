@@ -22,6 +22,10 @@
     <string name="decimal">.</string>
     <string name="categorize_button">Categorize</string>
 
+    <!-- AddBudgetCategoryDialogFragment -->
+    <string name="add_budget_category_dialog_fragment_title">Add Category</string>
+    <string name="add_category_button">Add</string>
+
     <!-- Widget -->
     <string name="widget_button">Widget</string>
 

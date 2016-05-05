@@ -22,11 +22,12 @@ public class BudgetCategoryListFragment extends ListFragment implements AdapterV
         super.onActivityCreated(savedInstanceState);
 
         // populate list and set item click listener
-        String[] budgetListItems = new String[] { "YOOOOO", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
-                "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
-                "Android", "iPhone", "WindowsMobile" };
+        String[] budgetListItems = new String[] { "Transportation", "Food", "Entertainment",
+            "Rent", "Gear", "Transportation", "Food", "Entertainment",
+            "Rent", "Gear", "Transportation", "Food", "Entertainment",
+            "Rent", "Gear", "Transportation", "Food", "Entertainment",
+            "Rent", "Gear", "Transportation", "Food", "Entertainment",
+            "Rent", "Gear"};
         setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, budgetListItems));
         getListView().setOnItemClickListener(this);
     }

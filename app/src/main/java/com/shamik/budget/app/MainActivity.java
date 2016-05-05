@@ -33,7 +33,7 @@ public class MainActivity extends ActionBarActivity {
 
         // populate the drawer and set an item click listener
         mDrawerList = (ListView)findViewById(R.id.navList);
-        String[] osArray = { "Android", "iOS", "Windows", "OS X", "Linux" };
+        String[] osArray = { "Transactions", "Categories", "Analytics" };
         mDrawerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
         mDrawerList.setAdapter(mDrawerAdapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -128,18 +128,26 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         if (id == R.id.action_add) {
-            // Switch to AddBudgetItemFragment and set title
+            if(mTitle.equals(this.getString(R.string.budget_item_list_fragment_title))) {
+                // We are on the budget item list, so the plus button will add an item
+                // Switch to AddBudgetItemFragment and set title
 
-            Fragment fragment = new AddBudgetItemFragment();
+                Fragment fragment = new AddBudgetItemFragment();
 
-            // Insert the fragment by replacing any existing fragment
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .commit();
+                // Insert the fragment by replacing any existing fragment
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
 
-            mTitle = this.getString(R.string.add_budget_item_fragment_title);
-            getActionBar().setTitle(mTitle);
+                mTitle = this.getString(R.string.add_budget_item_fragment_title);
+                getActionBar().setTitle(mTitle);
+            }
+            else if(mTitle.equals(this.getString(R.string.budget_category_list_fragment_title))) {
+                // We are on the category list, so the plus button will open a text entry modal
 
+                new AddBudgetCategoryDialogFragment().show(getSupportFragmentManager(),
+                        this.getString(R.string.add_budget_category_dialog_fragment_title));
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
