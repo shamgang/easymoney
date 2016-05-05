@@ -12,21 +12,23 @@ import android.widget.ArrayAdapter;
 /**
  * Created by Shamik on 5/4/2016.
  */
-public class BudgetListFragment extends ListFragment implements OnItemClickListener {
+public class BudgetItemListFragment extends ListFragment implements OnItemClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        return inflater.inflate(R.layout.budget_list, container, false);
+        return inflater.inflate(R.layout.fragment_budget_item_list, container, false);
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        String[] budgetListItems = new String[] { "Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
-                "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
-                "Android", "iPhone", "WindowsMobile" };
+
+        // populate list and set item click listener
+        String[] budgetListItems = new String[] { "Food - meijer", "Transportation - gas",
+                "Entertainment - bar cover", "Food - meijer", "Transportation - gas",
+                "Entertainment - bar cover", "Food - meijer", "Transportation - gas",
+                "Entertainment - bar cover", "Food - meijer", "Transportation - gas",
+                "Entertainment - bar cover", "Food - meijer", "Transportation - gas",
+                "Entertainment - bar cover"};
         setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, budgetListItems));
         getListView().setOnItemClickListener(this);
     }

@@ -18,13 +18,13 @@
             android:layout_width="0dp"
             android:layout_weight=".5"
             android:layout_height="wrap_content"
-            android:text="Cancel" />
+            android:text="@string/cancel_button" />
         <!-- Save -->
         <Button
             android:layout_width="0dp"
             android:layout_weight=".5"
             android:layout_height="wrap_content"
-            android:text="Save" />
+            android:text="@string/save_button" />
 
     </LinearLayout>
 
@@ -52,7 +52,7 @@
                 android:layout_width="10dp"
                 android:layout_height="wrap_content"
                 android:textSize="20pt"
-                android:text="."/>
+                android:text="@string/decimal"/>
 
             <EditText
                 android:id="@+id/item_amount_decimal"
@@ -75,7 +75,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Categorize" />
+            android:text="@string/categorize_button" />
 
         <!-- expense/income switch -->
         <LinearLayout

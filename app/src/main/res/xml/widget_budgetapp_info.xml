@@ -4,7 +4,7 @@
     android:minWidth="40dp"
     android:minHeight="40dp"
     android:updatePeriodMillis="86400000"
-    android:initialLayout="@layout/budget_appwidget"
+    android:initialLayout="@layout/widget_budgetapp"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen">
 </appwidget-provider>
