@@ -147,7 +147,7 @@ public class MainActivity extends ActionBarActivity {
             fragment = new BudgetListFragment();
         }
         else {
-            fragment = new BudgetListFragment();
+            fragment = new BudgetCategoriesFragment();
         }
 
         // Insert the fragment by replacing any existing fragment
