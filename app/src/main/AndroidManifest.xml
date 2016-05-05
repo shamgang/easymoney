@@ -17,6 +17,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.shamik.budget.app.AddBudgetItemActivity"
+            android:label="@string/app_name" >
+        </activity>
+
         <receiver android:name="BudgetAppWidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
