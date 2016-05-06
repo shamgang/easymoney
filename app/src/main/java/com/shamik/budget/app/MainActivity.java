@@ -169,9 +169,13 @@ public class MainActivity extends ActionBarActivity {
             fragment = new BudgetItemListFragment();
             mTitle = this.getString(R.string.budget_item_list_fragment_title);
         }
-        else {
+        else if(position == 1) {
             fragment = new BudgetCategoryListFragment();
             mTitle = this.getString(R.string.budget_category_list_fragment_title);
+        }
+        else {
+            fragment = new AnalyticsFragment();
+            mTitle = this.getString(R.string.analytics_fragment_title);
         }
 
         // Insert the fragment by replacing any existing fragment

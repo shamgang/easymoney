@@ -26,6 +26,10 @@
     <string name="add_budget_category_dialog_fragment_title">Add Category</string>
     <string name="add_category_button">Add</string>
 
+    <!-- AnalyticsFragment -->
+    <string name="analytics_fragment_title">Analytics</string>
+    <string name="choose_category_button">Category</string>
+
     <!-- Widget -->
     <string name="widget_quickadd_button">+Transaction</string>
     <string name="widget_expand_button">Full</string>
