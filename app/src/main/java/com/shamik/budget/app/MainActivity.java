@@ -2,12 +2,10 @@ package com.shamik.budget.app;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -110,15 +108,17 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
-        // Hide the plus button on the analytics page and the add budget item page
-        if(mTitle.equals(this.getString(R.string.analytics_fragment_title))
-                || mTitle.equals(this.getString(R.string.add_budget_item_fragment_title))) {
-            menu.findItem(R.id.action_add).setVisible(false);
-        }
-        // Hide the search button on the analytics, add item, and category list pages
+        // Hide the plus button on the analytics page, add, and view pages
         if(mTitle.equals(this.getString(R.string.analytics_fragment_title))
                 || mTitle.equals(this.getString(R.string.add_budget_item_fragment_title))
-                || mTitle.equals(this.getString(R.string.budget_category_list_fragment_title))) {
+                || mTitle.equals(this.getString(R.string.view_budget_item_fragment_title))) {
+            menu.findItem(R.id.action_add).setVisible(false);
+        }
+        // Hide the search button on the analytics, add, view, and category list pages
+        if(mTitle.equals(this.getString(R.string.analytics_fragment_title))
+                || mTitle.equals(this.getString(R.string.add_budget_item_fragment_title))
+                || mTitle.equals(this.getString(R.string.budget_category_list_fragment_title))
+                || mTitle.equals(this.getString(R.string.view_budget_item_fragment_title))) {
             menu.findItem(R.id.action_search).setVisible(false);
         }
 
@@ -180,15 +180,37 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void selectBudgetItem() {
+        // switch to ViewBudgetItemFragment, change title and refresh options menu
+        Fragment fragment = new ViewBudgetItemFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+        mTitle = this.getString(R.string.view_budget_item_fragment_title);
+        getActionBar().setTitle(mTitle);
+        invalidateOptionsMenu();
+    }
+
+    public void selectBudgetCategory() {
+        // switch to BudgetItemListFragment, change title and refresh options menu
+        Fragment fragment = new BudgetItemListFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+        mTitle = this.getString(R.string.budget_item_list_fragment_title);
+        getActionBar().setTitle(mTitle);
+        invalidateOptionsMenu();
+    }
+
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
-            selectItem(position);
+            selectNavItem(position);
         }
     }
 
     /** Swaps fragments in the main content view */
-    private void selectItem(int position) {
+    private void selectNavItem(int position) {
         // Switch fragment and title
 
         Fragment fragment;

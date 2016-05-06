@@ -35,5 +35,7 @@ public class BudgetItemListFragment extends ListFragment implements OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
+        MainActivity mainActivity = (MainActivity)getActivity();
+        mainActivity.selectBudgetItem();
     }
 }

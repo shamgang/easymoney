@@ -34,5 +34,7 @@ public class BudgetCategoryListFragment extends ListFragment implements AdapterV
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
+        MainActivity mainActivity = (MainActivity)getActivity();
+        mainActivity.selectBudgetCategory();
     }
 }
