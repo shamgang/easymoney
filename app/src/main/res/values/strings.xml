@@ -10,29 +10,29 @@
     <string name="drawer_close">Close Drawer</string>
     <string name="drawer_title">Menu</string>
 
-    <!-- BudgetItemListFragment -->
-    <string name="budget_item_list_fragment_title">Transactions</string>
+    <!-- TransactionListFragment -->
+    <string name="transaction_list_fragment_title">Transactions</string>
 
-    <!-- BudgetCategoryListFragment -->
-    <string name="budget_category_list_fragment_title">Categories</string>
+    <!-- CategoryListFragment -->
+    <string name="category_list_fragment_title">Categories</string>
 
-    <!-- AddBudgetItemFragment -->
-    <string name="add_budget_item_fragment_title">Add Item</string>
+    <!-- AddTransactionFragment -->
+    <string name="add_transaction_fragment_title">Add Item</string>
     <string name="cancel_button">Cancel</string>
     <string name="save_button">Save</string>
     <string name="decimal">.</string>
     <string name="categorize_button">Categorize</string>
 
-    <!-- AddBudgetCategoryDialogFragment -->
-    <string name="add_budget_category_dialog_fragment_title">Add Category</string>
+    <!-- AddCategoryDialogFragment -->
+    <string name="add_category_dialog_fragment_title">Add Category</string>
     <string name="add_category_button">Add</string>
 
     <!-- AnalyticsFragment -->
     <string name="analytics_fragment_title">Analytics</string>
     <string name="choose_category_button">Category</string>
 
-    <!-- ViewBudgetItemFragment -->
-    <string name="view_budget_item_fragment_title">View Item</string>
+    <!-- ViewTransactionFragment -->
+    <string name="view_transaction_fragment_title">View Item</string>
 
     <!-- Widget -->
     <string name="widget_quickadd_button">+Transaction</string>

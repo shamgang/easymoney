@@ -33,7 +33,7 @@ public class MainActivity extends ActionBarActivity {
         mDrawerTitle= this.getString(R.string.drawer_title);
 
         // populate the nav drawer and set an item click listener
-        mNavDrawerList = (ListView)findViewById(R.id.navList);
+        mNavDrawerList = (ListView)findViewById(R.id.nav_drawer);
         String[] osArray = { "Transactions", "Categories", "Analytics" };
         mNavDrawerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
         mNavDrawerList.setAdapter(mNavDrawerAdapter);
@@ -79,14 +79,14 @@ public class MainActivity extends ActionBarActivity {
         }
 
         // Create a new default Fragment to be placed in the activity layout
-        BudgetItemListFragment budgetItemListFragment = new BudgetItemListFragment();
+        TransactionListFragment transactionListFragment = new TransactionListFragment();
 
         // Add the fragment to the 'fragment_container' FrameLayout
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, budgetItemListFragment).commit();
+                .add(R.id.fragment_container, transactionListFragment).commit();
 
         // set title for default fragment
-        mTitle = this.getString(R.string.budget_item_list_fragment_title);
+        mTitle = this.getString(R.string.transaction_list_fragment_title);
         getActionBar().setTitle(mTitle);
     }
 
@@ -110,15 +110,15 @@ public class MainActivity extends ActionBarActivity {
 
         // Hide the plus button on the analytics page, add, and view pages
         if(mTitle.equals(this.getString(R.string.analytics_fragment_title))
-                || mTitle.equals(this.getString(R.string.add_budget_item_fragment_title))
-                || mTitle.equals(this.getString(R.string.view_budget_item_fragment_title))) {
+                || mTitle.equals(this.getString(R.string.add_transaction_fragment_title))
+                || mTitle.equals(this.getString(R.string.view_transaction_fragment_title))) {
             menu.findItem(R.id.action_add).setVisible(false);
         }
         // Hide the search button on the analytics, add, view, and category list pages
         if(mTitle.equals(this.getString(R.string.analytics_fragment_title))
-                || mTitle.equals(this.getString(R.string.add_budget_item_fragment_title))
-                || mTitle.equals(this.getString(R.string.budget_category_list_fragment_title))
-                || mTitle.equals(this.getString(R.string.view_budget_item_fragment_title))) {
+                || mTitle.equals(this.getString(R.string.add_transaction_fragment_title))
+                || mTitle.equals(this.getString(R.string.category_list_fragment_title))
+                || mTitle.equals(this.getString(R.string.view_transaction_fragment_title))) {
             menu.findItem(R.id.action_search).setVisible(false);
         }
 
@@ -144,26 +144,26 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         if (id == R.id.action_add) {
-            if(mTitle.equals(this.getString(R.string.budget_item_list_fragment_title))) {
-                // We are on the budget item list, so the plus button will add an item
-                // Switch to AddBudgetItemFragment, set title, and refresh options menu
+            if(mTitle.equals(this.getString(R.string.transaction_list_fragment_title))) {
+                // We are on the transaction list, so the plus button will add an item
+                // Switch to AddTransactionFragment, set title, and refresh options menu
 
-                Fragment fragment = new AddBudgetItemFragment();
+                Fragment fragment = new AddTransactionFragment();
 
                 // Insert the fragment by replacing any existing fragment
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, fragment)
                         .commit();
 
-                mTitle = this.getString(R.string.add_budget_item_fragment_title);
+                mTitle = this.getString(R.string.add_transaction_fragment_title);
                 getActionBar().setTitle(mTitle);
                 invalidateOptionsMenu();
             }
-            else if(mTitle.equals(this.getString(R.string.budget_category_list_fragment_title))) {
+            else if(mTitle.equals(this.getString(R.string.category_list_fragment_title))) {
                 // We are on the category list, so the plus button will open a text entry modal
 
-                new AddBudgetCategoryDialogFragment().show(getSupportFragmentManager(),
-                        this.getString(R.string.add_budget_category_dialog_fragment_title));
+                new AddCategoryDialogFragment().show(getSupportFragmentManager(),
+                        this.getString(R.string.add_category_dialog_fragment_title));
             }
             return true;
         }
@@ -180,24 +180,24 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void selectBudgetItem() {
-        // switch to ViewBudgetItemFragment, change title and refresh options menu
-        Fragment fragment = new ViewBudgetItemFragment();
+    public void selectTransaction() {
+        // switch to ViewTransactionFragment, change title and refresh options menu
+        Fragment fragment = new ViewTransactionFragment();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
-        mTitle = this.getString(R.string.view_budget_item_fragment_title);
+        mTitle = this.getString(R.string.view_transaction_fragment_title);
         getActionBar().setTitle(mTitle);
         invalidateOptionsMenu();
     }
 
-    public void selectBudgetCategory() {
-        // switch to BudgetItemListFragment, change title and refresh options menu
-        Fragment fragment = new BudgetItemListFragment();
+    public void selectCategory() {
+        // switch to TransactionListFragment, change title and refresh options menu
+        Fragment fragment = new TransactionListFragment();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
-        mTitle = this.getString(R.string.budget_item_list_fragment_title);
+        mTitle = this.getString(R.string.transaction_list_fragment_title);
         getActionBar().setTitle(mTitle);
         invalidateOptionsMenu();
     }
@@ -215,12 +215,12 @@ public class MainActivity extends ActionBarActivity {
 
         Fragment fragment;
         if(position == 0) {
-            fragment = new BudgetItemListFragment();
-            mTitle = this.getString(R.string.budget_item_list_fragment_title);
+            fragment = new TransactionListFragment();
+            mTitle = this.getString(R.string.transaction_list_fragment_title);
         }
         else if(position == 1) {
-            fragment = new BudgetCategoryListFragment();
-            mTitle = this.getString(R.string.budget_category_list_fragment_title);
+            fragment = new CategoryListFragment();
+            mTitle = this.getString(R.string.category_list_fragment_title);
         }
         else {
             fragment = new AnalyticsFragment();

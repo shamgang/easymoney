@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 /**
  * Created by Shamik on 5/6/2016.
  */
-public class ViewBudgetItemFragment extends Fragment {
+public class ViewTransactionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_view_budget_item, container, false);
+        return inflater.inflate(R.layout.fragment_view_transaction, container, false);
     }
 }

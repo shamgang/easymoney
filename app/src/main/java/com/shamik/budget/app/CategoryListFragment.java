@@ -11,11 +11,11 @@ import android.widget.ArrayAdapter;
 /**
  * Created by Shamik on 5/5/2016.
  */
-public class BudgetCategoryListFragment extends ListFragment implements AdapterView.OnItemClickListener {
+public class CategoryListFragment extends ListFragment implements AdapterView.OnItemClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_budget_item_list, container, false);
+        return inflater.inflate(R.layout.fragment_transaction_list, container, false);
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -35,6 +35,6 @@ public class BudgetCategoryListFragment extends ListFragment implements AdapterV
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
         MainActivity mainActivity = (MainActivity)getActivity();
-        mainActivity.selectBudgetCategory();
+        mainActivity.selectCategory();
     }
 }
