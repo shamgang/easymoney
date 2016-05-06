@@ -3,8 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.shamik.budget.app.MainActivity" >
 
+    <item android:id="@+id/action_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/action_search"
+        android:orderInCategory="25"
+        app:showAsAction="ifRoom" />
+
     <item android:id="@+id/action_add"
-        android:icon="@drawable/action_add"
+        android:icon="@drawable/ic_add"
         android:title="@string/action_add"
         android:orderInCategory="50"
         app:showAsAction="ifRoom" />

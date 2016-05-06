@@ -2,10 +2,13 @@ package com.shamik.budget.app;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,8 +20,8 @@ public class MainActivity extends ActionBarActivity {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    private ListView mDrawerList;
-    private ArrayAdapter<String> mDrawerAdapter;
+    private ListView mNavDrawerList;
+    private ArrayAdapter<String> mNavDrawerAdapter;
     private String mTitle;
     private String mDrawerTitle;
 
@@ -31,12 +34,12 @@ public class MainActivity extends ActionBarActivity {
         // the title that will be set onDrawerOpened
         mDrawerTitle= this.getString(R.string.drawer_title);
 
-        // populate the drawer and set an item click listener
-        mDrawerList = (ListView)findViewById(R.id.navList);
+        // populate the nav drawer and set an item click listener
+        mNavDrawerList = (ListView)findViewById(R.id.navList);
         String[] osArray = { "Transactions", "Categories", "Analytics" };
-        mDrawerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-        mDrawerList.setAdapter(mDrawerAdapter);
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mNavDrawerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+        mNavDrawerList.setAdapter(mNavDrawerAdapter);
+        mNavDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // add a toggle button for the drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -110,7 +113,13 @@ public class MainActivity extends ActionBarActivity {
         // Hide the plus button on the analytics page and the add budget item page
         if(mTitle.equals(this.getString(R.string.analytics_fragment_title))
                 || mTitle.equals(this.getString(R.string.add_budget_item_fragment_title))) {
-            menu.getItem(0).setVisible(false);
+            menu.findItem(R.id.action_add).setVisible(false);
+        }
+        // Hide the search button on the analytics, add item, and category list pages
+        if(mTitle.equals(this.getString(R.string.analytics_fragment_title))
+                || mTitle.equals(this.getString(R.string.add_budget_item_fragment_title))
+                || mTitle.equals(this.getString(R.string.budget_category_list_fragment_title))) {
+            menu.findItem(R.id.action_search).setVisible(false);
         }
 
         return true;
@@ -158,6 +167,16 @@ public class MainActivity extends ActionBarActivity {
             }
             return true;
         }
+        if(id == R.id.action_search) {
+            // toggle search drawer
+            if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                mDrawerLayout.closeDrawer(Gravity.RIGHT);
+            }
+            else {
+                mDrawerLayout.openDrawer(Gravity.RIGHT);
+            }
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -195,7 +214,7 @@ public class MainActivity extends ActionBarActivity {
                 .commit();
 
         // Highlight the selected item, update the title, and close the drawer
-        mDrawerList.setItemChecked(position, true);
-        mDrawerLayout.closeDrawer(mDrawerList);
+        mNavDrawerList.setItemChecked(position, true);
+        mDrawerLayout.closeDrawer(mNavDrawerList);
     }
 }
