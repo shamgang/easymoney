@@ -9,9 +9,14 @@ import android.view.ViewGroup;
 /**
  * Created by Shamik on 5/6/2016.
  */
-public class ViewTransactionFragment extends Fragment {
+public class ViewTransactionFragment extends BaseFullscreenFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_view_transaction, container, false);
+    }
+
+    @Override
+    protected String getTitle() {
+        return this.getString(R.string.view_transaction_fragment_title);
     }
 }

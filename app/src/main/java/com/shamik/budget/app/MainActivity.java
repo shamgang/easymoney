@@ -84,10 +84,6 @@ public class MainActivity extends ActionBarActivity {
         // Add the fragment to the 'fragment_container' FrameLayout
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, transactionListFragment).commit();
-
-        // set title for default fragment
-        mTitle = this.getString(R.string.transaction_list_fragment_title);
-        getActionBar().setTitle(mTitle);
     }
 
     @Override
@@ -153,11 +149,8 @@ public class MainActivity extends ActionBarActivity {
                 // Insert the fragment by replacing any existing fragment
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
                         .commit();
-
-                mTitle = this.getString(R.string.add_transaction_fragment_title);
-                getActionBar().setTitle(mTitle);
-                invalidateOptionsMenu();
             }
             else if(mTitle.equals(this.getString(R.string.category_list_fragment_title))) {
                 // We are on the category list, so the plus button will open a text entry modal
@@ -180,15 +173,19 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void updateActionBar(String fragmentTitle) {
+        mTitle = fragmentTitle;
+        getActionBar().setTitle(mTitle);
+        invalidateOptionsMenu();
+    }
+
     public void selectTransaction() {
         // switch to ViewTransactionFragment, change title and refresh options menu
         Fragment fragment = new ViewTransactionFragment();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
                 .commit();
-        mTitle = this.getString(R.string.view_transaction_fragment_title);
-        getActionBar().setTitle(mTitle);
-        invalidateOptionsMenu();
     }
 
     public void selectCategory() {
@@ -196,10 +193,8 @@ public class MainActivity extends ActionBarActivity {
         Fragment fragment = new TransactionListFragment();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
                 .commit();
-        mTitle = this.getString(R.string.transaction_list_fragment_title);
-        getActionBar().setTitle(mTitle);
-        invalidateOptionsMenu();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -216,19 +211,13 @@ public class MainActivity extends ActionBarActivity {
         Fragment fragment;
         if(position == 0) {
             fragment = new TransactionListFragment();
-            mTitle = this.getString(R.string.transaction_list_fragment_title);
         }
         else if(position == 1) {
             fragment = new CategoryListFragment();
-            mTitle = this.getString(R.string.category_list_fragment_title);
         }
         else {
             fragment = new AnalyticsFragment();
-            mTitle = this.getString(R.string.analytics_fragment_title);
         }
-
-        // refresh the options menu
-        invalidateOptionsMenu();
 
         // Insert the fragment by replacing any existing fragment
         getSupportFragmentManager().beginTransaction()

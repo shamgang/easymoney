@@ -8,11 +8,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 /**
  * Created by Shamik on 5/4/2016.
  */
-public class TransactionListFragment extends ListFragment implements OnItemClickListener {
+public class TransactionListFragment extends BaseFullscreenFragment implements OnItemClickListener {
+
+    private ListView mTransactionList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,13 +32,19 @@ public class TransactionListFragment extends ListFragment implements OnItemClick
                 "Entertainment - bar cover", "Food - meijer", "Transportation - gas",
                 "Entertainment - bar cover", "Food - meijer", "Transportation - gas",
                 "Entertainment - bar cover"};
-        setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, budgetListItems));
-        getListView().setOnItemClickListener(this);
+        mTransactionList = (ListView)getView().findViewById(R.id.transaction_list);
+        mTransactionList.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, budgetListItems));
+        mTransactionList.setOnItemClickListener(this);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
         MainActivity mainActivity = (MainActivity)getActivity();
         mainActivity.selectTransaction();
+    }
+
+    @Override
+    protected String getTitle() {
+        return this.getString(R.string.transaction_list_fragment_title);
     }
 }
