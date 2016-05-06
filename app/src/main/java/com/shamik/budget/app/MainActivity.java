@@ -106,6 +106,13 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
+        // Hide the plus button on the analytics page and the add budget item page
+        if(mTitle.equals(this.getString(R.string.analytics_fragment_title))
+                || mTitle.equals(this.getString(R.string.add_budget_item_fragment_title))) {
+            menu.getItem(0).setVisible(false);
+        }
+
         return true;
     }
 
@@ -130,7 +137,7 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_add) {
             if(mTitle.equals(this.getString(R.string.budget_item_list_fragment_title))) {
                 // We are on the budget item list, so the plus button will add an item
-                // Switch to AddBudgetItemFragment and set title
+                // Switch to AddBudgetItemFragment, set title, and refresh options menu
 
                 Fragment fragment = new AddBudgetItemFragment();
 
@@ -141,6 +148,7 @@ public class MainActivity extends ActionBarActivity {
 
                 mTitle = this.getString(R.string.add_budget_item_fragment_title);
                 getActionBar().setTitle(mTitle);
+                invalidateOptionsMenu();
             }
             else if(mTitle.equals(this.getString(R.string.budget_category_list_fragment_title))) {
                 // We are on the category list, so the plus button will open a text entry modal
@@ -177,6 +185,9 @@ public class MainActivity extends ActionBarActivity {
             fragment = new AnalyticsFragment();
             mTitle = this.getString(R.string.analytics_fragment_title);
         }
+
+        // refresh the options menu
+        invalidateOptionsMenu();
 
         // Insert the fragment by replacing any existing fragment
         getSupportFragmentManager().beginTransaction()
