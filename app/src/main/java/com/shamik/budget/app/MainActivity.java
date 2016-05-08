@@ -14,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends ActionBarActivity {
 
     private DrawerLayout mDrawerLayout;
@@ -23,11 +25,24 @@ public class MainActivity extends ActionBarActivity {
     private String mTitle;
     private String mDrawerTitle;
 
+    public ArrayList<Transaction> mTransactionStubList;
+    public ArrayList<Category> mCategoryStubList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        // TODO: remove stub data
+        mTransactionStubList = new ArrayList<Transaction>();
+        for(int i = 0; i < 30; ++i) {
+            mTransactionStubList.add(new Transaction());
+        }
+        mCategoryStubList = new ArrayList<Category>();
+        for(int i = 0; i < 30; ++i) {
+            mCategoryStubList.add(new Category(null, "Blank"));
+        }
 
         // the title that will be set onDrawerOpened
         mDrawerTitle= this.getString(R.string.drawer_title);
@@ -197,15 +212,8 @@ public class MainActivity extends ActionBarActivity {
                 .commit();
     }
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView parent, View view, int position, long id) {
-            selectNavItem(position);
-        }
-    }
-
     /** Swaps fragments in the main content view */
-    private void selectNavItem(int position) {
+    public void selectNavItem(int position) {
         // Switch fragment and title
 
         Fragment fragment;
@@ -227,5 +235,12 @@ public class MainActivity extends ActionBarActivity {
         // Highlight the selected item, update the title, and close the drawer
         mNavDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mNavDrawerList);
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView parent, View view, int position, long id) {
+            selectNavItem(position);
+        }
     }
 }

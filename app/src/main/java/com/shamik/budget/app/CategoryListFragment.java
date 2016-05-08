@@ -5,14 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-
-import java.util.ArrayList;
 
 /**
  * Created by Shamik on 5/5/2016.
  */
-public class CategoryListFragment extends BaseFullscreenFragment implements AdapterView.OnItemClickListener {
+public class CategoryListFragment extends BaseFullscreenFragment implements OnItemClickListener {
 
     private ListView mCategoryList;
 
@@ -32,12 +31,9 @@ public class CategoryListFragment extends BaseFullscreenFragment implements Adap
             "Rent", "Gear", "Transportation", "Food", "Entertainment",
             "Rent", "Gear"};
         */
-        ArrayList<Category> categoryStubList = new ArrayList<Category>();
-        for(int i = 0; i < 30; ++i) {
-            categoryStubList.add(new Category(null, "Blank"));
-        }
         mCategoryList = (ListView)getView().findViewById(R.id.list);
-        mCategoryList.setAdapter(new CategoryAdapter(getActivity(), categoryStubList));
+        mCategoryList.setAdapter(new CategoryAdapter(getActivity(),
+                ((MainActivity)getActivity()).mCategoryStubList));
         mCategoryList.setOnItemClickListener(this);
     }
 

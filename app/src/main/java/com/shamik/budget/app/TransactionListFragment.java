@@ -8,8 +8,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-
 /**
  * Created by Shamik on 5/4/2016.
  */
@@ -34,12 +32,9 @@ public class TransactionListFragment extends BaseFullscreenFragment implements O
                 "Entertainment - bar cover", "Food - meijer", "Transportation - gas",
                 "Entertainment - bar cover"};
         */
-        ArrayList<Transaction> transactionStubList = new ArrayList<Transaction>();
-        for(int i = 0; i < 30; ++i) {
-            transactionStubList.add(new Transaction());
-        }
         mTransactionList = (ListView)getView().findViewById(R.id.list);
-        mTransactionList.setAdapter(new TransactionAdapter(getActivity(), transactionStubList));
+        mTransactionList.setAdapter(new TransactionAdapter(getActivity(),
+                ((MainActivity)getActivity()).mTransactionStubList));
         mTransactionList.setOnItemClickListener(this);
     }
 
