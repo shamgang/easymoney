@@ -10,6 +10,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 /**
  * Created by Shamik on 5/4/2016.
  */
@@ -26,14 +28,20 @@ public class TransactionListFragment extends BaseFullscreenFragment implements O
         super.onActivityCreated(savedInstanceState);
 
         // populate list and set item click listener
+        /*
         String[] budgetListItems = new String[] { "Food - meijer", "Transportation - gas",
                 "Entertainment - bar cover", "Food - meijer", "Transportation - gas",
                 "Entertainment - bar cover", "Food - meijer", "Transportation - gas",
                 "Entertainment - bar cover", "Food - meijer", "Transportation - gas",
                 "Entertainment - bar cover", "Food - meijer", "Transportation - gas",
                 "Entertainment - bar cover"};
+        */
+        ArrayList<Transaction> transactionStubList = new ArrayList<Transaction>();
+        for(int i = 0; i < 30; ++i) {
+            transactionStubList.add(new Transaction());
+        }
         mTransactionList = (ListView)getView().findViewById(R.id.transaction_list);
-        mTransactionList.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, budgetListItems));
+        mTransactionList.setAdapter(new TransactionAdapter(getActivity(), transactionStubList));
         mTransactionList.setOnItemClickListener(this);
     }
 
