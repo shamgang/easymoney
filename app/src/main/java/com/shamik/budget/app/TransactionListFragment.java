@@ -1,13 +1,11 @@
 package com.shamik.budget.app;
 
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -21,7 +19,7 @@ public class TransactionListFragment extends BaseFullscreenFragment implements O
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_transaction_list, container, false);
+        return inflater.inflate(R.layout.fragment_list, container, false);
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -40,7 +38,7 @@ public class TransactionListFragment extends BaseFullscreenFragment implements O
         for(int i = 0; i < 30; ++i) {
             transactionStubList.add(new Transaction());
         }
-        mTransactionList = (ListView)getView().findViewById(R.id.transaction_list);
+        mTransactionList = (ListView)getView().findViewById(R.id.list);
         mTransactionList.setAdapter(new TransactionAdapter(getActivity(), transactionStubList));
         mTransactionList.setOnItemClickListener(this);
     }
