@@ -1,11 +1,13 @@
 package com.shamik.budget.app;
 
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
@@ -25,8 +28,11 @@ public class MainActivity extends ActionBarActivity {
     private String mTitle;
     private String mDrawerTitle;
 
+    private static final String TAG = "MainActivity";
+
     public ArrayList<Transaction> mTransactionStubList;
     public ArrayList<Category> mCategoryStubList;
+    public TransactionDataSource mTransactionDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +41,19 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         // TODO: remove stub data
+        /*
         mTransactionStubList = new ArrayList<Transaction>();
         for(int i = 0; i < 30; ++i) {
             mTransactionStubList.add(new Transaction());
+        }
+        */
+        mTransactionDataSource = new TransactionDataSource(this);
+        try {
+            mTransactionDataSource.open();
+            refreshTransactionList();
+        } catch(SQLException e) {
+            mTransactionStubList = new ArrayList<Transaction>();
+            Log.e(TAG, "Could not open database");
         }
         mCategoryStubList = new ArrayList<Category>();
         for(int i = 0; i < 30; ++i) {
@@ -235,6 +251,10 @@ public class MainActivity extends ActionBarActivity {
         // Highlight the selected item, update the title, and close the drawer
         mNavDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mNavDrawerList);
+    }
+
+    public void refreshTransactionList() {
+        mTransactionStubList = mTransactionDataSource.getAllTransactions();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {

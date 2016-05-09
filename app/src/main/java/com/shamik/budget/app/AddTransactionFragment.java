@@ -44,6 +44,7 @@ public class AddTransactionFragment extends BaseFullscreenFragment {
         TextView addTransactionDescription = (TextView)getView().findViewById(R.id.add_transaction_description);
         Switch addTransactionIsIncome = (Switch)getView().findViewById(R.id.add_transaction_is_income);
 
+        /*
         ((MainActivity)getActivity()).mTransactionStubList.add(0, new Transaction(
             addTransactionAmountWhole.getText().toString(),
             addTransactionAmountDecimal.getText().toString(),
@@ -51,5 +52,14 @@ public class AddTransactionFragment extends BaseFullscreenFragment {
             null,
             addTransactionIsIncome.isChecked()
         ));
+        */
+        ((MainActivity)getActivity()).mTransactionDataSource.createTransaction(new Transaction(
+            addTransactionAmountWhole.getText().toString(),
+            addTransactionAmountDecimal.getText().toString(),
+            addTransactionDescription.getText().toString(),
+            null,
+            addTransactionIsIncome.isChecked()
+        ));
+        ((MainActivity)getActivity()).refreshTransactionList();
     }
 }
