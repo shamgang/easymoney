@@ -17,10 +17,12 @@ public class ViewTransactionFragment extends BaseFullscreenFragment {
         Transaction transaction = ((MainActivity)getActivity()).mTransactionStubList.get(position);
         View view = inflater.inflate(R.layout.fragment_view_transaction, container, false);
         TextView viewTransactionAmount = (TextView)view.findViewById(R.id.view_transaction_amount);
-        viewTransactionAmount.setText(transaction.getAmountDollars().toString() + "." + transaction.getAmountCents().toString());
         TextView vewTransactionDescription = (TextView)view.findViewById(R.id.view_transaction_description);
-        vewTransactionDescription.setText(transaction.getDescription());
         TextView viewTransactionCategory = (TextView)view.findViewById(R.id.view_transaction_category);
+        // pad cents with 0 if necessary
+        viewTransactionAmount.setText(transaction.getAmountDollars().toString() + "."
+                + (transaction.getAmountCents().toString() + "0").substring(0, 2));
+        vewTransactionDescription.setText(transaction.getDescription());
         viewTransactionCategory.setText(transaction.getCategory().getName());
         return view;
     }

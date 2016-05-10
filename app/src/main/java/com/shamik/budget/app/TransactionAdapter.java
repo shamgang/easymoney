@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -31,7 +32,8 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
         TextView transactionDescription = (TextView)convertView.findViewById(R.id.transaction_item_description);
         TextView transactionCategory = (TextView)convertView.findViewById(R.id.transaction_item_category);
         transactionAmountWhole.setText(transaction.getAmountDollars().toString());
-        transactionAmountDecimal.setText(transaction.getAmountCents().toString());
+        // Pad cents with zero if necessary
+        transactionAmountDecimal.setText((transaction.getAmountCents().toString() + "0").substring(0, 2));
         transactionDescription.setText(transaction.getDescription());
         transactionCategory.setText(transaction.getCategory().getName());
         return convertView;

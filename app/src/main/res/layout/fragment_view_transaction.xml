@@ -22,7 +22,7 @@
             android:id="@+id/view_transaction_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rect"
+            android:background="@drawable/green_background"
             android:padding="10dp"
             android:textSize="16pt"
             android:layout_marginBottom="10dp" />
@@ -41,7 +41,7 @@
         android:id="@+id/view_transaction_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rect"
+        android:background="@drawable/green_background"
         android:padding="10dp"
         android:textSize="10pt"
         android:layout_marginBottom="20dp" />
@@ -58,7 +58,7 @@
         android:id="@+id/view_transaction_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rect"
+        android:background="@drawable/green_background"
         android:padding="10dp"
         android:textSize="10pt"
         android:layout_marginBottom="20dp" />
