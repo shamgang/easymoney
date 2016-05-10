@@ -22,7 +22,7 @@
     <string name="cancel_button">Cancel</string>
     <string name="save_button">Save</string>
     <string name="dollar">$</string>
-    <string name="add_transaction_description_label">Description:</string>
+    <string name="transaction_description_label">Description:</string>
     <string name="categorize_button">Categorize</string>
 
     <!-- AddCategoryDialogFragment -->
@@ -34,7 +34,8 @@
     <string name="choose_category_button">Category</string>
 
     <!-- ViewTransactionFragment -->
-    <string name="view_transaction_fragment_title">View Item</string>
+    <string name="view_transaction_fragment_title">View Transaction</string>
+    <string name="transaction_category_label">Category:</string>
 
     <!-- Widget -->
     <string name="widget_quickadd_button">+Transaction</string>

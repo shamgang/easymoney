@@ -13,10 +13,15 @@ import android.widget.TextView;
 public class ViewTransactionFragment extends BaseFullscreenFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        int position = getArguments().getInt("position");
+        Transaction transaction = ((MainActivity)getActivity()).mTransactionStubList.get(position);
         View view = inflater.inflate(R.layout.fragment_view_transaction, container, false);
         TextView viewTransactionAmount = (TextView)view.findViewById(R.id.view_transaction_amount);
-        int position = getArguments().getInt("position");
-        viewTransactionAmount.setText(((MainActivity)getActivity()).mTransactionStubList.get(position).getAmountDollars().toString());
+        viewTransactionAmount.setText(transaction.getAmountDollars().toString() + "." + transaction.getAmountCents().toString());
+        TextView vewTransactionDescription = (TextView)view.findViewById(R.id.view_transaction_description);
+        vewTransactionDescription.setText(transaction.getDescription());
+        TextView viewTransactionCategory = (TextView)view.findViewById(R.id.view_transaction_category);
+        viewTransactionCategory.setText(transaction.getCategory().getName());
         return view;
     }
 
