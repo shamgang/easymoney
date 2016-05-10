@@ -2,7 +2,6 @@ package com.shamik.budget.app;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +52,7 @@ public class AddTransactionFragment extends BaseFullscreenFragment {
             addTransactionIsIncome.isChecked()
         ));
         */
-        ((MainActivity)getActivity()).mTransactionDataSource.createTransaction(new Transaction(
+        ((MainActivity)getActivity()).mBudgetDatabase.createTransaction(new Transaction(
             addTransactionAmountWhole.getText().toString(),
             addTransactionAmountDecimal.getText().toString(),
             addTransactionDescription.getText().toString(),

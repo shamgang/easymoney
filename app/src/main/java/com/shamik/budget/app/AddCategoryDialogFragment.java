@@ -33,6 +33,8 @@ public class AddCategoryDialogFragment extends DialogFragment {
                 imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
                 // close dialog
                 dismiss();
+                // refresh category fragment
+                ((MainActivity)getActivity()).selectNavItem(1);
             }
         });
         builder.setView(mView);
@@ -42,7 +44,12 @@ public class AddCategoryDialogFragment extends DialogFragment {
     private void addCategory() {
         TextView addCategoryName = (TextView)mView.findViewById(R.id.add_category_name);
 
+        /*
         ((MainActivity)getActivity()).mCategoryStubList.add(0,
                 new Category(null, addCategoryName.getText().toString()));
+        */
+        ((MainActivity)getActivity()).mBudgetDatabase.createCategory(
+                new Category(null, addCategoryName.getText().toString()));
+        ((MainActivity)getActivity()).refreshCategoryList();
     }
 }

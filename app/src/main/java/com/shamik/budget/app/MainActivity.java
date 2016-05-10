@@ -1,7 +1,6 @@
 package com.shamik.budget.app;
 
 import android.content.res.Configuration;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -32,7 +31,7 @@ public class MainActivity extends ActionBarActivity {
 
     public ArrayList<Transaction> mTransactionStubList;
     public ArrayList<Category> mCategoryStubList;
-    public TransactionDataSource mTransactionDataSource;
+    public BudgetDatabase mBudgetDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,18 +46,22 @@ public class MainActivity extends ActionBarActivity {
             mTransactionStubList.add(new Transaction());
         }
         */
-        mTransactionDataSource = new TransactionDataSource(this);
+        mBudgetDatabase = new BudgetDatabase(this);
         try {
-            mTransactionDataSource.open();
+            mBudgetDatabase.open();
             refreshTransactionList();
+            refreshCategoryList();
         } catch(SQLException e) {
             mTransactionStubList = new ArrayList<Transaction>();
+            mCategoryStubList = new ArrayList<Category>();
             Log.e(TAG, "Could not open database");
         }
+        /*
         mCategoryStubList = new ArrayList<Category>();
         for(int i = 0; i < 30; ++i) {
             mCategoryStubList.add(new Category(null, "Blank"));
         }
+        */
 
         // the title that will be set onDrawerOpened
         mDrawerTitle= this.getString(R.string.drawer_title);
@@ -254,7 +257,11 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void refreshTransactionList() {
-        mTransactionStubList = mTransactionDataSource.getAllTransactions();
+        mTransactionStubList = mBudgetDatabase.getAllTransactions();
+    }
+
+    public void refreshCategoryList() {
+        mCategoryStubList = mBudgetDatabase.getAllCategories();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
