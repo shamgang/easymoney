@@ -16,8 +16,8 @@ public class BudgetDatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_CATEGORIES = "categories";
 
     public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_AMOUNT_WHOLE = "amount_whole";
-    public static final String COLUMN_AMOUNT_DECIMAL = "amount_decimal";
+    public static final String COLUMN_AMOUNT_DOLLARS = "amount_dollars";
+    public static final String COLUMN_AMOUNT_CENTS = "amount_cents";
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_CATEGORY = "category";
     public static final String COLUMN_IS_INCOME = "is_income";
@@ -32,8 +32,8 @@ public class BudgetDatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_TRANSACTIONS =
             "create table " + TABLE_TRANSACTIONS + "("
             + COLUMN_ID + " integer primary key autoincrement, "
-            + COLUMN_AMOUNT_WHOLE + " varchar(10), "
-            + COLUMN_AMOUNT_DECIMAL + " varchar(10), "
+            + COLUMN_AMOUNT_DOLLARS + " int, "
+            + COLUMN_AMOUNT_CENTS + " int, "
             + COLUMN_DESCRIPTION + " varchar(100), "
             + COLUMN_CATEGORY + " varchar(20), "
             + COLUMN_IS_INCOME + " boolean)";
@@ -66,25 +66,23 @@ public class BudgetDatabaseHelper extends SQLiteOpenHelper {
 
     // TODO: remove stub functions
     private void prePopulate(SQLiteDatabase database) {
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
 
         insertCategory(new Category(null, "acatagory"), database);
         insertCategory(new Category(null, "acatagory"), database);
@@ -104,8 +102,8 @@ public class BudgetDatabaseHelper extends SQLiteOpenHelper {
 
     private void insertTransaction(Transaction transaction, SQLiteDatabase database) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_AMOUNT_WHOLE, transaction.getAmountWhole());
-        values.put(COLUMN_AMOUNT_DECIMAL, transaction.getAmountDecimal());
+        values.put(COLUMN_AMOUNT_DOLLARS, transaction.getAmountDollars());
+        values.put(COLUMN_AMOUNT_CENTS, transaction.getAmountCents());
         values.put(COLUMN_DESCRIPTION, transaction.getDescription());
         values.put(COLUMN_CATEGORY, transaction.getCategory().getName());
         values.put(COLUMN_IS_INCOME, transaction.isIncome());

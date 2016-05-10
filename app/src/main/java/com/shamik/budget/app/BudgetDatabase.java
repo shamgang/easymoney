@@ -17,8 +17,8 @@ public class BudgetDatabase {
 
     private static final String[] TRANSACTION_COLUMNS = {
             BudgetDatabaseHelper.COLUMN_ID,
-            BudgetDatabaseHelper.COLUMN_AMOUNT_WHOLE,
-            BudgetDatabaseHelper.COLUMN_AMOUNT_DECIMAL,
+            BudgetDatabaseHelper.COLUMN_AMOUNT_DOLLARS,
+            BudgetDatabaseHelper.COLUMN_AMOUNT_CENTS,
             BudgetDatabaseHelper.COLUMN_DESCRIPTION,
             BudgetDatabaseHelper.COLUMN_CATEGORY,
             BudgetDatabaseHelper.COLUMN_IS_INCOME
@@ -43,8 +43,8 @@ public class BudgetDatabase {
 
     public Transaction createTransaction(Transaction transaction) {
         ContentValues values = new ContentValues();
-        values.put(BudgetDatabaseHelper.COLUMN_AMOUNT_WHOLE, transaction.getAmountWhole());
-        values.put(BudgetDatabaseHelper.COLUMN_AMOUNT_DECIMAL, transaction.getAmountDecimal());
+        values.put(BudgetDatabaseHelper.COLUMN_AMOUNT_DOLLARS, transaction.getAmountDollars());
+        values.put(BudgetDatabaseHelper.COLUMN_AMOUNT_CENTS, transaction.getAmountCents());
         values.put(BudgetDatabaseHelper.COLUMN_DESCRIPTION, transaction.getDescription());
         values.put(BudgetDatabaseHelper.COLUMN_CATEGORY, transaction.getCategory().getName());
         values.put(BudgetDatabaseHelper.COLUMN_IS_INCOME, transaction.isIncome());
@@ -106,7 +106,7 @@ public class BudgetDatabase {
 
     private Transaction cursorToTransaction(Cursor cursor) {
         // TODO: makes a new Category, shouldn't have to do that - maybe Category shouldn't be a class
-        return new Transaction(cursor.getString(1), cursor.getString(2),
+        return new Transaction(cursor.getInt(1), cursor.getInt(2),
                 cursor.getString(3), new Category(null, cursor.getString(4)), cursor.getInt(5) > 0);
     }
 

@@ -4,27 +4,27 @@ package com.shamik.budget.app;
  * Created by Shamik on 5/7/2016.
  */
 public class Transaction {
-    private String mAmountWhole;
-    private String mAmountDecimal;
+    private Integer mAmountDollars;
+    private Integer mAmountCents;
     private String mDescription;
     private Category mCategory;
     private boolean mIsIncome;
 
     public Transaction() {
-        set(null, null, null, null, false);
+        set(0, 0, null, null, false);
     }
 
-    public Transaction(String amountWhole, String amountDecimal, String description,
+    public Transaction(int amountDollars, int amountCents, String description,
                        Category category, boolean isIncome) {
-        set(amountWhole, amountDecimal, description, category, isIncome);
+        set(amountDollars, amountCents, description, category, isIncome);
     }
 
-    public String getAmountWhole() {
-        return mAmountWhole;
+    public Integer getAmountDollars() {
+        return mAmountDollars;
     }
 
-    public String getAmountDecimal() {
-        return mAmountDecimal;
+    public Integer getAmountCents() {
+        return mAmountCents;
     }
 
     public String getDescription() {
@@ -39,21 +39,21 @@ public class Transaction {
         return mIsIncome;
     }
 
-    public void set(String amountWhole, String amountDecimal, String description,
+    public void set(int amountWhole, int amountDecimal, String description,
                     Category category, boolean isIncome) {
-        setAmountWhole(amountWhole);
-        setAmountDecimal(amountDecimal);
+        setAmountDollars(amountWhole);
+        setAmountCents(amountDecimal);
         setDescription(description);
         setCategory(category);
         setIncome(isIncome);
     }
 
-    public void setAmountWhole(String amountWhole) {
-        mAmountWhole = (amountWhole == null) ? "00" : amountWhole;
+    public void setAmountDollars(int amountDollars) {
+        mAmountDollars = amountDollars;
     }
 
-    public void setAmountDecimal(String amountDecimal) {
-        mAmountDecimal = (amountDecimal == null) ? "00" : amountDecimal;
+    public void setAmountCents(int amountCents) {
+        mAmountCents = amountCents;
     }
 
     public void setDescription(String description) {

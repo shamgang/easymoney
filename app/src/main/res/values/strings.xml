@@ -17,7 +17,7 @@
     <string name="category_list_fragment_title">Categories</string>
 
     <!-- AddTransactionFragment -->
-    <string name="add_transaction_fragment_title">Add Item</string>
+    <string name="add_transaction_fragment_title">Add Transaction</string>
     <string name="cancel_button">Cancel</string>
     <string name="save_button">Save</string>
     <string name="decimal">.</string>

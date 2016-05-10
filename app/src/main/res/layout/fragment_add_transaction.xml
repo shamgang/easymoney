@@ -37,33 +37,14 @@
         android:layout_above="@id/add_transaction_footer">
 
         <!-- amount -->
-        <LinearLayout
+        <EditText
+            android:id="@+id/add_transaction_amount"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <EditText
-                android:id="@+id/add_transaction_amount_whole"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".45"
-                android:background="@drawable/rect"
-                android:inputType="number" />
-
-            <TextView
-                android:layout_width="10dp"
-                android:layout_height="wrap_content"
-                android:textSize="20pt"
-                android:text="@string/decimal"/>
-
-            <EditText
-                android:id="@+id/add_transaction_amount_decimal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".45"
-                android:background="@drawable/rect"
-                android:inputType="number" />
-
-        </LinearLayout>
+            android:layout_height="60dp"
+            android:textSize="16pt"
+            android:padding="10dp"
+            android:background="@drawable/rect"
+            android:inputType="numberDecimal" />
 
         <!-- description -->
         <EditText

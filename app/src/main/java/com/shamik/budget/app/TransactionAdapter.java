@@ -30,8 +30,8 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
         TextView transactionAmountDecimal = (TextView)convertView.findViewById(R.id.transaction_item_amount_decimal);
         TextView transactionDescription = (TextView)convertView.findViewById(R.id.transaction_item_description);
         TextView transactionCategory = (TextView)convertView.findViewById(R.id.transaction_item_category);
-        transactionAmountWhole.setText(transaction.getAmountWhole());
-        transactionAmountDecimal.setText(transaction.getAmountDecimal());
+        transactionAmountWhole.setText(transaction.getAmountDollars().toString());
+        transactionAmountDecimal.setText(transaction.getAmountCents().toString());
         transactionDescription.setText(transaction.getDescription());
         transactionCategory.setText(transaction.getCategory().getName());
         return convertView;
