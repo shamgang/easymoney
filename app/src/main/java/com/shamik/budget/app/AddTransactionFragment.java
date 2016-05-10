@@ -51,6 +51,14 @@ public class AddTransactionFragment extends BaseFullscreenFragment {
                 ((MainActivity)getActivity()).selectNavItem(0);
             }
         });
+        Button cancelButton = (Button)view.findViewById(R.id.transaction_cancel_button);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // return to transaction list
+                ((MainActivity)getActivity()).selectNavItem(0);
+            }
+        });
         return view;
     }
 

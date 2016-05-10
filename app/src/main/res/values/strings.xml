@@ -12,6 +12,7 @@
 
     <!-- TransactionListFragment -->
     <string name="transaction_list_fragment_title">Transactions</string>
+    <string name="decimal">.</string>
 
     <!-- CategoryListFragment -->
     <string name="category_list_fragment_title">Categories</string>
@@ -20,7 +21,8 @@
     <string name="add_transaction_fragment_title">Add Transaction</string>
     <string name="cancel_button">Cancel</string>
     <string name="save_button">Save</string>
-    <string name="decimal">.</string>
+    <string name="dollar">$</string>
+    <string name="add_transaction_description_label">Description:</string>
     <string name="categorize_button">Categorize</string>
 
     <!-- AddCategoryDialogFragment -->
