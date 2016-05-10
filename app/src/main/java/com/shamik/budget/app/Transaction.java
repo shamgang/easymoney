@@ -4,19 +4,27 @@ package com.shamik.budget.app;
  * Created by Shamik on 5/7/2016.
  */
 public class Transaction {
+    private Integer mID;
     private Integer mAmountDollars;
     private Integer mAmountCents;
     private String mDescription;
     private Category mCategory;
     private boolean mIsIncome;
 
-    public Transaction() {
-        set(0, 0, null, null, false);
-    }
-
+    // pre-database
     public Transaction(int amountDollars, int amountCents, String description,
                        Category category, boolean isIncome) {
-        set(amountDollars, amountCents, description, category, isIncome);
+        set(-1, amountDollars, amountCents, description, category, isIncome);
+    }
+
+    // post-database
+    public Transaction(int ID, int amountDollars, int amountCents, String description,
+                       Category category, boolean isIncome) {
+        set(ID, amountDollars, amountCents, description, category, isIncome);
+    }
+
+    public Integer getID() {
+        return mID;
     }
 
     public Integer getAmountDollars() {
@@ -39,13 +47,18 @@ public class Transaction {
         return mIsIncome;
     }
 
-    public void set(int amountWhole, int amountDecimal, String description,
+    public void set(int ID, int amountWhole, int amountDecimal, String description,
                     Category category, boolean isIncome) {
+        setID(ID);
         setAmountDollars(amountWhole);
         setAmountCents(amountDecimal);
         setDescription(description);
         setCategory(category);
         setIncome(isIncome);
+    }
+
+    public void setID(int ID) {
+        mID = ID;
     }
 
     public void setAmountDollars(int amountDollars) {

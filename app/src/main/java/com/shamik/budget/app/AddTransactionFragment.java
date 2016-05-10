@@ -96,13 +96,13 @@ public class AddTransactionFragment extends BaseFullscreenFragment {
             addTransactionIsIncome.isChecked()
         ));
         */
-        ((MainActivity)getActivity()).mBudgetDatabase.createTransaction(new Transaction(
+        Transaction newTransaction = ((MainActivity)getActivity()).mBudgetDatabase.createTransaction(new Transaction(
             amountDollars,
             amountCents,
             addTransactionDescription.getText().toString(),
             null,
             addTransactionIsIncome.isChecked()
         ));
-        ((MainActivity)getActivity()).refreshTransactionList();
+        ((MainActivity)getActivity()).mTransactionStubList.add(0, newTransaction);
     }
 }

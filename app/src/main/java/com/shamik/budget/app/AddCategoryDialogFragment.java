@@ -50,6 +50,6 @@ public class AddCategoryDialogFragment extends DialogFragment {
         */
         ((MainActivity)getActivity()).mBudgetDatabase.createCategory(
                 new Category(null, addCategoryName.getText().toString()));
-        ((MainActivity)getActivity()).refreshCategoryList();
+        ((MainActivity)getActivity()).loadCategoryList();
     }
 }

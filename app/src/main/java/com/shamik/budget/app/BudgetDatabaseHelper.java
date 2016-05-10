@@ -83,6 +83,9 @@ public class BudgetDatabaseHelper extends SQLiteOpenHelper {
         insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
         insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
         insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
 
         insertCategory(new Category(null, "acatagory"), database);
         insertCategory(new Category(null, "acatagory"), database);

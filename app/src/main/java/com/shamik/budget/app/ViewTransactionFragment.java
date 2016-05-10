@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * Created by Shamik on 5/6/2016.
@@ -12,7 +13,11 @@ import android.view.ViewGroup;
 public class ViewTransactionFragment extends BaseFullscreenFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_view_transaction, container, false);
+        View view = inflater.inflate(R.layout.fragment_view_transaction, container, false);
+        TextView viewTransactionAmount = (TextView)view.findViewById(R.id.view_transaction_amount);
+        int position = getArguments().getInt("position");
+        viewTransactionAmount.setText(((MainActivity)getActivity()).mTransactionStubList.get(position).getAmountDollars().toString());
+        return view;
     }
 
     @Override

@@ -39,9 +39,9 @@ public class TransactionListFragment extends BaseFullscreenFragment implements O
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         MainActivity mainActivity = (MainActivity)getActivity();
-        mainActivity.selectTransaction();
+        mainActivity.selectTransaction(position);
     }
 
     @Override

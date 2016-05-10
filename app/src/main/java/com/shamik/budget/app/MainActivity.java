@@ -49,8 +49,8 @@ public class MainActivity extends ActionBarActivity {
         mBudgetDatabase = new BudgetDatabase(this);
         try {
             mBudgetDatabase.open();
-            refreshTransactionList();
-            refreshCategoryList();
+            loadTransactionList();
+            loadCategoryList();
         } catch(SQLException e) {
             mTransactionStubList = new ArrayList<Transaction>();
             mCategoryStubList = new ArrayList<Category>();
@@ -213,9 +213,12 @@ public class MainActivity extends ActionBarActivity {
         invalidateOptionsMenu();
     }
 
-    public void selectTransaction() {
+    public void selectTransaction(int position) {
         // switch to ViewTransactionFragment, change title and refresh options menu
         Fragment fragment = new ViewTransactionFragment();
+        Bundle args = new Bundle();
+        args.putInt("position", position);
+        fragment.setArguments(args);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
@@ -256,11 +259,11 @@ public class MainActivity extends ActionBarActivity {
         mDrawerLayout.closeDrawer(mNavDrawerList);
     }
 
-    public void refreshTransactionList() {
+    public void loadTransactionList() {
         mTransactionStubList = mBudgetDatabase.getAllTransactions();
     }
 
-    public void refreshCategoryList() {
+    public void loadCategoryList() {
         mCategoryStubList = mBudgetDatabase.getAllCategories();
     }
 

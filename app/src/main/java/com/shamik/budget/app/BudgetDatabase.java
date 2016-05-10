@@ -106,7 +106,7 @@ public class BudgetDatabase {
 
     private Transaction cursorToTransaction(Cursor cursor) {
         // TODO: makes a new Category, shouldn't have to do that - maybe Category shouldn't be a class
-        return new Transaction(cursor.getInt(1), cursor.getInt(2),
+        return new Transaction(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2),
                 cursor.getString(3), new Category(null, cursor.getString(4)), cursor.getInt(5) > 0);
     }
 
