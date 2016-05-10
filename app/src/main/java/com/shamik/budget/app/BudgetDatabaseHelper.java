@@ -1,9 +1,12 @@
 package com.shamik.budget.app;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.sql.SQLException;
 
 /**
  * Created by Shamik on 5/8/2016.
@@ -48,6 +51,7 @@ public class BudgetDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase database) {
         database.execSQL(CREATE_TABLE_TRANSACTIONS);
         database.execSQL(CREATE_TABLE_CATEGORIES);
+        prePopulate(database);
     }
 
     @Override
@@ -58,5 +62,62 @@ public class BudgetDatabaseHelper extends SQLiteOpenHelper {
         database.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSACTIONS);
         database.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
         onCreate(database);
+    }
+
+    // TODO: remove stub functions
+    private void prePopulate(SQLiteDatabase database) {
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction("34", "55", "New purchase", new Category(null, "category1"), false), database);
+
+        insertCategory(new Category(null, "acatagory"), database);
+        insertCategory(new Category(null, "acatagory"), database);
+        insertCategory(new Category(null, "acatagory"), database);
+        insertCategory(new Category(null, "acatagory"), database);
+        insertCategory(new Category(null, "acatagory"), database);
+        insertCategory(new Category(null, "acatagory"), database);
+        insertCategory(new Category(null, "acatagory"), database);
+        insertCategory(new Category(null, "acatagory"), database);
+        insertCategory(new Category(null, "acatagory"), database);
+        insertCategory(new Category(null, "acatagory"), database);
+        insertCategory(new Category(null, "acatagory"), database);
+        insertCategory(new Category(null, "acatagory"), database);
+        insertCategory(new Category(null, "acatagory"), database);
+        insertCategory(new Category(null, "acatagory"), database);
+    }
+
+    private void insertTransaction(Transaction transaction, SQLiteDatabase database) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_AMOUNT_WHOLE, transaction.getAmountWhole());
+        values.put(COLUMN_AMOUNT_DECIMAL, transaction.getAmountDecimal());
+        values.put(COLUMN_DESCRIPTION, transaction.getDescription());
+        values.put(COLUMN_CATEGORY, transaction.getCategory().getName());
+        values.put(COLUMN_IS_INCOME, transaction.isIncome());
+        database.insert(BudgetDatabaseHelper.TABLE_TRANSACTIONS, null, values);
+    }
+
+    private void insertCategory(Category category, SQLiteDatabase database) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, category.getName());
+        if(category.getParent() != null) {
+            values.put(COLUMN_PARENT, category.getParent().getName());
+        }
+        database.insert(BudgetDatabaseHelper.TABLE_CATEGORIES, null, values);
     }
 }
