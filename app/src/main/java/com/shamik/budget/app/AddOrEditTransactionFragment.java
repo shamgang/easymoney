@@ -77,7 +77,8 @@ public class AddOrEditTransactionFragment extends BaseFullscreenFragment {
                         .getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
                 // return to transaction list
-                ((MainActivity)getActivity()).selectNavItem(0);
+                ((MainActivity)getActivity())
+                        .replaceFragmentWithBackstack(new TransactionListFragment());
             }
         });
         Button cancelButton = (Button)view.findViewById(R.id.transaction_cancel_button);
@@ -85,7 +86,8 @@ public class AddOrEditTransactionFragment extends BaseFullscreenFragment {
             @Override
             public void onClick(View v) {
                 // return to transaction list
-                ((MainActivity)getActivity()).selectNavItem(0);
+                ((MainActivity)getActivity())
+                        .replaceFragmentWithBackstack(new TransactionListFragment());
             }
         });
         return view;

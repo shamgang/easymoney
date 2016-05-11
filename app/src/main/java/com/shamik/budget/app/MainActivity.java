@@ -211,19 +211,13 @@ public class MainActivity extends ActionBarActivity {
         Bundle args = new Bundle();
         args.putInt("position", position);
         fragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit();
+        replaceFragmentWithBackstack(fragment);
     }
 
     public void selectCategory() {
         // switch to TransactionListFragment, change title and refresh options menu
         Fragment fragment = new TransactionListFragment();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit();
+        replaceFragmentWithBackstack(fragment);
     }
 
     /** Swaps fragments in the main content view */
@@ -241,10 +235,7 @@ public class MainActivity extends ActionBarActivity {
             fragment = new AnalyticsFragment();
         }
 
-        // Insert the fragment by replacing any existing fragment
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
+        replaceFragment(fragment);
 
         // Highlight the selected item, update the title, and close the drawer
         mNavDrawerList.setItemChecked(position, true);
@@ -262,20 +253,29 @@ public class MainActivity extends ActionBarActivity {
     public void addTransaction() {
         Bundle args = new Bundle();
         args.putBoolean("isNew", true);
-        launchAddOrEditTransaction(args);
+        Fragment fragment = new AddOrEditTransactionFragment();
+        fragment.setArguments(args);
+        replaceFragmentWithBackstack(fragment);
     }
 
     public void editTransaction(int position) {
         Bundle args = new Bundle();
         args.putBoolean("isNew", false);
         args.putInt("position", position);
-        launchAddOrEditTransaction(args);
-    }
-
-    private void launchAddOrEditTransaction(Bundle args) {
         Fragment fragment = new AddOrEditTransactionFragment();
         fragment.setArguments(args);
+        replaceFragmentWithBackstack(fragment);
+    }
+
+    public void replaceFragment(Fragment fragment) {
         // Insert the fragment by replacing any existing fragment
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+    }
+
+    public void replaceFragmentWithBackstack(Fragment fragment) {
+        // Insert the fragment by replacing any existing fragment, and add to backstack
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)

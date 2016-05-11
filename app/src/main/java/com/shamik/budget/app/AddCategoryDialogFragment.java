@@ -34,7 +34,7 @@ public class AddCategoryDialogFragment extends DialogFragment {
                 // close dialog
                 dismiss();
                 // refresh category fragment
-                ((MainActivity)getActivity()).selectNavItem(1);
+                ((MainActivity)getActivity()).replaceFragment(new CategoryListFragment());
             }
         });
         builder.setView(mView);
