@@ -2,8 +2,6 @@ package com.shamik.budget.app;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +16,27 @@ import android.widget.Toast;
 /**
  * Created by Shamik on 5/5/2016.
  */
-public class AddTransactionFragment extends BaseFullscreenFragment {
-    private static final String TAG = "AddTransactionFragment";
+public class AddOrEditTransactionFragment extends BaseFullscreenFragment {
+    private static final String TAG = "AddOrEditTransactionFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_transaction, container, false);
-        // validate amount input
+        View view = inflater.inflate(R.layout.fragment_add_or_edit_transaction, container, false);
+
         final EditText addTransactionAmount = (EditText)view.findViewById(R.id.add_transaction_amount);
         final EditText addTransactionDescription = (EditText)view.findViewById(R.id.add_transaction_description);
+
+        // if editing, fill default values
+        if(!getArguments().getBoolean("isNew")) {
+            Transaction transaction =((MainActivity)getActivity()).mTransactionStubList
+                    .get(getArguments().getInt("position"));
+            // pad cents with 0 if necessary
+            addTransactionAmount.setText(transaction.getAmountDollars().toString() + "."
+                    + (transaction.getAmountCents().toString() + "0").substring(0, 2));
+            addTransactionDescription.setText(transaction.getDescription());
+        }
+
+        // validate amount input
         addTransactionAmount.addTextChangedListener(new TextValidator(addTransactionAmount) {
             @Override
             public void validate(TextView textView, String text) {

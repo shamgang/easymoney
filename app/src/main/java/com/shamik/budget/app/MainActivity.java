@@ -176,15 +176,7 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_add) {
             if(mTitle.equals(this.getString(R.string.transaction_list_fragment_title))) {
                 // We are on the transaction list, so the plus button will add an item
-                // Switch to AddTransactionFragment, set title, and refresh options menu
-
-                Fragment fragment = new AddTransactionFragment();
-
-                // Insert the fragment by replacing any existing fragment
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, fragment)
-                        .addToBackStack(null)
-                        .commit();
+                addTransaction();
             }
             else if(mTitle.equals(this.getString(R.string.category_list_fragment_title))) {
                 // We are on the category list, so the plus button will open a text entry modal
@@ -265,6 +257,29 @@ public class MainActivity extends ActionBarActivity {
 
     public void loadCategoryList() {
         mCategoryStubList = mBudgetDatabase.getAllCategories();
+    }
+
+    public void addTransaction() {
+        Bundle args = new Bundle();
+        args.putBoolean("isNew", true);
+        launchAddOrEditTransaction(args);
+    }
+
+    public void editTransaction(int position) {
+        Bundle args = new Bundle();
+        args.putBoolean("isNew", false);
+        args.putInt("position", position);
+        launchAddOrEditTransaction(args);
+    }
+
+    private void launchAddOrEditTransaction(Bundle args) {
+        Fragment fragment = new AddOrEditTransactionFragment();
+        fragment.setArguments(args);
+        // Insert the fragment by replacing any existing fragment
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
