@@ -13,6 +13,7 @@ public class Category {
     public Category(Category parent, String name) {
         mParent = parent;
         mName = name;
+        mChildren = new ArrayList<Category>();
     }
 
     public Category getParent() {
@@ -21,5 +22,9 @@ public class Category {
 
     public String getName() {
         return mName;
+    }
+
+    public ArrayList<Category> getChildren() {
+        return mChildren;
     }
 }

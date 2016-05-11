@@ -33,6 +33,8 @@ public class MainActivity extends ActionBarActivity {
     public ArrayList<Category> mCategoryStubList;
     public BudgetDatabase mBudgetDatabase;
 
+    public static final String ADD_OR_EDIT_TRANSACTION_TAG = "addOrEditTransaction";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -255,7 +257,7 @@ public class MainActivity extends ActionBarActivity {
         args.putBoolean("isNew", true);
         Fragment fragment = new AddOrEditTransactionFragment();
         fragment.setArguments(args);
-        replaceFragmentWithBackstack(fragment);
+        replaceFragmentWithBackstack(fragment, ADD_OR_EDIT_TRANSACTION_TAG);
     }
 
     public void editTransaction(int position) {
@@ -264,7 +266,7 @@ public class MainActivity extends ActionBarActivity {
         args.putInt("position", position);
         Fragment fragment = new AddOrEditTransactionFragment();
         fragment.setArguments(args);
-        replaceFragmentWithBackstack(fragment);
+        replaceFragmentWithBackstack(fragment, ADD_OR_EDIT_TRANSACTION_TAG);
     }
 
     public void replaceFragment(Fragment fragment) {
@@ -278,6 +280,14 @@ public class MainActivity extends ActionBarActivity {
         // Insert the fragment by replacing any existing fragment, and add to backstack
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public void replaceFragmentWithBackstack(Fragment fragment, String tag) {
+        // Insert the fragment by replacing any existing fragment, and add to backstack
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment, tag)
                 .addToBackStack(null)
                 .commit();
     }

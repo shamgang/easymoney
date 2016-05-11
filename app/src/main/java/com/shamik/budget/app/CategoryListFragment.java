@@ -1,6 +1,7 @@
 package com.shamik.budget.app;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.ListView;
  * Created by Shamik on 5/5/2016.
  */
 public class CategoryListFragment extends BaseFullscreenFragment implements OnItemClickListener {
+    private static final String TAG = "CategoryListFragment";
 
     private ListView mCategoryList;
 
@@ -38,9 +40,8 @@ public class CategoryListFragment extends BaseFullscreenFragment implements OnIt
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-        MainActivity mainActivity = (MainActivity)getActivity();
-        mainActivity.selectCategory();
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        ((MainActivity)getActivity()).selectCategory();
     }
 
     @Override

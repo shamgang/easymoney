@@ -2,6 +2,7 @@ package com.shamik.budget.app;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,18 +20,21 @@ import android.widget.Toast;
 public class AddOrEditTransactionFragment extends BaseFullscreenFragment {
     private static final String TAG = "AddOrEditTransactionFragment";
 
+    private View mView;
     private boolean isNew;
     private int mPosition;
+    private Category mCategory;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_or_edit_transaction, container, false);
+        mView = inflater.inflate(R.layout.fragment_add_or_edit_transaction, container, false);
 
         final EditText addTransactionAmount =
-                (EditText)view.findViewById(R.id.add_transaction_amount);
+                (EditText)mView.findViewById(R.id.add_transaction_amount);
         final EditText addTransactionDescription =
-                (EditText)view.findViewById(R.id.add_transaction_description);
+                (EditText)mView.findViewById(R.id.add_transaction_description);
+        Button categorizeButton = (Button)mView.findViewById(R.id.transaction_categorize_button);
 
         // if editing, fill default values
         isNew = getArguments().getBoolean("isNew");
@@ -42,6 +46,7 @@ public class AddOrEditTransactionFragment extends BaseFullscreenFragment {
             addTransactionAmount.setText(transaction.getAmountDollars().toString() + "."
                     + (transaction.getAmountCents().toString() + "0").substring(0, 2));
             addTransactionDescription.setText(transaction.getDescription());
+            categorizeButton.setText(transaction.getCategory().getName());
         }
 
         // validate amount input
@@ -59,8 +64,17 @@ public class AddOrEditTransactionFragment extends BaseFullscreenFragment {
                 }
             }
         });
+        // categorize button behavior
+        categorizeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // open category list as selection modal
+                new SelectCategoryDialogFragment().show(getActivity().getSupportFragmentManager(),
+                        getActivity().getString(R.string.select_category_dialog_fragment_title));
+            }
+        });
         // save button behavior
-        Button saveButton = (Button)view.findViewById(R.id.transaction_save_button);
+        Button saveButton = (Button)mView.findViewById(R.id.transaction_save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +95,8 @@ public class AddOrEditTransactionFragment extends BaseFullscreenFragment {
                         .replaceFragmentWithBackstack(new TransactionListFragment());
             }
         });
-        Button cancelButton = (Button)view.findViewById(R.id.transaction_cancel_button);
+        // cancel button behavior
+        Button cancelButton = (Button)mView.findViewById(R.id.transaction_cancel_button);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +105,13 @@ public class AddOrEditTransactionFragment extends BaseFullscreenFragment {
                         .replaceFragmentWithBackstack(new TransactionListFragment());
             }
         });
-        return view;
+        return mView;
+    }
+
+    public void setCategory(Category category) {
+        Button categorizeButton = (Button)mView.findViewById(R.id.transaction_categorize_button);
+        mCategory = category;
+        categorizeButton.setText(mCategory.getName());
     }
 
     @Override
@@ -142,7 +163,7 @@ public class AddOrEditTransactionFragment extends BaseFullscreenFragment {
                 amountDollars,
                 amountCents,
                 addTransactionDescription.getText().toString(),
-                null,
+                mCategory,
                 addTransactionIsIncome.isChecked()
         );
         Transaction newTransaction;
