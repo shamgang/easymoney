@@ -19,17 +19,25 @@ import android.widget.Toast;
 public class AddOrEditTransactionFragment extends BaseFullscreenFragment {
     private static final String TAG = "AddOrEditTransactionFragment";
 
+    private boolean isNew;
+    private int mPosition;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_or_edit_transaction, container, false);
 
-        final EditText addTransactionAmount = (EditText)view.findViewById(R.id.add_transaction_amount);
-        final EditText addTransactionDescription = (EditText)view.findViewById(R.id.add_transaction_description);
+        final EditText addTransactionAmount =
+                (EditText)view.findViewById(R.id.add_transaction_amount);
+        final EditText addTransactionDescription =
+                (EditText)view.findViewById(R.id.add_transaction_description);
 
         // if editing, fill default values
-        if(!getArguments().getBoolean("isNew")) {
-            Transaction transaction =((MainActivity)getActivity()).mTransactionStubList
-                    .get(getArguments().getInt("position"));
+        isNew = getArguments().getBoolean("isNew");
+        if(!isNew) {
+            mPosition = getArguments().getInt("position");
+            Transaction transaction =((MainActivity)getActivity())
+                    .mTransactionStubList.get(mPosition);
             // pad cents with 0 if necessary
             addTransactionAmount.setText(transaction.getAmountDollars().toString() + "."
                     + (transaction.getAmountCents().toString() + "0").substring(0, 2));
@@ -57,14 +65,16 @@ public class AddOrEditTransactionFragment extends BaseFullscreenFragment {
             @Override
             public void onClick(View v) {
                 try {
-                    addTransaction();
+                    addOrUpdateTransaction();
                 } catch(NumberFormatException e) {
-                    Toast toast = Toast.makeText(getActivity(), "Please enter a valid amount.", 2000);
+                    Toast toast =
+                            Toast.makeText(getActivity(), "Please enter a valid amount.", 2000);
                     toast.show();
                     return;
                 }
                 // hide keyboard
-                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager)getActivity()
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
                 // return to transaction list
                 ((MainActivity)getActivity()).selectNavItem(0);
@@ -86,16 +96,17 @@ public class AddOrEditTransactionFragment extends BaseFullscreenFragment {
         return this.getString(R.string.add_transaction_fragment_title);
     }
 
-    private void addTransaction() throws NumberFormatException {
-        TextView addTransactionAmount = (TextView)getView().findViewById(R.id.add_transaction_amount);
-        TextView addTransactionDescription = (TextView)getView().findViewById(R.id.add_transaction_description);
-        Switch addTransactionIsIncome = (Switch)getView().findViewById(R.id.add_transaction_is_income);
+    private void addOrUpdateTransaction() throws NumberFormatException {
+        TextView addTransactionAmount =
+                (TextView)getView().findViewById(R.id.add_transaction_amount);
+        TextView addTransactionDescription =
+                (TextView)getView().findViewById(R.id.add_transaction_description);
+        Switch addTransactionIsIncome =
+                (Switch)getView().findViewById(R.id.add_transaction_is_income);
 
         // parse amount
         String amountText = addTransactionAmount.getText().toString();
         int decPos = amountText.lastIndexOf('.');
-        Log.d(TAG, Integer.toString(decPos));
-        Log.d(TAG, Integer.toString(amountText.length()));
         int amountDollars, amountCents;
         if(decPos == -1) {
             // no decimal, save round dollar amount
@@ -103,7 +114,6 @@ public class AddOrEditTransactionFragment extends BaseFullscreenFragment {
             amountCents = 0;
         } else if(decPos == amountText.length() - 1) {
             // terminating decimal, remove and save round dollar amount
-            Log.d(TAG, amountText);
             amountDollars = Integer.parseInt(amountText.substring(0, amountText.length() - 1));
             amountCents = 0;
         } else if(decPos == 0) {
@@ -125,13 +135,29 @@ public class AddOrEditTransactionFragment extends BaseFullscreenFragment {
             addTransactionIsIncome.isChecked()
         ));
         */
-        Transaction newTransaction = ((MainActivity)getActivity()).mBudgetDatabase.createTransaction(new Transaction(
-            amountDollars,
-            amountCents,
-            addTransactionDescription.getText().toString(),
-            null,
-            addTransactionIsIncome.isChecked()
-        ));
-        ((MainActivity)getActivity()).mTransactionStubList.add(0, newTransaction);
+        // Make a new transaction to send to database
+        Transaction transactionForDatabase = new Transaction(
+                amountDollars,
+                amountCents,
+                addTransactionDescription.getText().toString(),
+                null,
+                addTransactionIsIncome.isChecked()
+        );
+        Transaction newTransaction;
+        if(isNew) {
+            // if this is a new transaction, create in database,
+            // get the new object with table ID, and add to list
+            newTransaction = ((MainActivity)getActivity()).mBudgetDatabase
+                    .createTransaction(transactionForDatabase);
+            ((MainActivity)getActivity()).mTransactionStubList.add(0, newTransaction);
+        } else {
+            // if this is an old transaction, update in database using old ID and replace in list
+            transactionForDatabase.setID(((MainActivity)getActivity())
+                    .mTransactionStubList.get(mPosition).getID());
+            ((MainActivity)getActivity()).mBudgetDatabase
+                    .updateTransaction(transactionForDatabase);
+            ((MainActivity)getActivity())
+                    .mTransactionStubList.set(mPosition, transactionForDatabase);
+        }
     }
 }

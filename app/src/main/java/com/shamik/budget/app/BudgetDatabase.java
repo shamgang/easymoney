@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
  * Created by Shamik on 5/9/2016.
  */
 public class BudgetDatabase {
+    private static final String TAG = "BudgetDatabase";
+
     private SQLiteDatabase mDatabase;
     private BudgetDatabaseHelper mDBHelper;
 
@@ -42,19 +45,29 @@ public class BudgetDatabase {
     }
 
     public Transaction createTransaction(Transaction transaction) {
-        ContentValues values = new ContentValues();
-        values.put(BudgetDatabaseHelper.COLUMN_AMOUNT_DOLLARS, transaction.getAmountDollars());
-        values.put(BudgetDatabaseHelper.COLUMN_AMOUNT_CENTS, transaction.getAmountCents());
-        values.put(BudgetDatabaseHelper.COLUMN_DESCRIPTION, transaction.getDescription());
-        values.put(BudgetDatabaseHelper.COLUMN_CATEGORY, transaction.getCategory().getName());
-        values.put(BudgetDatabaseHelper.COLUMN_IS_INCOME, transaction.isIncome());
-        long insertId = mDatabase.insert(BudgetDatabaseHelper.TABLE_TRANSACTIONS, null, values);
+        long insertId = mDatabase.insert(BudgetDatabaseHelper.TABLE_TRANSACTIONS, null,
+                transactionToValues(transaction));
         Cursor cursor = mDatabase.query(BudgetDatabaseHelper.TABLE_TRANSACTIONS, TRANSACTION_COLUMNS,
                 BudgetDatabaseHelper.COLUMN_ID + " = " + insertId, null, null, null, null);
         cursor.moveToFirst();
         Transaction newTransaction = cursorToTransaction(cursor);
         cursor.close();
         return newTransaction;
+    }
+
+    public void updateTransaction(Transaction transaction) {
+        mDatabase.update(BudgetDatabaseHelper.TABLE_TRANSACTIONS, transactionToValues(transaction),
+                "_id=" + transaction.getID(), null);
+    }
+
+    private ContentValues transactionToValues(Transaction transaction) {
+        ContentValues values = new ContentValues();
+        values.put(BudgetDatabaseHelper.COLUMN_AMOUNT_DOLLARS, transaction.getAmountDollars());
+        values.put(BudgetDatabaseHelper.COLUMN_AMOUNT_CENTS, transaction.getAmountCents());
+        values.put(BudgetDatabaseHelper.COLUMN_DESCRIPTION, transaction.getDescription());
+        values.put(BudgetDatabaseHelper.COLUMN_CATEGORY, transaction.getCategory().getName());
+        values.put(BudgetDatabaseHelper.COLUMN_IS_INCOME, transaction.isIncome());
+        return values;
     }
 
     public Category createCategory(Category category) {
