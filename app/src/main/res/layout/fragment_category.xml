@@ -13,6 +13,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="10dp"
+            android:layout_marginTop="20dp"
             android:textSize="10pt"
             android:text="@string/category_children_label" />
 

@@ -86,13 +86,18 @@ public class BudgetDatabase {
     }
 
     public ArrayList<Transaction> getAllTransactions() {
+        return getTransactionsWhere(null);
+    }
+
+    public ArrayList<Transaction> getTransactionsWhere(String where) {
         ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 
         Cursor cursor = mDatabase.query(BudgetDatabaseHelper.TABLE_TRANSACTIONS,
-                TRANSACTION_COLUMNS, null, null, null, null, null);
+                TRANSACTION_COLUMNS, where, null, null, null, null);
 
         cursor.moveToLast();
         while(!cursor.isBeforeFirst()) {
+            Log.d(TAG, "cursor loop");
             Transaction transaction = cursorToTransaction(cursor);
             transactions.add(transaction);
             cursor.moveToPrevious();
