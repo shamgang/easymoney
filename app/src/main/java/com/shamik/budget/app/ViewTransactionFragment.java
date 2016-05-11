@@ -19,11 +19,13 @@ public class ViewTransactionFragment extends BaseFullscreenFragment {
         TextView viewTransactionAmount = (TextView)view.findViewById(R.id.view_transaction_amount);
         TextView vewTransactionDescription = (TextView)view.findViewById(R.id.view_transaction_description);
         TextView viewTransactionCategory = (TextView)view.findViewById(R.id.view_transaction_category);
+        TextView viewTransactionIsIncome = (TextView)view.findViewById(R.id.view_transaction_is_income);
         // pad cents with 0 if necessary
         viewTransactionAmount.setText(transaction.getAmountDollars().toString() + "."
                 + (transaction.getAmountCents().toString() + "0").substring(0, 2));
         vewTransactionDescription.setText(transaction.getDescription());
         viewTransactionCategory.setText(transaction.getCategory().getName());
+        viewTransactionIsIncome.setText(transaction.isIncome() ? "Income" : "Expense");
         return view;
     }
 
