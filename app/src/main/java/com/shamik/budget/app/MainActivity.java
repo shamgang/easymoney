@@ -216,9 +216,12 @@ public class MainActivity extends ActionBarActivity {
         replaceFragmentWithBackstack(fragment);
     }
 
-    public void selectCategory() {
+    public void selectCategory(int position) {
         // switch to TransactionListFragment, change title and refresh options menu
-        Fragment fragment = new TransactionListFragment();
+        Fragment fragment = new CategoryFragment();
+        Bundle args = new Bundle();
+        args.putInt("position", position);
+        fragment.setArguments(args);
         replaceFragmentWithBackstack(fragment);
     }
 

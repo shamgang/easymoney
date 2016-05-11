@@ -17,6 +17,10 @@
     <!-- CategoryListFragment -->
     <string name="category_list_fragment_title">Categories</string>
 
+    <!-- CategoryFragment -->
+    <string name="category_children_label">Sub-categories</string>
+    <string name="category_transaction_label">Transactions</string>
+
     <!-- AddOrEditTransactionFragment -->
     <string name="add_transaction_fragment_title">Add Transaction</string>
     <string name="cancel_button">Cancel</string>

@@ -41,7 +41,7 @@ public class CategoryListFragment extends BaseFullscreenFragment implements OnIt
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        ((MainActivity)getActivity()).selectCategory();
+        ((MainActivity)getActivity()).selectCategory(position);
     }
 
     @Override
