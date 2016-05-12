@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by Shamik on 5/5/2016.
@@ -27,7 +28,13 @@ public class AddCategoryDialogFragment extends DialogFragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addCategory();
+                try {
+                    addCategory();
+                } catch(DuplicateCategoryException e) {
+                    Toast toast = Toast.makeText(getActivity(), e.getMessage(), 2000);
+                    toast.show();
+                    return;
+                }
                 // hide keyboard
                 InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
@@ -41,15 +48,29 @@ public class AddCategoryDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    private void addCategory() {
-        TextView addCategoryName = (TextView)mView.findViewById(R.id.add_category_name);
+    public class DuplicateCategoryException extends Exception {
+        public DuplicateCategoryException(String message) {
+            super(message);
+        }
+    }
+
+    private void addCategory() throws DuplicateCategoryException {
+        TextView addCategoryNameView = (TextView)mView.findViewById(R.id.add_category_name);
+        String addCategoryName = addCategoryNameView.getText().toString();
+
+        for(Category category  : ((MainActivity)getActivity()).mCategoryStubList) {
+            if(addCategoryName.equals(category.getName())) {
+                throw new DuplicateCategoryException("Category '" + addCategoryName + "' already exists");
+            }
+        }
 
         /*
         ((MainActivity)getActivity()).mCategoryStubList.add(0,
                 new Category(null, addCategoryName.getText().toString()));
         */
+
         ((MainActivity)getActivity()).mBudgetDatabase.createCategory(
-                new Category(null, addCategoryName.getText().toString()));
+                new Category(null, addCategoryNameView.getText().toString()));
         ((MainActivity)getActivity()).loadCategoryList();
     }
 }
