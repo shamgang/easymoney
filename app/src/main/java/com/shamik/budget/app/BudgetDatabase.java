@@ -97,7 +97,6 @@ public class BudgetDatabase {
 
         cursor.moveToLast();
         while(!cursor.isBeforeFirst()) {
-            Log.d(TAG, "cursor loop");
             Transaction transaction = cursorToTransaction(cursor);
             transactions.add(transaction);
             cursor.moveToPrevious();

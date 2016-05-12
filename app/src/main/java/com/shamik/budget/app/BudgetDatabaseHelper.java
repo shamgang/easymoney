@@ -66,7 +66,7 @@ public class BudgetDatabaseHelper extends SQLiteOpenHelper {
 
     // TODO: remove stub functions
     private void prePopulate(SQLiteDatabase database) {
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "acatagory2"), false), database);
         insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
         insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
         insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
@@ -88,19 +88,20 @@ public class BudgetDatabaseHelper extends SQLiteOpenHelper {
         insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
 
         insertCategory(new Category(null, "acatagory"), database);
-        insertCategory(new Category(null, "acatagory"), database);
-        insertCategory(new Category(null, "acatagory"), database);
-        insertCategory(new Category(null, "acatagory"), database);
-        insertCategory(new Category(null, "acatagory"), database);
-        insertCategory(new Category(null, "acatagory"), database);
-        insertCategory(new Category(null, "acatagory"), database);
-        insertCategory(new Category(null, "acatagory"), database);
-        insertCategory(new Category(null, "acatagory"), database);
-        insertCategory(new Category(null, "acatagory"), database);
-        insertCategory(new Category(null, "acatagory"), database);
-        insertCategory(new Category(null, "acatagory"), database);
-        insertCategory(new Category(null, "acatagory"), database);
-        insertCategory(new Category(null, "acatagory"), database);
+        insertCategory(new Category(null, "acatagory1"), database);
+        insertCategory(new Category(null, "acatagory2"), database);
+        insertCategory(new Category(null, "acatagory3"), database);
+        insertCategory(new Category(null, "acatagory4"), database);
+        insertCategory(new Category(null, "acatagory5"), database);
+        insertCategory(new Category(null, "acatagory6"), database);
+        insertCategory(new Category(null, "acatagory7"), database);
+        insertCategory(new Category(null, "acatagory8"), database);
+        insertCategory(new Category(null, "acatagory9"), database);
+        insertCategory(new Category(null, "acatagory11"), database);
+        insertCategory(new Category(null, "acatagory12"), database);
+        insertCategory(new Category(null, "acatagory13"), database);
+        insertCategory(new Category(null, "acatagory14"), database);
+        insertCategory(new Category(null, "category1"), database);
     }
 
     private void insertTransaction(Transaction transaction, SQLiteDatabase database) {

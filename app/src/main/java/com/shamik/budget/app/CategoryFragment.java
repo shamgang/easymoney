@@ -33,11 +33,16 @@ public class CategoryFragment extends BaseFullscreenFragment {
         mTransactionList = ((MainActivity)getActivity()).mBudgetDatabase
                 .getTransactionsWhere(BudgetDatabaseHelper.COLUMN_CATEGORY + "='" + mTitle + "'");
 
-        Log.d(TAG, BudgetDatabaseHelper.COLUMN_CATEGORY + "='" + mTitle + "'");
-        Log.d(TAG, mTransactionList.toString());
-
         mTransactionListView = (ListView)getView().findViewById(R.id.category_transaction_list);
         mTransactionListView.setAdapter(new TransactionAdapter(getActivity(), mTransactionList));
+        // set list height to cover all items
+        View itemView = mTransactionListView.getAdapter().getView(0, null, (ViewGroup)mTransactionListView);
+        itemView.measure(0, 0);
+        ViewGroup.LayoutParams layoutParams = mTransactionListView.getLayoutParams();
+        layoutParams.height = itemView.getMeasuredHeight() * mTransactionList.size();
+        mTransactionListView.setLayoutParams(layoutParams);
+        mTransactionListView.requestLayout();
+
         mTransactionListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

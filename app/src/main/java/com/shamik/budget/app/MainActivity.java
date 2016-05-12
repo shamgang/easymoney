@@ -33,7 +33,10 @@ public class MainActivity extends ActionBarActivity {
     public ArrayList<Category> mCategoryStubList;
     public BudgetDatabase mBudgetDatabase;
 
-    public static final String ADD_OR_EDIT_TRANSACTION_TAG = "addOrEditTransaction";
+    public static final String ADD_OR_EDIT_TRANSACTION_TAG = "AddOrEditTransaction";
+    public static final String TRANSACTION_LIST_TAG = "TransactionList";
+    public static final String CATEGORY_LIST_TAG = "CategoryList";
+    public static final String ANALYTICS_TAG = "Analytics";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,17 +233,21 @@ public class MainActivity extends ActionBarActivity {
         // Switch fragment and title
 
         Fragment fragment;
+        String tag;
         if(position == 0) {
             fragment = new TransactionListFragment();
+            tag = TRANSACTION_LIST_TAG;
         }
         else if(position == 1) {
             fragment = new CategoryListFragment();
+            tag = CATEGORY_LIST_TAG;
         }
         else {
             fragment = new AnalyticsFragment();
+            tag = ANALYTICS_TAG;
         }
 
-        replaceFragment(fragment);
+        replaceFragment(fragment, tag);
 
         // Highlight the selected item, update the title, and close the drawer
         mNavDrawerList.setItemChecked(position, true);
@@ -276,6 +283,13 @@ public class MainActivity extends ActionBarActivity {
         // Insert the fragment by replacing any existing fragment
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
+                .commit();
+    }
+
+    public void replaceFragment(Fragment fragment, String tag) {
+        // Insert the fragment by replacing any existing fragment
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment, tag)
                 .commit();
     }
 

@@ -17,7 +17,7 @@ import android.widget.Toast;
 /**
  * Created by Shamik on 5/5/2016.
  */
-public class AddOrEditTransactionFragment extends BaseFullscreenFragment {
+public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
     private static final String TAG = "AddOrEditTransactionFragment";
 
     private View mView;
@@ -69,7 +69,12 @@ public class AddOrEditTransactionFragment extends BaseFullscreenFragment {
             @Override
             public void onClick(View v) {
                 // open category list as selection modal
-                new SelectCategoryDialogFragment().show(getActivity().getSupportFragmentManager(),
+                SelectCategoryDialogFragment selectCategoryDialogFragment
+                        = new SelectCategoryDialogFragment();
+                Bundle args = new Bundle();
+                args.putString("parent", getTag());
+                selectCategoryDialogFragment.setArguments(args);
+                selectCategoryDialogFragment.show(getActivity().getSupportFragmentManager(),
                         getActivity().getString(R.string.select_category_dialog_fragment_title));
             }
         });

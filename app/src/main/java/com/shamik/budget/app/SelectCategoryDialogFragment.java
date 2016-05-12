@@ -39,10 +39,10 @@ public class SelectCategoryDialogFragment extends DialogFragment implements Adap
         if(mCategoryList.get(position).getChildren().isEmpty()) {
             // no children, we've selected a category
             // call back to addOrEditTransactionFragment, which must exist
-            AddOrEditTransactionFragment aoetFrag =
-                    (AddOrEditTransactionFragment)getActivity().getSupportFragmentManager()
-                    .findFragmentByTag(MainActivity.ADD_OR_EDIT_TRANSACTION_TAG);
-            aoetFrag.setCategory(mCategoryList.get(position));
+            BaseCategorySelectFragment parentFragment =
+                    (BaseCategorySelectFragment)getActivity().getSupportFragmentManager()
+                    .findFragmentByTag(getArguments().getString("parent"));
+            parentFragment.setCategory(mCategoryList.get(position));
             dismiss();
         } else {
             // reset list to children of category
