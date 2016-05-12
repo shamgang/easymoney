@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ap="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,7 +10,7 @@
         android:id="@+id/analytics_categorize_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/categorize_button"
+        android:text="@string/choose_category_button"
         android:textSize="10pt"
         android:gravity="left"
         android:padding="20dp"
@@ -22,18 +23,79 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <DatePicker
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_weight=".5"
-            android:layout_height="wrap_content"
-            android:calendarViewShown="false" />
+            android:layout_height="wrap_content">
 
-        <DatePicker
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/from_date_label"
+                android:gravity="center"/>
+
+            <DatePicker
+                android:id="@+id/from_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:calendarViewShown="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_weight=".5"
-            android:layout_height="wrap_content"
-            android:calendarViewShown="false" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/to_date_label"
+                android:gravity="center"/>
+
+            <DatePicker
+                android:id="@+id/to_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:calendarViewShown="false" />
+
+        </LinearLayout>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/analyze_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/blue_background"
+        android:gravity="center"
+        android:textSize="10pt"
+        android:text="@string/analyze_button"/>
+
+    <TextView
+        android:id="@+id/analytics_avg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/green_background"
+        android:textSize="16pt" />
+    <TextView
+        android:id="@+id/analytics_sum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/green_background"
+        android:textSize="16pt"
+        android:padding="10dp"
+        android:gravity="center"/>
+
+    <com.androidplot.xy.XYPlot
+        style="@style/APDefacto.Dark"
+        android:id="@+id/plot"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        ap:label="A Simple XY Plot"
+        ap:rangeLabel="range"
+        ap:domainLabel="domain"/>
 
 </LinearLayout>
