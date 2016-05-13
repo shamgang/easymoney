@@ -179,9 +179,11 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
                     .createTransaction(transactionForDatabase);
             ((MainActivity)getActivity()).mTransactionStubList.add(0, newTransaction);
         } else {
-            // if this is an old transaction, update in database using old ID and replace in list
+            // if this is an old transaction, update in database using old ID and date and replace in list
             transactionForDatabase.setID(((MainActivity)getActivity())
                     .mTransactionStubList.get(mPosition).getID());
+            transactionForDatabase.setDate(((MainActivity)getActivity())
+                    .mTransactionStubList.get(mPosition).getDate());
             ((MainActivity)getActivity()).mBudgetDatabase
                     .updateTransaction(transactionForDatabase);
             ((MainActivity)getActivity())

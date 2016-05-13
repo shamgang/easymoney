@@ -16,6 +16,7 @@ public class BudgetDatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_CATEGORIES = "categories";
 
     public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_DATE = "date";
     public static final String COLUMN_AMOUNT_DOLLARS = "amount_dollars";
     public static final String COLUMN_AMOUNT_CENTS = "amount_cents";
     public static final String COLUMN_DESCRIPTION = "description";
@@ -32,6 +33,7 @@ public class BudgetDatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_TRANSACTIONS =
             "create table " + TABLE_TRANSACTIONS + "("
             + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_DATE + " date default current_timestamp, "
             + COLUMN_AMOUNT_DOLLARS + " int, "
             + COLUMN_AMOUNT_CENTS + " int, "
             + COLUMN_DESCRIPTION + " varchar(100), "

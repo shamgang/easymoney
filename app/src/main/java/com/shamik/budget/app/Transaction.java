@@ -1,10 +1,13 @@
 package com.shamik.budget.app;
 
+import java.util.Date;
+
 /**
  * Created by Shamik on 5/7/2016.
  */
 public class Transaction {
     private Integer mID;
+    private Date mDate;
     private Integer mAmountDollars;
     private Integer mAmountCents;
     private String mDescription;
@@ -14,17 +17,21 @@ public class Transaction {
     // pre-database
     public Transaction(int amountDollars, int amountCents, String description,
                        Category category, boolean isIncome) {
-        set(-1, amountDollars, amountCents, description, category, isIncome);
+        set(-1, null, amountDollars, amountCents, description, category, isIncome);
     }
 
     // post-database
-    public Transaction(int ID, int amountDollars, int amountCents, String description,
+    public Transaction(int ID, Date date, int amountDollars, int amountCents, String description,
                        Category category, boolean isIncome) {
-        set(ID, amountDollars, amountCents, description, category, isIncome);
+        set(ID, date, amountDollars, amountCents, description, category, isIncome);
     }
 
     public Integer getID() {
         return mID;
+    }
+
+    public Date getDate() {
+        return mDate;
     }
 
     public Integer getAmountDollars() {
@@ -47,9 +54,10 @@ public class Transaction {
         return mIsIncome;
     }
 
-    public void set(int ID, int amountWhole, int amountDecimal, String description,
+    public void set(int ID, Date date, int amountWhole, int amountDecimal, String description,
                     Category category, boolean isIncome) {
         setID(ID);
+        setDate(date);
         setAmountDollars(amountWhole);
         setAmountCents(amountDecimal);
         setDescription(description);
@@ -59,6 +67,10 @@ public class Transaction {
 
     public void setID(int ID) {
         mID = ID;
+    }
+
+    public void setDate(Date date) {
+        mDate = date;
     }
 
     public void setAmountDollars(int amountDollars) {

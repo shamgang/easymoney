@@ -7,7 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Shamik on 5/9/2016.
@@ -20,6 +24,7 @@ public class BudgetDatabase {
 
     private static final String[] TRANSACTION_COLUMNS = {
             BudgetDatabaseHelper.COLUMN_ID,
+            BudgetDatabaseHelper.COLUMN_DATE,
             BudgetDatabaseHelper.COLUMN_AMOUNT_DOLLARS,
             BudgetDatabaseHelper.COLUMN_AMOUNT_CENTS,
             BudgetDatabaseHelper.COLUMN_DESCRIPTION,
@@ -123,8 +128,16 @@ public class BudgetDatabase {
 
     private Transaction cursorToTransaction(Cursor cursor) {
         // TODO: makes a new Category, shouldn't have to do that - maybe Category shouldn't be a class
-        return new Transaction(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2),
-                cursor.getString(3), new Category(null, cursor.getString(4)), cursor.getInt(5) > 0);
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date;
+        try {
+            date = format.parse(cursor.getString(1));
+        } catch(ParseException e) {
+            Log.e(TAG, "Parsing SQL date failed");
+            date = null;
+        }
+        return new Transaction(cursor.getInt(0), date, cursor.getInt(2), cursor.getInt(3),
+                cursor.getString(4), new Category(null, cursor.getString(5)), cursor.getInt(6) > 0);
     }
 
     private Category cursorToCategory(Cursor cursor) {
