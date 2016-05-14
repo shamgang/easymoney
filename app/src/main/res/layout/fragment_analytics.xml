@@ -90,12 +90,9 @@
         android:gravity="center"/>
 
     <com.androidplot.xy.XYPlot
-        style="@style/APDefacto.Dark"
+        style="@style/APDefacto.Light"
         android:id="@+id/plot"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        ap:label="A Simple XY Plot"
-        ap:rangeLabel="range"
-        ap:domainLabel="domain"/>
+        android:layout_height="fill_parent" />
 
 </LinearLayout>

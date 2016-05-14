@@ -1,7 +1,6 @@
 package com.shamik.budget.app;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidplot.xy.LineAndPointFormatter;
-import com.androidplot.xy.PointLabelFormatter;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
@@ -20,10 +18,7 @@ import com.androidplot.xy.XYSeries;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
 
 /**
@@ -101,13 +96,33 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                 transactionSum.setText("Total: $" + String.format("%.2f", sum));
 
                 XYPlot plot = (XYPlot)mView.findViewById(R.id.plot);
+                plot.getLegendWidget().setVisible(false);
+                plot.getGraphWidget().setDomainGridLinePaint(null);
+                plot.getGraphWidget().setRangeGridLinePaint(null);
+                plot.getGraphWidget().setGridBackgroundPaint(null);
+                plot.getGraphWidget().setDomainOriginLinePaint(null);
+                plot.getGraphWidget().setRangeOriginLinePaint(null);
+                plot.getGraphWidget().setDomainTickLabelPaint(null);
+                plot.getGraphWidget().setRangeTickLabelPaint(null);
+                plot.getGraphWidget().setDomainOriginTickLabelPaint(null);
+                plot.getGraphWidget().setRangeOriginTickLabelPaint(null);
                 XYSeries series = new SimpleXYSeries(plotX, plotY, "Transactions");
                 LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
-                seriesFormat.setPointLabelFormatter(new PointLabelFormatter());
                 seriesFormat.configure(getActivity().getApplicationContext(),
-                        R.xml.line_point_formatter_with_labels);
+                        R.xml.line_point_formatter);
+                LineAndPointFormatter selectedFormat = new LineAndPointFormatter();
+                selectedFormat.configure(getActivity().getApplicationContext(),
+                        R.xml.selected_point_formatter);
                 plot.addSeries(series, seriesFormat);
+
+                ArrayList<Number> selectedX = new ArrayList<Number>();
+                ArrayList<Number> selectedY = new ArrayList<Number>();
+                selectedX.add(20160513);
+                selectedY.add(34.55);
+                XYSeries selectedPoint = new SimpleXYSeries(selectedX, selectedY, "Selected Point");
+                plot.addSeries(selectedPoint, selectedFormat);
                 plot.redraw();
+
             }
         });
 
