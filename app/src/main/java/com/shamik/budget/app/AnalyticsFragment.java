@@ -5,8 +5,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +21,8 @@ import com.androidplot.xy.XYSeries;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,10 +33,47 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
     private static final String TAG = "AnalyticsFragment";
     private View mView;
     private Category mCategory;
+    private XYPlot mPlot;
+
+    private static final String AVERAGE_DAILY = "Daily";
+    private static final String AVERAGE_MONTHLY = "Monthly";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_analytics, container, false);
+
+        // style plot
+        mPlot = (XYPlot)mView.findViewById(R.id.plot);
+        mPlot.getLegendWidget().setVisible(false);
+        mPlot.getGraphWidget().setDomainGridLinePaint(null);
+        mPlot.getGraphWidget().setRangeGridLinePaint(null);
+        mPlot.getGraphWidget().setGridBackgroundPaint(null);
+        mPlot.getGraphWidget().setDomainOriginLinePaint(null);
+        mPlot.getGraphWidget().setRangeOriginLinePaint(null);
+        mPlot.getGraphWidget().setDomainTickLabelPaint(null);
+        mPlot.getGraphWidget().setRangeTickLabelPaint(null);
+        mPlot.getGraphWidget().setDomainOriginTickLabelPaint(null);
+        mPlot.getGraphWidget().setRangeOriginTickLabelPaint(null);
+
+        // spinner
+        final Spinner averageSpinner = (Spinner)mView.findViewById(R.id.average_spinner);
+        List<String> averages = new ArrayList<String>();
+        averages.add(AVERAGE_DAILY);
+        averages.add(AVERAGE_MONTHLY);
+        ArrayAdapter<String> averagesAdapter =
+                new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, averages);
+        averageSpinner.setAdapter(averagesAdapter);
+        averageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         Button categorizeButton = (Button)mView.findViewById(R.id.analytics_categorize_button);
         // categorize button behavior
         categorizeButton.setOnClickListener(new View.OnClickListener() {
@@ -88,24 +130,24 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                     //plotY.add(amount);
                 }
 
-                Log.d(TAG, plotX.toString());
-                Log.d(TAG, plotY.toString());
-
+                // calculate average
+                double numDays =
+                        (toDate.getCalendarView().getDate() - fromDate.getCalendarView().getDate())
+                        / 1000. / 60. / 60. / 24 + 1;
+                Log.d(TAG, Long.toString(toDate.getCalendarView().getDate()));
+                Log.d(TAG, Long.toString(fromDate.getCalendarView().getDate()));
+                Log.d(TAG, Double.toString(numDays));
+                double avg;
+                if(averageSpinner.getSelectedItem().equals(AVERAGE_DAILY)) {
+                    avg = sum / numDays;
+                } else {
+                    avg = sum / (numDays / 30.);
+                }
                 TextView transactionAvg = (TextView)getView().findViewById(R.id.analytics_avg);
+                transactionAvg.setText("$" + String.format("%.2f", avg));
                 TextView transactionSum = (TextView)getView().findViewById(R.id.analytics_sum);
-                transactionSum.setText("Total: $" + String.format("%.2f", sum));
+                transactionSum.setText("$" + String.format("%.2f", sum));
 
-                XYPlot plot = (XYPlot)mView.findViewById(R.id.plot);
-                plot.getLegendWidget().setVisible(false);
-                plot.getGraphWidget().setDomainGridLinePaint(null);
-                plot.getGraphWidget().setRangeGridLinePaint(null);
-                plot.getGraphWidget().setGridBackgroundPaint(null);
-                plot.getGraphWidget().setDomainOriginLinePaint(null);
-                plot.getGraphWidget().setRangeOriginLinePaint(null);
-                plot.getGraphWidget().setDomainTickLabelPaint(null);
-                plot.getGraphWidget().setRangeTickLabelPaint(null);
-                plot.getGraphWidget().setDomainOriginTickLabelPaint(null);
-                plot.getGraphWidget().setRangeOriginTickLabelPaint(null);
                 XYSeries series = new SimpleXYSeries(plotX, plotY, "Transactions");
                 LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
                 seriesFormat.configure(getActivity().getApplicationContext(),
@@ -113,15 +155,20 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                 LineAndPointFormatter selectedFormat = new LineAndPointFormatter();
                 selectedFormat.configure(getActivity().getApplicationContext(),
                         R.xml.selected_point_formatter);
-                plot.addSeries(series, seriesFormat);
+                mPlot.addSeries(series, seriesFormat);
 
                 ArrayList<Number> selectedX = new ArrayList<Number>();
                 ArrayList<Number> selectedY = new ArrayList<Number>();
                 selectedX.add(20160513);
                 selectedY.add(34.55);
                 XYSeries selectedPoint = new SimpleXYSeries(selectedX, selectedY, "Selected Point");
-                plot.addSeries(selectedPoint, selectedFormat);
-                plot.redraw();
+                mPlot.addSeries(selectedPoint, selectedFormat);
+                mPlot.redraw();
+
+                TextView selectedDate = (TextView)mView.findViewById(R.id.selected_date);
+                TextView selectedAmount = (TextView)mView.findViewById(R.id.selected_amount);
+                selectedDate.setText("March 04, 2016");
+                selectedAmount.setText("$" + String.format("%.2f", sum));
 
             }
         });

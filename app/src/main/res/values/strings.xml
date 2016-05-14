@@ -42,6 +42,15 @@
     <string name="from_date_label">From:</string>
     <string name="to_date_label">To:</string>
     <string name="analyze_button">Analyze</string>
+    <string-array name="averages">
+        <item>Daily</item>
+        <item>Monthly</item>
+    </string-array>
+    <string name="average_label">average:</string>
+    <string name="sum_label">Total:</string>
+    <string name="back_label">back</string>
+    <string name="forward_label">forward</string>
+
 
     <!-- ViewTransactionFragment -->
     <string name="view_transaction_fragment_title">View Transaction</string>
