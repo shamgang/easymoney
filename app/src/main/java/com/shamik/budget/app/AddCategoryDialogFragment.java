@@ -62,6 +62,6 @@ public class AddCategoryDialogFragment extends DialogFragment {
         }
 
         BudgetDatabase.getInstance().createCategory(
-                new Category(null, addCategoryNameView.getText().toString()));
+                new Category(addCategoryNameView.getText().toString(), -1));
     }
 }

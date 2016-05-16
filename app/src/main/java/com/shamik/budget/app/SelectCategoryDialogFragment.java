@@ -37,7 +37,7 @@ public class SelectCategoryDialogFragment extends DialogFragment implements Adap
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if(mCategoryList.get(position).getChildren().isEmpty()) {
+        if(!mCategoryList.get(position).hasChildren()) {
             // no children, we've selected a category
             // call back to addOrEditTransactionFragment, which must exist
             BaseCategorySelectFragment parentFragment =

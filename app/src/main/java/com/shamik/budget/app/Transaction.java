@@ -11,19 +11,20 @@ public class Transaction {
     private Integer mAmountDollars;
     private Integer mAmountCents;
     private String mDescription;
-    private Category mCategory;
+    private Integer mCategoryID;
     private boolean mIsIncome;
 
     // pre-database
+    // categoryID should be -1 if no category
     public Transaction(int amountDollars, int amountCents, String description,
-                       Category category, boolean isIncome) {
-        set(-1, null, amountDollars, amountCents, description, category, isIncome);
+                       int categoryID, boolean isIncome) {
+        set(-1, null, amountDollars, amountCents, description, categoryID, isIncome);
     }
 
     // post-database
     public Transaction(int ID, Date date, int amountDollars, int amountCents, String description,
-                       Category category, boolean isIncome) {
-        set(ID, date, amountDollars, amountCents, description, category, isIncome);
+                       int categoryID, boolean isIncome) {
+        set(ID, date, amountDollars, amountCents, description, categoryID, isIncome);
     }
 
     public Integer getID() {
@@ -46,8 +47,18 @@ public class Transaction {
         return mDescription;
     }
 
+    // should return -1 if no category
+    public Integer getCategoryID() {
+        return mCategoryID;
+    }
+
     public Category getCategory() {
-        return mCategory;
+        if(mCategoryID == -1) {
+            return new Category("blank", -1);
+        }
+        else {
+            return BudgetDatabase.getInstance().getCategoryByID(mCategoryID);
+        }
     }
 
     public boolean isIncome() {
@@ -55,13 +66,13 @@ public class Transaction {
     }
 
     public void set(int ID, Date date, int amountWhole, int amountDecimal, String description,
-                    Category category, boolean isIncome) {
+                    int categoryID, boolean isIncome) {
         setID(ID);
         setDate(date);
         setAmountDollars(amountWhole);
         setAmountCents(amountDecimal);
         setDescription(description);
-        setCategory(category);
+        setCategoryID(categoryID);
         setIncome(isIncome);
     }
 
@@ -85,8 +96,8 @@ public class Transaction {
         mDescription = (description == null) ? "Test" : description;
     }
 
-    public void setCategory(Category category) {
-        mCategory = (category == null) ? new Category(null, "blank") : category;
+    public void setCategoryID(int categoryID) {
+        mCategoryID = categoryID;
     }
 
     public void setIncome(boolean isIncome) {

@@ -30,7 +30,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
         TextView categoryName = (TextView)convertView.findViewById(R.id.category_item_name);
         categoryName.setText(category.getName());
         // display carat if parent
-        if(!category.getChildren().isEmpty()) {
+        if(category.hasChildren()) {
             categoryName.setCompoundDrawablesWithIntrinsicBounds(0, 0,
                     R.drawable.ic_right_arrow_dark, 0);
         }

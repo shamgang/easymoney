@@ -2,8 +2,6 @@ package com.shamik.budget.app;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,7 @@ import android.widget.Toast;
 public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
     private View mView;
     private boolean isNew;
-    private int mTransactionId;
+    private int mTransactionID;
     private Category mCategory;
 
     @Override
@@ -38,15 +36,16 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
         isNew = getArguments().getBoolean("isNew");
         if(!isNew) {
             // get current transaction from database
-            mTransactionId = getArguments()
+            mTransactionID = getArguments()
                     .getInt(getActivity().getString(R.string.transaction_id_tag));
             Transaction transaction = BudgetDatabase.getInstance()
-                    .getTransactionByID(mTransactionId);
+                    .getTransactionByID(mTransactionID);
+            mCategory = transaction.getCategory();
             // pad cents with 0 if necessary
             addTransactionAmount.setText(transaction.getAmountDollars().toString() + "."
                     + (transaction.getAmountCents().toString() + "0").substring(0, 2));
             addTransactionDescription.setText(transaction.getDescription());
-            categorizeButton.setText(transaction.getCategory().getName());
+            categorizeButton.setText(mCategory.getName());
         }
 
         // validate amount input
@@ -159,14 +158,14 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
                 amountDollars,
                 amountCents,
                 addTransactionDescription.getText().toString(),
-                mCategory,
+                mCategory.getID(),
                 addTransactionIsIncome.isChecked()
         );
         // Add or update an entry
         if(isNew) {
             BudgetDatabase.getInstance().createTransaction(newTransaction);
         } else {
-            BudgetDatabase.getInstance().updateTransaction(newTransaction);
+            BudgetDatabase.getInstance().updateTransactionByID(mTransactionID, newTransaction);
         }
     }
 }

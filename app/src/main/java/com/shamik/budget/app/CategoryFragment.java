@@ -23,14 +23,14 @@ public class CategoryFragment extends BaseFullscreenFragment {
 
     @Override
     public void onStart() {
+        int id = getArguments().getInt(getActivity().getString(R.string.category_id_tag));
         mTitle = BudgetDatabase.getInstance()
-                .getCategoryByID(getArguments().getInt(getActivity().getString(R.string.category_id_tag)))
+                .getCategoryByID(id)
                 .getName();
         Log.d(CategoryFragment.class.getName(), mTitle);
         super.onStart();
 
-        mTransactionList = BudgetDatabase.getInstance()
-                .getTransactionsWhere(BudgetDatabase.COLUMN_CATEGORY + "='" + mTitle + "'");
+        mTransactionList = BudgetDatabase.getInstance().getTransactionsByCategoryID(id);
 
         // set adapter and click listener
         mTransactionListView = (ListView)getView().findViewById(R.id.category_transaction_list);
@@ -43,6 +43,9 @@ public class CategoryFragment extends BaseFullscreenFragment {
         });
 
         // set list height to cover all items
+        if(mTransactionListView.getAdapter().isEmpty()) {
+            return;
+        }
         View itemView = mTransactionListView.getAdapter().getView(0, null, (ViewGroup)mTransactionListView);
         itemView.measure(0, 0);
         ViewGroup.LayoutParams layoutParams = mTransactionListView.getLayoutParams();
