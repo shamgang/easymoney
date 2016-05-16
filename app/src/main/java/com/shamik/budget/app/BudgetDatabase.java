@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -46,7 +47,7 @@ public class BudgetDatabase extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_TRANSACTIONS =
             "create table " + TABLE_TRANSACTIONS + "("
                     + COLUMN_ID + " integer primary key autoincrement, "
-                    + COLUMN_DATE + " date default current_timestamp, "
+                    + COLUMN_DATE + " date default current_date, "
                     + COLUMN_AMOUNT_DOLLARS + " int, "
                     + COLUMN_AMOUNT_CENTS + " int, "
                     + COLUMN_DESCRIPTION + " varchar(100), "
@@ -133,6 +134,13 @@ public class BudgetDatabase extends SQLiteOpenHelper {
 
     public ArrayList<Transaction> getTransactionsByCategoryID(int ID) {
         return getTransactionsWhere(COLUMN_CATEGORY_ID + "=" + ID);
+    }
+
+    // expects date in SQL format (YYYY-MM-DD)
+    public ArrayList<Transaction> getTransactionsByCategoryIDAndDateRange(int ID, String fromDate,
+                                                                          String toDate) {
+        return getTransactionsWhere("(" + COLUMN_DATE + " between '" + fromDate + "' and '" + toDate
+                + "') and (" + COLUMN_CATEGORY_ID + "=" + ID + ")");
     }
 
     private ArrayList<Transaction> getTransactionsWhere(String where) {
@@ -225,16 +233,8 @@ public class BudgetDatabase extends SQLiteOpenHelper {
     }
 
     private Transaction cursorToTransaction(Cursor cursor) {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date date;
-        try {
-            date = format.parse(cursor.getString(1));
-        } catch(ParseException e) {
-            Log.e(BudgetDatabase.class.getName(), "Parsing SQL date failed");
-            date = null;
-        }
-        return new Transaction(cursor.getInt(0), date, cursor.getInt(2), cursor.getInt(3),
-                cursor.getString(4), cursor.getInt(5), cursor.getInt(6) > 0);
+        return new Transaction(cursor.getInt(0), cursor.getString(1), cursor.getInt(2),
+                cursor.getInt(3), cursor.getString(4), cursor.getInt(5), cursor.getInt(6) > 0);
     }
 
     private Category cursorToCategory(Cursor cursor) {

@@ -1,6 +1,8 @@
 package com.shamik.budget.app;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +20,18 @@ import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 /**
  * Created by Shamik on 5/5/2016.
@@ -36,6 +43,34 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
 
     private static final String AVERAGE_DAILY = "Daily";
     private static final String AVERAGE_MONTHLY = "Monthly";
+
+    private class DataPoint {
+        private double mValue;
+        private ArrayList<Transaction> mTransactions;
+
+        public DataPoint() {
+            mValue = 0;
+            mTransactions = new ArrayList<Transaction>();
+        }
+
+        public DataPoint(Transaction transaction) {
+            this();
+            addTransaction(transaction);
+        }
+
+        public void addTransaction(Transaction transaction) {
+            mValue += transaction.getAmount();
+            mTransactions.add(transaction);
+        }
+
+        public double getValue() {
+            return mValue;
+        }
+
+        public ArrayList<Transaction> getTransactions() {
+            return mTransactions;
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -102,51 +137,75 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
 
                 DatePicker fromDate = (DatePicker)mView.findViewById(R.id.from_date);
                 DatePicker toDate = (DatePicker)mView.findViewById(R.id.to_date);
-                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
-                String message = mCategory.getName() + " "
-                        + sdf.format(fromDate.getCalendarView().getDate()) + " "
-                        + sdf.format(toDate.getCalendarView().getDate());
-                Toast toast2 = Toast.makeText(getActivity(), message, 2000);
-                toast2.show();
 
+                // format epoch dates as SQL and query database for transactions
+                SimpleDateFormat sqlDate = new SimpleDateFormat("yyyy-MM-dd");
                 ArrayList<Transaction> transactionList = BudgetDatabase.getInstance()
-                        .getTransactionsByCategoryID(mCategory.getID());
-                //ArrayList<Number> plotX = new ArrayList<Number>();
-                Number[] plotXnums = {20160513, 20160514, 20160515};
-                List<Number> plotX = Arrays.asList(plotXnums);
-                //ArrayList<Number> plotY = new ArrayList<Number>();
-                Number[] plotYnums = {34.55, 12, 5};
-                List<Number> plotY = Arrays.asList(plotYnums);
+                        .getTransactionsByCategoryIDAndDateRange(mCategory.getID(),
+                                sqlDate.format(fromDate.getCalendarView().getDate()),
+                                sqlDate.format(toDate.getCalendarView().getDate()));
+
+                // construct a data point object for each date, containing transactions
+                TreeMap<String, DataPoint> dateToData = new TreeMap<String, DataPoint>();
                 double sum = 0;
-                SimpleDateFormat intDate = new SimpleDateFormat("yyyyMMdd");
                 for(Transaction transaction : transactionList) {
-                    double amount = transaction.getAmountDollars() + transaction.getAmountCents()/100.;
                     // add transaction amount to running sum
-                    sum += amount;
+                    sum += transaction.getAmount();
+                    // add transaction to data set
+                    if(dateToData.containsKey(transaction.getDate())) {
+                        dateToData.get(transaction.getDate()).addTransaction(transaction);
+                    } else {
+                        dateToData.put(transaction.getDate(), new DataPoint(transaction));
+                    }
                     // format date as a monotonically increasing integer as x coordinate
                     //plotX.add(Integer.valueOf(intDate.format(transaction.getDate())));
                     // add amount as y coordinate
                     //plotY.add(amount);
                 }
 
-                // calculate average
-                double numDays =
-                        (toDate.getCalendarView().getDate() - fromDate.getCalendarView().getDate())
-                        / 1000. / 60. / 60. / 24 + 1;
-                Log.d(AnalyticsFragment.class.getName(), Long.toString(toDate.getCalendarView().getDate()));
-                Log.d(AnalyticsFragment.class.getName(), Long.toString(fromDate.getCalendarView().getDate()));
-                Log.d(AnalyticsFragment.class.getName(), Double.toString(numDays));
+                // TODO: remove stub data
+                TreeMap<String, DataPoint> stubDateToData = new TreeMap<String, DataPoint>();
+                stubDateToData.put("2016-05-14", new DataPoint(new Transaction(34, 55, "test", -1, false)));
+                stubDateToData.get("2016-05-14").addTransaction(new Transaction(34, 55, "test", -1, false));
+                stubDateToData.put("2016-05-15", new DataPoint(new Transaction(34, 55, "test", -1, false)));
+                stubDateToData.put("2016-05-16", new DataPoint(new Transaction(34, 55, "test", -1, false)));
+                dateToData = stubDateToData;
+                sum = 54.21;
+
+                // construct plot data by iterating in date order
+                ArrayList<Number> plotX = new ArrayList<Number>();
+                ArrayList<Number> plotY = new ArrayList<Number>();
+                // format date as a monotonically increasing integer as x coordinate
+                SimpleDateFormat intDate = new SimpleDateFormat("yyyyMMdd");
+                for(Map.Entry<String, DataPoint> entry : dateToData.entrySet()) {
+                    try {
+                        // convert from SQL date to epoch time to integer date
+                        plotX.add(Integer.valueOf(intDate.format(sqlDate.parse(entry.getKey()).getTime())));
+                        plotY.add(entry.getValue().getValue());
+                    } catch(ParseException e) {
+                        Log.e(AnalyticsFragment.class.getName(), e.getMessage());
+                    }
+                }
+
+                // calculate average by converting range from epoch time to integer date
+                int numDays =
+                        Integer.valueOf(intDate.format(toDate.getCalendarView().getDate()))
+                        - Integer.valueOf(intDate.format(fromDate.getCalendarView().getDate()))
+                        + 1;
                 double avg;
                 if(averageSpinner.getSelectedItem().equals(AVERAGE_DAILY)) {
-                    avg = sum / numDays;
+                    avg = sum / (double)numDays;
                 } else {
                     avg = sum / (numDays / 30.);
                 }
+
+                // set text for sum and average
                 TextView transactionAvg = (TextView)getView().findViewById(R.id.analytics_avg);
-                transactionAvg.setText("$" + String.format("%.2f", avg));
                 TextView transactionSum = (TextView)getView().findViewById(R.id.analytics_sum);
+                transactionAvg.setText("$" + String.format("%.2f", avg));
                 transactionSum.setText("$" + String.format("%.2f", sum));
 
+                // plot data
                 XYSeries series = new SimpleXYSeries(plotX, plotY, "Transactions");
                 LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
                 seriesFormat.configure(getActivity().getApplicationContext(),
@@ -156,19 +215,31 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                         R.xml.selected_point_formatter);
                 mPlot.addSeries(series, seriesFormat);
 
+                // draw selected data point
                 ArrayList<Number> selectedX = new ArrayList<Number>();
                 ArrayList<Number> selectedY = new ArrayList<Number>();
-                selectedX.add(20160513);
-                selectedY.add(34.55);
+                selectedX.add(plotX.get(0));
+                selectedY.add(plotY.get(0));
                 XYSeries selectedPoint = new SimpleXYSeries(selectedX, selectedY, "Selected Point");
                 mPlot.addSeries(selectedPoint, selectedFormat);
                 mPlot.redraw();
 
-                TextView selectedDate = (TextView)mView.findViewById(R.id.selected_date);
-                TextView selectedAmount = (TextView)mView.findViewById(R.id.selected_amount);
-                selectedDate.setText("March 04, 2016");
-                selectedAmount.setText("$" + String.format("%.2f", sum));
-
+                // fill selected data point views
+                TextView selectedDateView = (TextView)mView.findViewById(R.id.selected_date);
+                TextView selectedAmountView = (TextView)mView.findViewById(R.id.selected_amount);
+                // make date human-readable
+                Date selectedDate;
+                try {
+                    selectedDate = sqlDate.parse(dateToData.firstEntry().getKey());
+                } catch(ParseException e) {
+                    Log.e(AnalyticsFragment.class.getName(), e.getMessage());
+                    selectedDate = null;
+                }
+                SimpleDateFormat readableDate = new SimpleDateFormat("MMMM dd, yyyy");
+                selectedDateView.setText(readableDate.format(selectedDate));
+                // sum all transaction amounts for this date
+                selectedAmountView.setText("$" + String.format("%.2f",
+                        sumTransactions(dateToData.firstEntry().getValue().getTransactions())));
             }
         });
 
@@ -186,5 +257,13 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
     @Override
     protected String getTitle() {
         return this.getString(R.string.analytics_fragment_title);
+    }
+
+    private double sumTransactions(ArrayList<Transaction> transactions) {
+        double sum = 0;
+        for(Transaction transaction : transactions) {
+            sum += transaction.getAmount();
+        }
+        return sum;
     }
 }

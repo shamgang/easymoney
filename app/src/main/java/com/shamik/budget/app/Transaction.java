@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class Transaction {
     private Integer mID;
-    private Date mDate;
+    private String mDate;
     private Integer mAmountDollars;
     private Integer mAmountCents;
     private String mDescription;
@@ -22,7 +22,7 @@ public class Transaction {
     }
 
     // post-database
-    public Transaction(int ID, Date date, int amountDollars, int amountCents, String description,
+    public Transaction(int ID, String date, int amountDollars, int amountCents, String description,
                        int categoryID, boolean isIncome) {
         set(ID, date, amountDollars, amountCents, description, categoryID, isIncome);
     }
@@ -31,7 +31,7 @@ public class Transaction {
         return mID;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return mDate;
     }
 
@@ -41,6 +41,10 @@ public class Transaction {
 
     public Integer getAmountCents() {
         return mAmountCents;
+    }
+
+    public double getAmount() {
+        return mAmountDollars + mAmountCents / 100.;
     }
 
     public String getDescription() {
@@ -65,7 +69,7 @@ public class Transaction {
         return mIsIncome;
     }
 
-    public void set(int ID, Date date, int amountWhole, int amountDecimal, String description,
+    public void set(int ID, String date, int amountWhole, int amountDecimal, String description,
                     int categoryID, boolean isIncome) {
         setID(ID);
         setDate(date);
@@ -76,31 +80,31 @@ public class Transaction {
         setIncome(isIncome);
     }
 
-    public void setID(int ID) {
+    private void setID(int ID) {
         mID = ID;
     }
 
-    public void setDate(Date date) {
+    private void setDate(String date) {
         mDate = date;
     }
 
-    public void setAmountDollars(int amountDollars) {
+    private void setAmountDollars(int amountDollars) {
         mAmountDollars = amountDollars;
     }
 
-    public void setAmountCents(int amountCents) {
+    private void setAmountCents(int amountCents) {
         mAmountCents = amountCents;
     }
 
-    public void setDescription(String description) {
+    private void setDescription(String description) {
         mDescription = (description == null) ? "Test" : description;
     }
 
-    public void setCategoryID(int categoryID) {
+    private void setCategoryID(int categoryID) {
         mCategoryID = categoryID;
     }
 
-    public void setIncome(boolean isIncome) {
+    private void setIncome(boolean isIncome) {
         mIsIncome = isIncome;
     }
 }
