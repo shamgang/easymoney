@@ -217,11 +217,11 @@ public class BudgetDatabase extends SQLiteOpenHelper {
 
     private ContentValues transactionToValues(Transaction transaction) {
         ContentValues values = new ContentValues();
-        values.put(BudgetDatabase.COLUMN_AMOUNT_DOLLARS, transaction.getAmountDollars());
-        values.put(BudgetDatabase.COLUMN_AMOUNT_CENTS, transaction.getAmountCents());
-        values.put(BudgetDatabase.COLUMN_DESCRIPTION, transaction.getDescription());
-        values.put(BudgetDatabase.COLUMN_CATEGORY_ID, transaction.getCategoryID());
-        values.put(BudgetDatabase.COLUMN_IS_INCOME, transaction.isIncome());
+        values.put(COLUMN_AMOUNT_DOLLARS, transaction.getAmountDollars());
+        values.put(COLUMN_AMOUNT_CENTS, transaction.getAmountCents());
+        values.put(COLUMN_DESCRIPTION, transaction.getDescription());
+        values.put(COLUMN_CATEGORY_ID, transaction.getCategoryID());
+        values.put(COLUMN_IS_INCOME, transaction.isIncome());
         return values;
     }
 
@@ -243,29 +243,25 @@ public class BudgetDatabase extends SQLiteOpenHelper {
 
     // TODO: remove stub functions
     private void prePopulate(SQLiteDatabase database) {
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-13", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-13", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-13", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-13", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-13", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-14", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-14", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-14", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-14", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-16", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-16", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-16", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-16", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-17", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-12", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-18", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-20", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-21", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-20", 34, 55, "New purchase", 1, false), database);
 
         createCategory(new Category("acatagory", -1), database);
         createCategory(new Category("acatagory1", -1), database);
@@ -283,7 +279,18 @@ public class BudgetDatabase extends SQLiteOpenHelper {
     }
 
     private void createTransaction(Transaction transaction, SQLiteDatabase database) {
-        database.insert(BudgetDatabase.TABLE_TRANSACTIONS, null, transactionToValues(transaction));
+        database.insert(BudgetDatabase.TABLE_TRANSACTIONS, null, transactionToValuesWithDate(transaction));
+    }
+
+    private ContentValues transactionToValuesWithDate(Transaction transaction) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_DATE, transaction.getDate());
+        values.put(COLUMN_AMOUNT_DOLLARS, transaction.getAmountDollars());
+        values.put(COLUMN_AMOUNT_CENTS, transaction.getAmountCents());
+        values.put(COLUMN_DESCRIPTION, transaction.getDescription());
+        values.put(COLUMN_CATEGORY_ID, transaction.getCategoryID());
+        values.put(COLUMN_IS_INCOME, transaction.isIncome());
+        return values;
     }
 
     private void createCategory(Category category, SQLiteDatabase database) {

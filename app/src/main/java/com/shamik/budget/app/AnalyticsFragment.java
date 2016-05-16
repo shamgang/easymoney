@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
@@ -39,8 +40,10 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
     private ArrayList<Number> mPlotX;
     private ArrayList<Number> mPlotY;
     private XYSeries mSelectedPoint;
-    private LineAndPointFormatter mSelectedFormat;
     private int mSelectedIndex;
+    private TextView mSelectedDateView;
+    private TextView mSelectedAmountView;
+    private LineAndPointFormatter mSelectedFormat;
     private ArrayList<Transaction> mSelectedTransactions;
     private ListView mSelectedTransactionsView;
 
@@ -154,7 +157,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                 TreeMap<String, DataPoint> dateToData = new TreeMap<String, DataPoint>();
                 double sum = 0;
                 for(Transaction transaction : transactionList) {
-                    // add transaction amount to running sum
+                    // add transaction amount to running sum and check running max
                     sum += transaction.getAmount();
                     // add transaction to data set
                     if(dateToData.containsKey(transaction.getDate())) {
@@ -168,35 +171,32 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                     //mPlotY.add(amount);
                 }
 
-                // TODO: remove stub data
-                TreeMap<String, DataPoint> stubDateToData = new TreeMap<String, DataPoint>();
-                stubDateToData.put("2016-05-14", new DataPoint(new Transaction(34, 55, "test", -1, false)));
-                stubDateToData.get("2016-05-14").addTransaction(new Transaction(34, 55, "test", -1, false));
-                stubDateToData.put("2016-05-15", new DataPoint(new Transaction(34, 55, "test", -1, false)));
-                stubDateToData.put("2016-05-16", new DataPoint(new Transaction(34, 55, "test", -1, false)));
-                dateToData = stubDateToData;
-                sum = 54.21;
-
                 // construct plot data by iterating in date order
                 mPlotX = new ArrayList<Number>();
                 mPlotY = new ArrayList<Number>();
                 mDataArray = new ArrayList<Map.Entry<String, DataPoint>>(dateToData.entrySet());
                 // format date as a monotonically increasing integer as x coordinate
+                // keep track of maximum data point for graph boundary
+                double max = 0;
                 for(Map.Entry<String, DataPoint> entry : mDataArray) {
                     try {
                         // convert from SQL date to epoch time to integer date
                         mPlotX.add(Integer.valueOf(sIntDate.format(sSqlDate.parse(entry.getKey()).getTime())));
                         mPlotY.add(entry.getValue().getValue());
+                        if(entry.getValue().getValue() > max) {
+                            max = entry.getValue().getValue();
+                        }
                     } catch(ParseException e) {
                         Log.e(AnalyticsFragment.class.getName(), e.getMessage());
                     }
                 }
 
                 // calculate average by converting range from epoch time to integer date
-                int numDays =
-                        Integer.valueOf(sIntDate.format(toDate.getCalendarView().getDate()))
-                        - Integer.valueOf(sIntDate.format(fromDate.getCalendarView().getDate()))
-                        + 1;
+                int fromDateInt
+                        = Integer.valueOf(sIntDate.format(fromDate.getCalendarView().getDate()));
+                int toDateInt
+                        = Integer.valueOf(sIntDate.format(toDate.getCalendarView().getDate()));
+                int numDays = toDateInt - fromDateInt + 1;
                 double avg;
                 if(averageSpinner.getSelectedItem().equals(AVERAGE_DAILY)) {
                     avg = sum / (double)numDays;
@@ -216,6 +216,9 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                 seriesFormat.configure(getActivity().getApplicationContext(),
                         R.xml.line_point_formatter);
                 mPlot.addSeries(series, seriesFormat);
+                // set graph boundaries
+                mPlot.setDomainBoundaries(fromDateInt - 1, toDateInt + 1, BoundaryMode.FIXED);
+                mPlot.setRangeBoundaries(0, max + 1, BoundaryMode.FIXED);
 
                 // TODO: what if no data or one date?
 
@@ -223,6 +226,18 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                 mSelectedFormat = new LineAndPointFormatter();
                 mSelectedFormat.configure(getActivity().getApplicationContext(),
                         R.xml.selected_point_formatter);
+
+                // empty selected data
+                mSelectedDateView.setText("");
+                mSelectedAmountView.setText("");
+                // empty transaction list and shrink
+                mSelectedTransactions = new ArrayList<Transaction>();
+                mSelectedTransactionsView
+                        .setAdapter(new TransactionAdapter(getActivity(), mSelectedTransactions));
+                ViewGroup.LayoutParams layoutParams = mSelectedTransactionsView.getLayoutParams();
+                layoutParams.height = 0;
+                mSelectedTransactionsView.setLayoutParams(layoutParams);
+                mSelectedTransactionsView.requestLayout();
 
                 // select first point
                 selectPoint(0);
@@ -245,15 +260,15 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
             }
         });
 
-        mSelectedTransactions = new ArrayList<Transaction>();
-
-        // set adapter and click listener
+        // selected data fields
+        mSelectedDateView = (TextView)mView.findViewById(R.id.selected_date);
+        mSelectedAmountView = (TextView)mView.findViewById(R.id.selected_amount);
+        // selected transactions list behavior
         mSelectedTransactionsView = (ListView)mView.findViewById(R.id.selected_transaction_list);
-        mSelectedTransactionsView.setAdapter(new TransactionAdapter(getActivity(), mSelectedTransactions));
         mSelectedTransactionsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                ((MainActivity)getActivity()).selectTransaction(mSelectedTransactions.get(i).getID());
             }
         });
 
@@ -310,8 +325,6 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         mPlot.redraw();
 
         // fill selected data point views
-        TextView selectedDateView = (TextView)mView.findViewById(R.id.selected_date);
-        TextView selectedAmountView = (TextView)mView.findViewById(R.id.selected_amount);
         // make date human-readable
         Date selectedDate;
         try {
@@ -321,9 +334,9 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
             selectedDate = null;
         }
         SimpleDateFormat readableDate = new SimpleDateFormat("MMMM dd, yyyy");
-        selectedDateView.setText(readableDate.format(selectedDate));
+        mSelectedDateView.setText(readableDate.format(selectedDate));
         // sum all transaction amounts for this date
-        selectedAmountView.setText("$" + String.format("%.2f",
+        mSelectedAmountView.setText("$" + String.format("%.2f",
                 sumTransactions(mDataArray.get(mSelectedIndex).getValue().getTransactions())));
 
         mSelectedTransactions = mDataArray.get(mSelectedIndex).getValue().getTransactions();
