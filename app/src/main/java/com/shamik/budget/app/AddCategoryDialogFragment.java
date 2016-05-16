@@ -16,7 +16,6 @@ import android.widget.Toast;
  * Created by Shamik on 5/5/2016.
  */
 public class AddCategoryDialogFragment extends DialogFragment {
-
     private View mView;
 
     @Override
@@ -58,19 +57,11 @@ public class AddCategoryDialogFragment extends DialogFragment {
         TextView addCategoryNameView = (TextView)mView.findViewById(R.id.add_category_name);
         String addCategoryName = addCategoryNameView.getText().toString();
 
-        for(Category category  : ((MainActivity)getActivity()).mCategoryStubList) {
-            if(addCategoryName.equals(category.getName())) {
-                throw new DuplicateCategoryException("Category '" + addCategoryName + "' already exists");
-            }
+        if(BudgetDatabase.getInstance(getActivity()).hasCategoryName(addCategoryName)) {
+            throw new DuplicateCategoryException("Category '" + addCategoryName + "' already exists");
         }
-
-        /*
-        ((MainActivity)getActivity()).mCategoryStubList.add(0,
-                new Category(null, addCategoryName.getText().toString()));
-        */
 
         BudgetDatabase.getInstance(getActivity()).createCategory(
                 new Category(null, addCategoryNameView.getText().toString()));
-        ((MainActivity)getActivity()).loadCategoryList();
     }
 }

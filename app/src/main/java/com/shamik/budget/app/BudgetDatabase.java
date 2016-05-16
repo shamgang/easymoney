@@ -122,6 +122,7 @@ public class BudgetDatabase extends SQLiteOpenHelper {
     }
 
     public Transaction getTransactionByID(int id) {
+        // TODO: should this not use a function call to avoid extra array overhead?
         return getTransactionsWhere(COLUMN_ID + "=" + Integer.toString(id)).get(0);
     }
 
@@ -186,6 +187,19 @@ public class BudgetDatabase extends SQLiteOpenHelper {
         return transactions;
     }
 
+    public Category getCategoryByID(int ID) {
+        Cursor cursor = mDatabase.query(BudgetDatabase.TABLE_CATEGORIES,
+                CATEGORY_COLUMNS, COLUMN_ID + "=" + Integer.toString(ID), null, null, null, null);
+        cursor.moveToFirst();
+        return cursorToCategory(cursor);
+    }
+
+    public boolean hasCategoryName(String name) {
+        Cursor cursor = mDatabase.query(BudgetDatabase.TABLE_CATEGORIES,
+                CATEGORY_COLUMNS, COLUMN_NAME + "='" + name + "'", null, null, null, null);
+        return cursor.getCount() != 0;
+    }
+
     public ArrayList<Category> getAllCategories() {
         ArrayList<Category> categories = new ArrayList<Category>();
 
@@ -218,7 +232,7 @@ public class BudgetDatabase extends SQLiteOpenHelper {
 
     private Category cursorToCategory(Cursor cursor) {
         // TODO: makes a new Category - shouldn't do that. Also, switch param order in Category?
-        return new Category(new Category(null, cursor.getString(2)), cursor.getString(1));
+        return new Category(cursor.getInt(0), new Category(null, cursor.getString(2)), cursor.getString(1));
     }
 
     // TODO: remove stub functions

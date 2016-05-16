@@ -23,16 +23,25 @@ public class CategoryFragment extends BaseFullscreenFragment {
 
     @Override
     public void onStart() {
-        mTitle = ((MainActivity)getActivity())
-                .mCategoryStubList.get(getArguments().getInt("position")).getName();
+        mTitle = BudgetDatabase.getInstance(getActivity())
+                .getCategoryByID(getArguments().getInt(getActivity().getString(R.string.category_id_tag)))
+                .getName();
         Log.d(CategoryFragment.class.getName(), mTitle);
         super.onStart();
 
         mTransactionList = BudgetDatabase.getInstance(getActivity())
                 .getTransactionsWhere(BudgetDatabase.COLUMN_CATEGORY + "='" + mTitle + "'");
 
+        // set adapter and click listener
         mTransactionListView = (ListView)getView().findViewById(R.id.category_transaction_list);
         mTransactionListView.setAdapter(new TransactionAdapter(getActivity(), mTransactionList));
+        mTransactionListView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+        });
+
         // set list height to cover all items
         View itemView = mTransactionListView.getAdapter().getView(0, null, (ViewGroup)mTransactionListView);
         itemView.measure(0, 0);
@@ -40,13 +49,6 @@ public class CategoryFragment extends BaseFullscreenFragment {
         layoutParams.height = itemView.getMeasuredHeight() * mTransactionList.size();
         mTransactionListView.setLayoutParams(layoutParams);
         mTransactionListView.requestLayout();
-
-        mTransactionListView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-            }
-        });
     }
 
     @Override

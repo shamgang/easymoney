@@ -27,8 +27,6 @@ public class MainActivity extends ActionBarActivity {
     private String mTitle;
     private String mDrawerTitle;
 
-    public ArrayList<Transaction> mTransactionStubList;
-    public ArrayList<Category> mCategoryStubList;
     public BudgetDatabase mBudgetDatabase;
 
     @Override
@@ -36,29 +34,6 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
-        // TODO: remove stub data
-        /*
-        mTransactionStubList = new ArrayList<Transaction>();
-        for(int i = 0; i < 30; ++i) {
-            mTransactionStubList.add(new Transaction());
-        }
-        */
-        mBudgetDatabase = BudgetDatabase.getInstance(this);
-        if(mBudgetDatabase != null) {
-            loadTransactionList();
-            loadCategoryList();
-        } else {
-            mTransactionStubList = new ArrayList<Transaction>();
-            mCategoryStubList = new ArrayList<Category>();
-            Log.e(MainActivity.class.getName(), "Could not open database");
-        }
-        /*
-        mCategoryStubList = new ArrayList<Category>();
-        for(int i = 0; i < 30; ++i) {
-            mCategoryStubList.add(new Category(null, "Blank"));
-        }
-        */
 
         // the title that will be set onDrawerOpened
         mDrawerTitle= this.getString(R.string.drawer_title);
@@ -211,11 +186,11 @@ public class MainActivity extends ActionBarActivity {
         replaceFragmentWithBackstack(fragment);
     }
 
-    public void selectCategory(int position) {
+    public void selectCategory(int ID) {
         // switch to TransactionListFragment, change title and refresh options menu
         Fragment fragment = new CategoryFragment();
         Bundle args = new Bundle();
-        args.putInt("position", position);
+        args.putInt(getString(R.string.category_id_tag), ID);
         fragment.setArguments(args);
         replaceFragmentWithBackstack(fragment);
     }
@@ -244,14 +219,6 @@ public class MainActivity extends ActionBarActivity {
         // Highlight the selected item, update the title, and close the drawer
         mNavDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mNavDrawerList);
-    }
-
-    public void loadTransactionList() {
-        mTransactionStubList = mBudgetDatabase.getAllTransactions();
-    }
-
-    public void loadCategoryList() {
-        mCategoryStubList = mBudgetDatabase.getAllCategories();
     }
 
     public void addTransaction() {

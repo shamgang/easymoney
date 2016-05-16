@@ -9,37 +9,34 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 /**
  * Created by Shamik on 5/5/2016.
  */
 public class CategoryListFragment extends BaseFullscreenFragment implements OnItemClickListener {
-    private ListView mCategoryList;
+    private ArrayList<Category> mCategoryList;
+    private ListView mCategoryListView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_list, container, false);
-    }
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        // populate list from database
+        // TODO: paginate
+        mCategoryList = BudgetDatabase.getInstance(getActivity()).getAllCategories();
 
-        // populate list and set item click listener
-        /*String[] budgetListItems = new String[] { "Transportation", "Food", "Entertainment",
-            "Rent", "Gear", "Transportation", "Food", "Entertainment",
-            "Rent", "Gear", "Transportation", "Food", "Entertainment",
-            "Rent", "Gear", "Transportation", "Food", "Entertainment",
-            "Rent", "Gear", "Transportation", "Food", "Entertainment",
-            "Rent", "Gear"};
-        */
-        mCategoryList = (ListView)getView().findViewById(R.id.list);
-        mCategoryList.setAdapter(new CategoryAdapter(getActivity(),
-                ((MainActivity)getActivity()).mCategoryStubList));
-        mCategoryList.setOnItemClickListener(this);
+        // set list view adapter and click listener
+        mCategoryListView = (ListView)view.findViewById(R.id.list);
+        mCategoryListView.setAdapter(new CategoryAdapter(getActivity(), mCategoryList));
+        mCategoryListView.setOnItemClickListener(this);
+
+        return view;
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        ((MainActivity)getActivity()).selectCategory(position);
+        ((MainActivity)getActivity()).selectCategory(mCategoryList.get(position).getID());
     }
 
     @Override
