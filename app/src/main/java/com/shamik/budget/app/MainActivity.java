@@ -27,16 +27,9 @@ public class MainActivity extends ActionBarActivity {
     private String mTitle;
     private String mDrawerTitle;
 
-    private static final String TAG = "MainActivity";
-
     public ArrayList<Transaction> mTransactionStubList;
     public ArrayList<Category> mCategoryStubList;
     public BudgetDatabase mBudgetDatabase;
-
-    public static final String ADD_OR_EDIT_TRANSACTION_TAG = "AddOrEditTransaction";
-    public static final String TRANSACTION_LIST_TAG = "TransactionList";
-    public static final String CATEGORY_LIST_TAG = "CategoryList";
-    public static final String ANALYTICS_TAG = "Analytics";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +44,14 @@ public class MainActivity extends ActionBarActivity {
             mTransactionStubList.add(new Transaction());
         }
         */
-        mBudgetDatabase = new BudgetDatabase(this);
-        try {
-            mBudgetDatabase.open();
+        mBudgetDatabase = BudgetDatabase.getInstance(this);
+        if(mBudgetDatabase != null) {
             loadTransactionList();
             loadCategoryList();
-        } catch(SQLException e) {
+        } else {
             mTransactionStubList = new ArrayList<Transaction>();
             mCategoryStubList = new ArrayList<Category>();
-            Log.e(TAG, "Could not open database");
+            Log.e(MainActivity.class.getName(), "Could not open database");
         }
         /*
         mCategoryStubList = new ArrayList<Category>();
@@ -236,15 +228,15 @@ public class MainActivity extends ActionBarActivity {
         String tag;
         if(position == 0) {
             fragment = new TransactionListFragment();
-            tag = TRANSACTION_LIST_TAG;
+            tag = TransactionListFragment.class.getName();
         }
         else if(position == 1) {
             fragment = new CategoryListFragment();
-            tag = CATEGORY_LIST_TAG;
+            tag = CategoryListFragment.class.getName();
         }
         else {
             fragment = new AnalyticsFragment();
-            tag = ANALYTICS_TAG;
+            tag = AnalyticsFragment.class.getName();
         }
 
         replaceFragment(fragment, tag);
@@ -267,7 +259,7 @@ public class MainActivity extends ActionBarActivity {
         args.putBoolean("isNew", true);
         Fragment fragment = new AddOrEditTransactionFragment();
         fragment.setArguments(args);
-        replaceFragmentWithBackstack(fragment, ADD_OR_EDIT_TRANSACTION_TAG);
+        replaceFragmentWithBackstack(fragment, AddOrEditTransactionFragment.class.getName());
     }
 
     public void editTransaction(int position) {
@@ -276,7 +268,7 @@ public class MainActivity extends ActionBarActivity {
         args.putInt("position", position);
         Fragment fragment = new AddOrEditTransactionFragment();
         fragment.setArguments(args);
-        replaceFragmentWithBackstack(fragment, ADD_OR_EDIT_TRANSACTION_TAG);
+        replaceFragmentWithBackstack(fragment, AddOrEditTransactionFragment.class.getName());
     }
 
     public void replaceFragment(Fragment fragment) {

@@ -13,8 +13,6 @@ import android.widget.ListView;
  * Created by Shamik on 5/5/2016.
  */
 public class CategoryListFragment extends BaseFullscreenFragment implements OnItemClickListener {
-    private static final String TAG = "CategoryListFragment";
-
     private ListView mCategoryList;
 
     @Override

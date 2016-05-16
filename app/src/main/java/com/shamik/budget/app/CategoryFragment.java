@@ -21,17 +21,15 @@ public class CategoryFragment extends BaseFullscreenFragment {
     private ArrayList<Transaction> mTransactionList;
     private String mTitle;
 
-    private static final String TAG = "CategoryFragment";
-
     @Override
     public void onStart() {
         mTitle = ((MainActivity)getActivity())
                 .mCategoryStubList.get(getArguments().getInt("position")).getName();
-        Log.d(TAG, mTitle);
+        Log.d(CategoryFragment.class.getName(), mTitle);
         super.onStart();
 
-        mTransactionList = ((MainActivity)getActivity()).mBudgetDatabase
-                .getTransactionsWhere(BudgetDatabaseHelper.COLUMN_CATEGORY + "='" + mTitle + "'");
+        mTransactionList = BudgetDatabase.getInstance(getActivity())
+                .getTransactionsWhere(BudgetDatabase.COLUMN_CATEGORY + "='" + mTitle + "'");
 
         mTransactionListView = (ListView)getView().findViewById(R.id.category_transaction_list);
         mTransactionListView.setAdapter(new TransactionAdapter(getActivity(), mTransactionList));

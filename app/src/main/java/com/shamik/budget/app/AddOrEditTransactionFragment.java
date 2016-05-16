@@ -18,8 +18,6 @@ import android.widget.Toast;
  * Created by Shamik on 5/5/2016.
  */
 public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
-    private static final String TAG = "AddOrEditTransactionFragment";
-
     private View mView;
     private boolean isNew;
     private int mPosition;
@@ -175,7 +173,7 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
         if(isNew) {
             // if this is a new transaction, create in database,
             // get the new object with table ID, and add to list
-            newTransaction = ((MainActivity)getActivity()).mBudgetDatabase
+            newTransaction = BudgetDatabase.getInstance(getActivity())
                     .createTransaction(transactionForDatabase);
             ((MainActivity)getActivity()).mTransactionStubList.add(0, newTransaction);
         } else {
@@ -184,8 +182,7 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
                     .mTransactionStubList.get(mPosition).getID());
             transactionForDatabase.setDate(((MainActivity)getActivity())
                     .mTransactionStubList.get(mPosition).getDate());
-            ((MainActivity)getActivity()).mBudgetDatabase
-                    .updateTransaction(transactionForDatabase);
+            BudgetDatabase.getInstance(getActivity()).updateTransaction(transactionForDatabase);
             ((MainActivity)getActivity())
                     .mTransactionStubList.set(mPosition, transactionForDatabase);
         }

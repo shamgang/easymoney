@@ -30,7 +30,6 @@ import java.util.Locale;
  * Created by Shamik on 5/5/2016.
  */
 public class AnalyticsFragment extends BaseCategorySelectFragment {
-    private static final String TAG = "AnalyticsFragment";
     private View mView;
     private Category mCategory;
     private XYPlot mPlot;
@@ -110,8 +109,8 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                 Toast toast2 = Toast.makeText(getActivity(), message, 2000);
                 toast2.show();
 
-                ArrayList<Transaction> transactionList = ((MainActivity)getActivity()).mBudgetDatabase
-                        .getTransactionsWhere(BudgetDatabaseHelper.COLUMN_CATEGORY + "='" + mCategory.getName() + "'");
+                ArrayList<Transaction> transactionList = BudgetDatabase.getInstance(getActivity())
+                        .getTransactionsWhere(BudgetDatabase.COLUMN_CATEGORY + "='" + mCategory.getName() + "'");
                 //ArrayList<Number> plotX = new ArrayList<Number>();
                 Number[] plotXnums = {20160513, 20160514, 20160515};
                 List<Number> plotX = Arrays.asList(plotXnums);
@@ -134,9 +133,9 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                 double numDays =
                         (toDate.getCalendarView().getDate() - fromDate.getCalendarView().getDate())
                         / 1000. / 60. / 60. / 24 + 1;
-                Log.d(TAG, Long.toString(toDate.getCalendarView().getDate()));
-                Log.d(TAG, Long.toString(fromDate.getCalendarView().getDate()));
-                Log.d(TAG, Double.toString(numDays));
+                Log.d(AnalyticsFragment.class.getName(), Long.toString(toDate.getCalendarView().getDate()));
+                Log.d(AnalyticsFragment.class.getName(), Long.toString(fromDate.getCalendarView().getDate()));
+                Log.d(AnalyticsFragment.class.getName(), Double.toString(numDays));
                 double avg;
                 if(averageSpinner.getSelectedItem().equals(AVERAGE_DAILY)) {
                     avg = sum / numDays;
