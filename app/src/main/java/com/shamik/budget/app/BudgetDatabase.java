@@ -120,7 +120,11 @@ public class BudgetDatabase extends SQLiteOpenHelper {
         database.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
         onCreate(database);
     }
-    
+
+    public Transaction getTransactionByID(int id) {
+        return getTransactionsWhere(COLUMN_ID + "=" + Integer.toString(id)).get(0);
+    }
+
     public Transaction createTransaction(Transaction transaction) {
         long insertId = mDatabase.insert(BudgetDatabase.TABLE_TRANSACTIONS, null,
                 transactionToValues(transaction));

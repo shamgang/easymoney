@@ -20,7 +20,7 @@ import android.widget.Toast;
 public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
     private View mView;
     private boolean isNew;
-    private int mPosition;
+    private int mTransactionId;
     private Category mCategory;
 
     @Override
@@ -37,9 +37,11 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
         // if editing, fill default values
         isNew = getArguments().getBoolean("isNew");
         if(!isNew) {
-            mPosition = getArguments().getInt("position");
-            Transaction transaction =((MainActivity)getActivity())
-                    .mTransactionStubList.get(mPosition);
+            // get current transaction from database
+            mTransactionId = getArguments()
+                    .getInt(getActivity().getString(R.string.transaction_id_tag));
+            Transaction transaction = BudgetDatabase.getInstance(getActivity())
+                    .getTransactionByID(mTransactionId);
             // pad cents with 0 if necessary
             addTransactionAmount.setText(transaction.getAmountDollars().toString() + "."
                     + (transaction.getAmountCents().toString() + "0").substring(0, 2));
@@ -152,39 +154,19 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
             amountCents = Integer.parseInt(amountText.substring(decPos + 1, amountText.length()));
         }
 
-        /*
-        ((MainActivity)getActivity()).mTransactionStubList.add(0, new Transaction(
-            addTransactionAmountWhole.getText().toString(),
-            addTransactionAmountDecimal.getText().toString(),
-            addTransactionDescription.getText().toString(),
-            null,
-            addTransactionIsIncome.isChecked()
-        ));
-        */
         // Make a new transaction to send to database
-        Transaction transactionForDatabase = new Transaction(
+        Transaction newTransaction = new Transaction(
                 amountDollars,
                 amountCents,
                 addTransactionDescription.getText().toString(),
                 mCategory,
                 addTransactionIsIncome.isChecked()
         );
-        Transaction newTransaction;
+        // Add or update an entry
         if(isNew) {
-            // if this is a new transaction, create in database,
-            // get the new object with table ID, and add to list
-            newTransaction = BudgetDatabase.getInstance(getActivity())
-                    .createTransaction(transactionForDatabase);
-            ((MainActivity)getActivity()).mTransactionStubList.add(0, newTransaction);
+            BudgetDatabase.getInstance(getActivity()).createTransaction(newTransaction);
         } else {
-            // if this is an old transaction, update in database using old ID and date and replace in list
-            transactionForDatabase.setID(((MainActivity)getActivity())
-                    .mTransactionStubList.get(mPosition).getID());
-            transactionForDatabase.setDate(((MainActivity)getActivity())
-                    .mTransactionStubList.get(mPosition).getDate());
-            BudgetDatabase.getInstance(getActivity()).updateTransaction(transactionForDatabase);
-            ((MainActivity)getActivity())
-                    .mTransactionStubList.set(mPosition, transactionForDatabase);
+            BudgetDatabase.getInstance(getActivity()).updateTransaction(newTransaction);
         }
     }
 }

@@ -202,11 +202,11 @@ public class MainActivity extends ActionBarActivity {
         invalidateOptionsMenu();
     }
 
-    public void selectTransaction(int position) {
+    public void selectTransaction(int ID) {
         // switch to ViewTransactionFragment, change title and refresh options menu
         Fragment fragment = new ViewTransactionFragment();
         Bundle args = new Bundle();
-        args.putInt("position", position);
+        args.putInt(getString(R.string.transaction_id_tag), ID);
         fragment.setArguments(args);
         replaceFragmentWithBackstack(fragment);
     }
@@ -262,10 +262,10 @@ public class MainActivity extends ActionBarActivity {
         replaceFragmentWithBackstack(fragment, AddOrEditTransactionFragment.class.getName());
     }
 
-    public void editTransaction(int position) {
+    public void editTransaction(int ID) {
         Bundle args = new Bundle();
         args.putBoolean("isNew", false);
-        args.putInt("position", position);
+        args.putInt(getString(R.string.transaction_id_tag), ID);
         Fragment fragment = new AddOrEditTransactionFragment();
         fragment.setArguments(args);
         replaceFragmentWithBackstack(fragment, AddOrEditTransactionFragment.class.getName());

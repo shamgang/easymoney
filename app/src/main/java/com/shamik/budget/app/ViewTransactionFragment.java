@@ -14,8 +14,10 @@ import android.widget.TextView;
 public class ViewTransactionFragment extends BaseFullscreenFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final int position = getArguments().getInt("position");
-        Transaction transaction = ((MainActivity)getActivity()).mTransactionStubList.get(position);
+        final int transactionID = getArguments()
+                .getInt(getActivity().getString(R.string.transaction_id_tag));
+        Transaction transaction = BudgetDatabase.getInstance(getActivity())
+                .getTransactionByID(transactionID);
         View view = inflater.inflate(R.layout.fragment_view_transaction, container, false);
         TextView viewTransactionAmount = (TextView)view.findViewById(R.id.view_transaction_amount);
         TextView viewTransactionDescription = (TextView)view.findViewById(R.id.view_transaction_description);
@@ -32,7 +34,7 @@ public class ViewTransactionFragment extends BaseFullscreenFragment {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).editTransaction(position);
+                ((MainActivity)getActivity()).editTransaction(transactionID);
             }
         });
         return view;
