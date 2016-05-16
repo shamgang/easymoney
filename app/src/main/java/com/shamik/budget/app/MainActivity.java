@@ -119,6 +119,7 @@ public class MainActivity extends ActionBarActivity {
                 || mTitle.equals(this.getString(R.string.view_transaction_fragment_title))) {
             menu.findItem(R.id.action_add).setVisible(false);
         }
+        /*
         // Hide the search button on the analytics, add, view, and category list pages
         if(mTitle.equals(this.getString(R.string.analytics_fragment_title))
                 || mTitle.equals(this.getString(R.string.add_transaction_fragment_title))
@@ -126,7 +127,7 @@ public class MainActivity extends ActionBarActivity {
                 || mTitle.equals(this.getString(R.string.view_transaction_fragment_title))) {
             menu.findItem(R.id.action_search).setVisible(false);
         }
-
+        */
         return true;
     }
 
@@ -161,6 +162,7 @@ public class MainActivity extends ActionBarActivity {
             }
             return true;
         }
+        /*
         if(id == R.id.action_search) {
             // toggle search drawer
             if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
@@ -171,6 +173,7 @@ public class MainActivity extends ActionBarActivity {
             }
             return true;
         }
+        */
         return super.onOptionsItemSelected(item);
     }
 

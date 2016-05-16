@@ -20,6 +20,7 @@
         android:background="#ffeeeeee"/>
 
     <!-- right search/filter drawer -->
+    <!--
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/search_drawer"
@@ -39,5 +40,6 @@
             android:inputType="text" />
 
     </LinearLayout>
+    -->
 
 </android.support.v4.widget.DrawerLayout>
