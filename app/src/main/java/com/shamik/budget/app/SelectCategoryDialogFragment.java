@@ -23,7 +23,7 @@ public class SelectCategoryDialogFragment extends DialogFragment implements Adap
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // TODO: paginate
-        mCategoryList = BudgetDatabase.getInstance(getActivity()).getAllCategories();
+        mCategoryList = BudgetDatabase.getInstance().getAllCategories();
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

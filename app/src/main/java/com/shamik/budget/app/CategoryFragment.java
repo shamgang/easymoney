@@ -23,13 +23,13 @@ public class CategoryFragment extends BaseFullscreenFragment {
 
     @Override
     public void onStart() {
-        mTitle = BudgetDatabase.getInstance(getActivity())
+        mTitle = BudgetDatabase.getInstance()
                 .getCategoryByID(getArguments().getInt(getActivity().getString(R.string.category_id_tag)))
                 .getName();
         Log.d(CategoryFragment.class.getName(), mTitle);
         super.onStart();
 
-        mTransactionList = BudgetDatabase.getInstance(getActivity())
+        mTransactionList = BudgetDatabase.getInstance()
                 .getTransactionsWhere(BudgetDatabase.COLUMN_CATEGORY + "='" + mTitle + "'");
 
         // set adapter and click listener

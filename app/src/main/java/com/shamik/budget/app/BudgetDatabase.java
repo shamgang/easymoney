@@ -18,9 +18,10 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by Shamik on 5/9/2016.
  */
+// singleton
 public class BudgetDatabase extends SQLiteOpenHelper {
-    private static ConcurrentHashMap<Context, BudgetDatabase> mInstances
-            = new ConcurrentHashMap<Context, BudgetDatabase>();
+    private static Context mContext;
+    private static BudgetDatabase mInstance;
 
     private SQLiteDatabase mDatabase;
 
@@ -72,36 +73,27 @@ public class BudgetDatabase extends SQLiteOpenHelper {
             COLUMN_PARENT
     };
 
+    // must be called before getInstance
+    public static void init(Context context) {
+        mContext = context;
+    }
+
     // returns null if database open fails
-    public static BudgetDatabase getInstance(Context context) {
-        // factory
-        BudgetDatabase instance;
-        if((instance = mInstances.get(context)) == null) {
-            instance = new BudgetDatabase(context);
+    public static BudgetDatabase getInstance() {
+        if(mContext == null) {
+            Log.e(BudgetDatabase.class.getName(), "Didn't call init before getInstance");
+            return null;
+        }
+        if(mInstance == null) {
+            mInstance = new BudgetDatabase(mContext);
             try {
-                instance.open();
-                mInstances.put(context, instance);
+                mInstance.open();
             } catch(SQLException e) {
                 Log.e(BudgetDatabase.class.getName(), "Failed to open database.");
-                instance = null;
+                mInstance = null;
             }
         }
-        return instance;
-    }
-
-    public BudgetDatabase(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-    // hope to close database connection
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        close();
-    }
-
-    private void open() throws SQLException {
-        mDatabase = getWritableDatabase();
+        return mInstance;
     }
 
     @Override
@@ -126,45 +118,13 @@ public class BudgetDatabase extends SQLiteOpenHelper {
         return getTransactionsWhere(COLUMN_ID + "=" + Integer.toString(id)).get(0);
     }
 
-    public Transaction createTransaction(Transaction transaction) {
-        long insertId = mDatabase.insert(BudgetDatabase.TABLE_TRANSACTIONS, null,
-                transactionToValues(transaction));
-        Cursor cursor = mDatabase.query(BudgetDatabase.TABLE_TRANSACTIONS, TRANSACTION_COLUMNS,
-                BudgetDatabase.COLUMN_ID + " = " + insertId, null, null, null, null);
-        cursor.moveToFirst();
-        Transaction newTransaction = cursorToTransaction(cursor);
-        cursor.close();
-        return newTransaction;
+    public void createTransaction(Transaction transaction) {
+        mDatabase.insert(BudgetDatabase.TABLE_TRANSACTIONS, null, transactionToValues(transaction));
     }
 
     public void updateTransaction(Transaction transaction) {
         mDatabase.update(BudgetDatabase.TABLE_TRANSACTIONS, transactionToValues(transaction),
                 "_id=" + transaction.getID(), null);
-    }
-
-    private ContentValues transactionToValues(Transaction transaction) {
-        ContentValues values = new ContentValues();
-        values.put(BudgetDatabase.COLUMN_AMOUNT_DOLLARS, transaction.getAmountDollars());
-        values.put(BudgetDatabase.COLUMN_AMOUNT_CENTS, transaction.getAmountCents());
-        values.put(BudgetDatabase.COLUMN_DESCRIPTION, transaction.getDescription());
-        values.put(BudgetDatabase.COLUMN_CATEGORY, transaction.getCategory().getName());
-        values.put(BudgetDatabase.COLUMN_IS_INCOME, transaction.isIncome());
-        return values;
-    }
-
-    public Category createCategory(Category category) {
-        ContentValues values = new ContentValues();
-        values.put(BudgetDatabase.COLUMN_NAME, category.getName());
-        if(category.getParent() != null) {
-            values.put(BudgetDatabase.COLUMN_PARENT, category.getParent().getName());
-        }
-        long insertId = mDatabase.insert(BudgetDatabase.TABLE_CATEGORIES, null, values);
-        Cursor cursor = mDatabase.query(BudgetDatabase.TABLE_CATEGORIES, CATEGORY_COLUMNS,
-                BudgetDatabase.COLUMN_ID + " = " + insertId, null, null, null, null);
-        cursor.moveToFirst();
-        Category newCategory = cursorToCategory(cursor);
-        cursor.close();
-        return newCategory;
     }
 
     public ArrayList<Transaction> getAllTransactions() {
@@ -200,6 +160,10 @@ public class BudgetDatabase extends SQLiteOpenHelper {
         return cursor.getCount() != 0;
     }
 
+    public void createCategory(Category category) {
+        mDatabase.insert(BudgetDatabase.TABLE_CATEGORIES, null, categoryToValues(category));
+    }
+
     public ArrayList<Category> getAllCategories() {
         ArrayList<Category> categories = new ArrayList<Category>();
 
@@ -214,6 +178,40 @@ public class BudgetDatabase extends SQLiteOpenHelper {
         }
         cursor.close();
         return categories;
+    }
+
+    protected BudgetDatabase(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    // hope to close database connection
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        close();
+    }
+
+    private void open() throws SQLException {
+        mDatabase = getWritableDatabase();
+    }
+
+    private ContentValues transactionToValues(Transaction transaction) {
+        ContentValues values = new ContentValues();
+        values.put(BudgetDatabase.COLUMN_AMOUNT_DOLLARS, transaction.getAmountDollars());
+        values.put(BudgetDatabase.COLUMN_AMOUNT_CENTS, transaction.getAmountCents());
+        values.put(BudgetDatabase.COLUMN_DESCRIPTION, transaction.getDescription());
+        values.put(BudgetDatabase.COLUMN_CATEGORY, transaction.getCategory().getName());
+        values.put(BudgetDatabase.COLUMN_IS_INCOME, transaction.isIncome());
+        return values;
+    }
+
+    private ContentValues categoryToValues(Category category) {
+        ContentValues values = new ContentValues();
+        values.put(BudgetDatabase.COLUMN_NAME, category.getName());
+        if(category.getParent() != null) {
+            values.put(BudgetDatabase.COLUMN_PARENT, category.getParent().getName());
+        }
+        return values;
     }
 
     private Transaction cursorToTransaction(Cursor cursor) {
@@ -237,60 +235,49 @@ public class BudgetDatabase extends SQLiteOpenHelper {
 
     // TODO: remove stub functions
     private void prePopulate(SQLiteDatabase database) {
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "acatagory2"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
-        insertTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "acatagory2"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
+        createTransaction(new Transaction(34, 55, "New purchase", new Category(null, "category1"), false), database);
 
-        insertCategory(new Category(null, "acatagory"), database);
-        insertCategory(new Category(null, "acatagory1"), database);
-        insertCategory(new Category(null, "acatagory2"), database);
-        insertCategory(new Category(null, "acatagory3"), database);
-        insertCategory(new Category(null, "acatagory4"), database);
-        insertCategory(new Category(null, "acatagory5"), database);
-        insertCategory(new Category(null, "acatagory6"), database);
-        insertCategory(new Category(null, "acatagory7"), database);
-        insertCategory(new Category(null, "acatagory8"), database);
-        insertCategory(new Category(null, "acatagory9"), database);
-        insertCategory(new Category(null, "acatagory11"), database);
-        insertCategory(new Category(null, "acatagory12"), database);
-        insertCategory(new Category(null, "acatagory13"), database);
-        insertCategory(new Category(null, "acatagory14"), database);
-        insertCategory(new Category(null, "category1"), database);
+        createCategory(new Category(null, "acatagory"), database);
+        createCategory(new Category(null, "acatagory1"), database);
+        createCategory(new Category(null, "acatagory2"), database);
+        createCategory(new Category(null, "acatagory3"), database);
+        createCategory(new Category(null, "acatagory4"), database);
+        createCategory(new Category(null, "acatagory5"), database);
+        createCategory(new Category(null, "acatagory6"), database);
+        createCategory(new Category(null, "acatagory7"), database);
+        createCategory(new Category(null, "acatagory8"), database);
+        createCategory(new Category(null, "acatagory9"), database);
+        createCategory(new Category(null, "acatagory11"), database);
+        createCategory(new Category(null, "acatagory12"), database);
+        createCategory(new Category(null, "acatagory13"), database);
+        createCategory(new Category(null, "acatagory14"), database);
+        createCategory(new Category(null, "category1"), database);
     }
 
-    private void insertTransaction(Transaction transaction, SQLiteDatabase database) {
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_AMOUNT_DOLLARS, transaction.getAmountDollars());
-        values.put(COLUMN_AMOUNT_CENTS, transaction.getAmountCents());
-        values.put(COLUMN_DESCRIPTION, transaction.getDescription());
-        values.put(COLUMN_CATEGORY, transaction.getCategory().getName());
-        values.put(COLUMN_IS_INCOME, transaction.isIncome());
-        database.insert(BudgetDatabase.TABLE_TRANSACTIONS, null, values);
+    private void createTransaction(Transaction transaction, SQLiteDatabase database) {
+        database.insert(BudgetDatabase.TABLE_TRANSACTIONS, null, transactionToValues(transaction));
     }
 
-    private void insertCategory(Category category, SQLiteDatabase database) {
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME, category.getName());
-        if(category.getParent() != null) {
-            values.put(COLUMN_PARENT, category.getParent().getName());
-        }
-        database.insert(BudgetDatabase.TABLE_CATEGORIES, null, values);
+    private void createCategory(Category category, SQLiteDatabase database) {
+        database.insert(BudgetDatabase.TABLE_CATEGORIES, null, categoryToValues(category));
     }
 }

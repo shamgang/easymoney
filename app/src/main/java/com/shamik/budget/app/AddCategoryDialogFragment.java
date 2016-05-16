@@ -57,11 +57,11 @@ public class AddCategoryDialogFragment extends DialogFragment {
         TextView addCategoryNameView = (TextView)mView.findViewById(R.id.add_category_name);
         String addCategoryName = addCategoryNameView.getText().toString();
 
-        if(BudgetDatabase.getInstance(getActivity()).hasCategoryName(addCategoryName)) {
+        if(BudgetDatabase.getInstance().hasCategoryName(addCategoryName)) {
             throw new DuplicateCategoryException("Category '" + addCategoryName + "' already exists");
         }
 
-        BudgetDatabase.getInstance(getActivity()).createCategory(
+        BudgetDatabase.getInstance().createCategory(
                 new Category(null, addCategoryNameView.getText().toString()));
     }
 }

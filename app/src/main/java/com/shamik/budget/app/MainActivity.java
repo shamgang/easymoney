@@ -35,6 +35,9 @@ public class MainActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_main);
 
+        // initialize database singleton
+        BudgetDatabase.init(this);
+
         // the title that will be set onDrawerOpened
         mDrawerTitle= this.getString(R.string.drawer_title);
 

@@ -25,7 +25,7 @@ public class TransactionListFragment extends BaseFullscreenFragment implements O
 
         // fill list from database
         // TODO: paginate
-        mTransactionList = BudgetDatabase.getInstance(getActivity()).getAllTransactions();
+        mTransactionList = BudgetDatabase.getInstance().getAllTransactions();
 
         // set adapter and listener on list view
         mTransactionListView = (ListView)view.findViewById(R.id.list);

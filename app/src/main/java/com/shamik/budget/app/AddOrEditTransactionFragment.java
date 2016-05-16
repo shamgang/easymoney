@@ -40,7 +40,7 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
             // get current transaction from database
             mTransactionId = getArguments()
                     .getInt(getActivity().getString(R.string.transaction_id_tag));
-            Transaction transaction = BudgetDatabase.getInstance(getActivity())
+            Transaction transaction = BudgetDatabase.getInstance()
                     .getTransactionByID(mTransactionId);
             // pad cents with 0 if necessary
             addTransactionAmount.setText(transaction.getAmountDollars().toString() + "."
@@ -164,9 +164,9 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
         );
         // Add or update an entry
         if(isNew) {
-            BudgetDatabase.getInstance(getActivity()).createTransaction(newTransaction);
+            BudgetDatabase.getInstance().createTransaction(newTransaction);
         } else {
-            BudgetDatabase.getInstance(getActivity()).updateTransaction(newTransaction);
+            BudgetDatabase.getInstance().updateTransaction(newTransaction);
         }
     }
 }

@@ -109,7 +109,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                 Toast toast2 = Toast.makeText(getActivity(), message, 2000);
                 toast2.show();
 
-                ArrayList<Transaction> transactionList = BudgetDatabase.getInstance(getActivity())
+                ArrayList<Transaction> transactionList = BudgetDatabase.getInstance()
                         .getTransactionsWhere(BudgetDatabase.COLUMN_CATEGORY + "='" + mCategory.getName() + "'");
                 //ArrayList<Number> plotX = new ArrayList<Number>();
                 Number[] plotXnums = {20160513, 20160514, 20160515};

@@ -24,7 +24,7 @@ public class CategoryListFragment extends BaseFullscreenFragment implements OnIt
 
         // populate list from database
         // TODO: paginate
-        mCategoryList = BudgetDatabase.getInstance(getActivity()).getAllCategories();
+        mCategoryList = BudgetDatabase.getInstance().getAllCategories();
 
         // set list view adapter and click listener
         mCategoryListView = (ListView)view.findViewById(R.id.list);

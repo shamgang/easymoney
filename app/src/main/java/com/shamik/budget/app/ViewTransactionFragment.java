@@ -16,7 +16,7 @@ public class ViewTransactionFragment extends BaseFullscreenFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final int transactionID = getArguments()
                 .getInt(getActivity().getString(R.string.transaction_id_tag));
-        Transaction transaction = BudgetDatabase.getInstance(getActivity())
+        Transaction transaction = BudgetDatabase.getInstance()
                 .getTransactionByID(transactionID);
         View view = inflater.inflate(R.layout.fragment_view_transaction, container, false);
         TextView viewTransactionAmount = (TextView)view.findViewById(R.id.view_transaction_amount);
