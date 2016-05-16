@@ -1,8 +1,6 @@
 package com.shamik.budget.app;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +9,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,15 +22,10 @@ import com.androidplot.xy.XYSeries;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.NavigableMap;
 import java.util.TreeMap;
 
 /**
@@ -40,6 +35,17 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
     private View mView;
     private Category mCategory;
     private XYPlot mPlot;
+    private ArrayList<Map.Entry<String, DataPoint>> mDataArray;
+    private ArrayList<Number> mPlotX;
+    private ArrayList<Number> mPlotY;
+    private XYSeries mSelectedPoint;
+    private LineAndPointFormatter mSelectedFormat;
+    private int mSelectedIndex;
+    private ArrayList<Transaction> mSelectedTransactions;
+    private ListView mSelectedTransactionsView;
+
+    private static SimpleDateFormat sSqlDate = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat sIntDate = new SimpleDateFormat("yyyyMMdd");
 
     private static final String AVERAGE_DAILY = "Daily";
     private static final String AVERAGE_MONTHLY = "Monthly";
@@ -139,11 +145,10 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                 DatePicker toDate = (DatePicker)mView.findViewById(R.id.to_date);
 
                 // format epoch dates as SQL and query database for transactions
-                SimpleDateFormat sqlDate = new SimpleDateFormat("yyyy-MM-dd");
                 ArrayList<Transaction> transactionList = BudgetDatabase.getInstance()
                         .getTransactionsByCategoryIDAndDateRange(mCategory.getID(),
-                                sqlDate.format(fromDate.getCalendarView().getDate()),
-                                sqlDate.format(toDate.getCalendarView().getDate()));
+                                sSqlDate.format(fromDate.getCalendarView().getDate()),
+                                sSqlDate.format(toDate.getCalendarView().getDate()));
 
                 // construct a data point object for each date, containing transactions
                 TreeMap<String, DataPoint> dateToData = new TreeMap<String, DataPoint>();
@@ -158,9 +163,9 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                         dateToData.put(transaction.getDate(), new DataPoint(transaction));
                     }
                     // format date as a monotonically increasing integer as x coordinate
-                    //plotX.add(Integer.valueOf(intDate.format(transaction.getDate())));
+                    //mPlotX.add(Integer.valueOf(sIntDate.format(transaction.getDate())));
                     // add amount as y coordinate
-                    //plotY.add(amount);
+                    //mPlotY.add(amount);
                 }
 
                 // TODO: remove stub data
@@ -173,15 +178,15 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                 sum = 54.21;
 
                 // construct plot data by iterating in date order
-                ArrayList<Number> plotX = new ArrayList<Number>();
-                ArrayList<Number> plotY = new ArrayList<Number>();
+                mPlotX = new ArrayList<Number>();
+                mPlotY = new ArrayList<Number>();
+                mDataArray = new ArrayList<Map.Entry<String, DataPoint>>(dateToData.entrySet());
                 // format date as a monotonically increasing integer as x coordinate
-                SimpleDateFormat intDate = new SimpleDateFormat("yyyyMMdd");
-                for(Map.Entry<String, DataPoint> entry : dateToData.entrySet()) {
+                for(Map.Entry<String, DataPoint> entry : mDataArray) {
                     try {
                         // convert from SQL date to epoch time to integer date
-                        plotX.add(Integer.valueOf(intDate.format(sqlDate.parse(entry.getKey()).getTime())));
-                        plotY.add(entry.getValue().getValue());
+                        mPlotX.add(Integer.valueOf(sIntDate.format(sSqlDate.parse(entry.getKey()).getTime())));
+                        mPlotY.add(entry.getValue().getValue());
                     } catch(ParseException e) {
                         Log.e(AnalyticsFragment.class.getName(), e.getMessage());
                     }
@@ -189,8 +194,8 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
 
                 // calculate average by converting range from epoch time to integer date
                 int numDays =
-                        Integer.valueOf(intDate.format(toDate.getCalendarView().getDate()))
-                        - Integer.valueOf(intDate.format(fromDate.getCalendarView().getDate()))
+                        Integer.valueOf(sIntDate.format(toDate.getCalendarView().getDate()))
+                        - Integer.valueOf(sIntDate.format(fromDate.getCalendarView().getDate()))
                         + 1;
                 double avg;
                 if(averageSpinner.getSelectedItem().equals(AVERAGE_DAILY)) {
@@ -206,40 +211,49 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                 transactionSum.setText("$" + String.format("%.2f", sum));
 
                 // plot data
-                XYSeries series = new SimpleXYSeries(plotX, plotY, "Transactions");
+                XYSeries series = new SimpleXYSeries(mPlotX, mPlotY, "Transactions");
                 LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
                 seriesFormat.configure(getActivity().getApplicationContext(),
                         R.xml.line_point_formatter);
-                LineAndPointFormatter selectedFormat = new LineAndPointFormatter();
-                selectedFormat.configure(getActivity().getApplicationContext(),
-                        R.xml.selected_point_formatter);
                 mPlot.addSeries(series, seriesFormat);
 
-                // draw selected data point
-                ArrayList<Number> selectedX = new ArrayList<Number>();
-                ArrayList<Number> selectedY = new ArrayList<Number>();
-                selectedX.add(plotX.get(0));
-                selectedY.add(plotY.get(0));
-                XYSeries selectedPoint = new SimpleXYSeries(selectedX, selectedY, "Selected Point");
-                mPlot.addSeries(selectedPoint, selectedFormat);
-                mPlot.redraw();
+                // TODO: what if no data or one date?
 
-                // fill selected data point views
-                TextView selectedDateView = (TextView)mView.findViewById(R.id.selected_date);
-                TextView selectedAmountView = (TextView)mView.findViewById(R.id.selected_amount);
-                // make date human-readable
-                Date selectedDate;
-                try {
-                    selectedDate = sqlDate.parse(dateToData.firstEntry().getKey());
-                } catch(ParseException e) {
-                    Log.e(AnalyticsFragment.class.getName(), e.getMessage());
-                    selectedDate = null;
-                }
-                SimpleDateFormat readableDate = new SimpleDateFormat("MMMM dd, yyyy");
-                selectedDateView.setText(readableDate.format(selectedDate));
-                // sum all transaction amounts for this date
-                selectedAmountView.setText("$" + String.format("%.2f",
-                        sumTransactions(dateToData.firstEntry().getValue().getTransactions())));
+                // prepare formatter for selected point
+                mSelectedFormat = new LineAndPointFormatter();
+                mSelectedFormat.configure(getActivity().getApplicationContext(),
+                        R.xml.selected_point_formatter);
+
+                // select first point
+                selectPoint(0);
+            }
+        });
+
+        // graph paging button behavior
+        ImageButton leftButton = (ImageButton)mView.findViewById(R.id.analytics_left_button);
+        ImageButton rightButton = (ImageButton)mView.findViewById(R.id.analytics_right_button);
+        leftButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectPreviousPoint();
+            }
+        });
+        rightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectNextPoint();
+            }
+        });
+
+        mSelectedTransactions = new ArrayList<Transaction>();
+
+        // set adapter and click listener
+        mSelectedTransactionsView = (ListView)mView.findViewById(R.id.selected_transaction_list);
+        mSelectedTransactionsView.setAdapter(new TransactionAdapter(getActivity(), mSelectedTransactions));
+        mSelectedTransactionsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
             }
         });
 
@@ -265,5 +279,66 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
             sum += transaction.getAmount();
         }
         return sum;
+    }
+
+    private void selectPreviousPoint() {
+        selectPoint(mSelectedIndex - 1);
+    }
+
+    private void selectNextPoint() {
+        selectPoint(mSelectedIndex + 1);
+    }
+
+    private void selectPoint(int index) {
+        // bounds check with silent fail
+        if(index < 0 || index >= mDataArray.size()) {
+            return;
+        }
+
+        mSelectedIndex = index;
+
+        // draw selected data point
+        ArrayList<Number> selectedX = new ArrayList<Number>();
+        ArrayList<Number> selectedY = new ArrayList<Number>();
+        selectedX.add(mPlotX.get(mSelectedIndex));
+        selectedY.add(mPlotY.get(mSelectedIndex));
+        if(mSelectedPoint != null) {
+            mPlot.removeSeries(mSelectedPoint);
+        }
+        mSelectedPoint = new SimpleXYSeries(selectedX, selectedY, "Selected Point");
+        mPlot.addSeries(mSelectedPoint, mSelectedFormat);
+        mPlot.redraw();
+
+        // fill selected data point views
+        TextView selectedDateView = (TextView)mView.findViewById(R.id.selected_date);
+        TextView selectedAmountView = (TextView)mView.findViewById(R.id.selected_amount);
+        // make date human-readable
+        Date selectedDate;
+        try {
+            selectedDate = sSqlDate.parse(mDataArray.get(mSelectedIndex).getKey());
+        } catch(ParseException e) {
+            Log.e(AnalyticsFragment.class.getName(), e.getMessage());
+            selectedDate = null;
+        }
+        SimpleDateFormat readableDate = new SimpleDateFormat("MMMM dd, yyyy");
+        selectedDateView.setText(readableDate.format(selectedDate));
+        // sum all transaction amounts for this date
+        selectedAmountView.setText("$" + String.format("%.2f",
+                sumTransactions(mDataArray.get(mSelectedIndex).getValue().getTransactions())));
+
+        mSelectedTransactions = mDataArray.get(mSelectedIndex).getValue().getTransactions();
+        mSelectedTransactionsView.setAdapter(new TransactionAdapter(getActivity(), mSelectedTransactions));
+
+        // TODO: duplicated from CategoryFragment
+        // set list height to cover all items
+        if(!mSelectedTransactionsView.getAdapter().isEmpty()) {
+            Log.d(AnalyticsFragment.class.getName(), "isn't empty");
+            View itemView = mSelectedTransactionsView.getAdapter().getView(0, null, (ViewGroup)mSelectedTransactionsView);
+            itemView.measure(0, 0);
+            ViewGroup.LayoutParams layoutParams = mSelectedTransactionsView.getLayoutParams();
+            layoutParams.height = itemView.getMeasuredHeight() * mSelectedTransactions.size();
+            mSelectedTransactionsView.setLayoutParams(layoutParams);
+            mSelectedTransactionsView.requestLayout();
+        }
     }
 }

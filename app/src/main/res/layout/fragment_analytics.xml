@@ -160,6 +160,7 @@
             android:layout_height="50dp">
 
             <ImageButton
+                android:id="@+id/analytics_left_button"
                 android:layout_width="0dp"
                 android:layout_weight=".5"
                 android:layout_height="match_parent"
@@ -174,6 +175,7 @@
                 android:background="@drawable/light_blue_background"/>
 
             <ImageButton
+                android:id="@+id/analytics_right_button"
                 android:layout_width="0dp"
                 android:layout_weight=".5"
                 android:layout_height="match_parent"
@@ -205,6 +207,7 @@
 
         <!-- transaction list -->
         <ListView
+            android:id="@+id/selected_transaction_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </ListView>
