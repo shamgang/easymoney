@@ -158,7 +158,7 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
                 amountDollars,
                 amountCents,
                 addTransactionDescription.getText().toString(),
-                mCategory.getID(),
+                (mCategory == null) ? -1 : mCategory.getID(),
                 addTransactionIsIncome.isChecked()
         );
         // Add or update an entry
