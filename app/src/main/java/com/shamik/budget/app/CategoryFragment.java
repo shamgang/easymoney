@@ -38,7 +38,7 @@ public class CategoryFragment extends BaseFullscreenFragment {
         mTransactionListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                ((MainActivity)getActivity()).selectTransaction(mTransactionList.get(i).getID());
             }
         });
 

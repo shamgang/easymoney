@@ -68,7 +68,11 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         }
 
         public void addTransaction(Transaction transaction) {
-            mValue += transaction.getAmount();
+            if(transaction.isIncome()) {
+                mValue -= transaction.getAmount();
+            } else {
+                mValue += transaction.getAmount();
+            }
             mTransactions.add(transaction);
         }
 
@@ -158,17 +162,17 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                 double sum = 0;
                 for(Transaction transaction : transactionList) {
                     // add transaction amount to running sum and check running max
-                    sum += transaction.getAmount();
+                    if(transaction.isIncome()) {
+                        sum -= transaction.getAmount();
+                    } else {
+                        sum += transaction.getAmount();
+                    }
                     // add transaction to data set
                     if(dateToData.containsKey(transaction.getDate())) {
                         dateToData.get(transaction.getDate()).addTransaction(transaction);
                     } else {
                         dateToData.put(transaction.getDate(), new DataPoint(transaction));
                     }
-                    // format date as a monotonically increasing integer as x coordinate
-                    //mPlotX.add(Integer.valueOf(sIntDate.format(transaction.getDate())));
-                    // add amount as y coordinate
-                    //mPlotY.add(amount);
                 }
 
                 // construct plot data by iterating in date order
@@ -178,6 +182,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                 // format date as a monotonically increasing integer as x coordinate
                 // keep track of maximum data point for graph boundary
                 double max = 0;
+                double min = 0;
                 for(Map.Entry<String, DataPoint> entry : mDataArray) {
                     try {
                         // convert from SQL date to epoch time to integer date
@@ -185,6 +190,9 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                         mPlotY.add(entry.getValue().getValue());
                         if(entry.getValue().getValue() > max) {
                             max = entry.getValue().getValue();
+                        }
+                        if(entry.getValue().getValue() < min) {
+                            min = entry.getValue().getValue();
                         }
                     } catch(ParseException e) {
                         Log.e(AnalyticsFragment.class.getName(), e.getMessage());
@@ -291,7 +299,11 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
     private double sumTransactions(ArrayList<Transaction> transactions) {
         double sum = 0;
         for(Transaction transaction : transactions) {
-            sum += transaction.getAmount();
+            if(transaction.isIncome()){
+                sum -= transaction.getAmount();
+            } else {
+                sum += transaction.getAmount();
+            }
         }
         return sum;
     }
