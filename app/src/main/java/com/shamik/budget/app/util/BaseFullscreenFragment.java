@@ -14,6 +14,7 @@ public abstract class BaseFullscreenFragment extends Fragment {
         super.onStart();
         MainActivity mainActivity = (MainActivity)getActivity();
         mainActivity.updateActionBar(getTitle());
+        mainActivity.mCurrentFragment = getClass().getName();
     }
 
     protected abstract String getTitle();

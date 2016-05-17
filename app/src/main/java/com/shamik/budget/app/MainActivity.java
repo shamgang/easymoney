@@ -32,6 +32,7 @@ public class MainActivity extends ActionBarActivity {
     private String mTitle;
     private String mDrawerTitle;
 
+    public String mCurrentFragment;
     public BudgetDatabase mBudgetDatabase;
 
     @Override
@@ -122,10 +123,11 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
-        // Hide the plus button on the analytics page, add, and view pages
-        if(mTitle.equals(this.getString(R.string.analytics_fragment_title))
-                || mTitle.equals(this.getString(R.string.add_transaction_fragment_title))
-                || mTitle.equals(this.getString(R.string.view_transaction_fragment_title))) {
+        // Hide the plus button on the analytics, add/edit, view, and category pages
+        if(mCurrentFragment.equals(AnalyticsFragment.class.getName())
+                || mCurrentFragment.equals(AddOrEditTransactionFragment.class.getName())
+                || mCurrentFragment.equals(ViewTransactionFragment.class.getName())
+                || mCurrentFragment.equals(CategoryFragment.class.getName())) {
             menu.findItem(R.id.action_add).setVisible(false);
         }
         /*
@@ -155,9 +157,11 @@ public class MainActivity extends ActionBarActivity {
         // Handle your other action bar items...
 
         int id = item.getItemId();
+        /*
         if (id == R.id.action_settings) {
             return true;
         }
+        */
         if (id == R.id.action_add) {
             if(mTitle.equals(this.getString(R.string.transaction_list_fragment_title))) {
                 // We are on the transaction list, so the plus button will add an item
