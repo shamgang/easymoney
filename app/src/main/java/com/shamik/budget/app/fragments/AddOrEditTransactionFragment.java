@@ -102,9 +102,8 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
                 InputMethodManager imm = (InputMethodManager)getActivity()
                         .getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                // return to transaction list
-                ((MainActivity)getActivity())
-                        .replaceFragmentWithBackstack(new TransactionListFragment());
+                // go back to previous fragment
+                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
         // cancel button behavior
@@ -112,9 +111,8 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // return to transaction list
-                ((MainActivity)getActivity())
-                        .replaceFragmentWithBackstack(new TransactionListFragment());
+                // go back to previous fragment
+                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
         return mView;

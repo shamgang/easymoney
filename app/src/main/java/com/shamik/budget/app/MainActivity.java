@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -195,16 +196,16 @@ public class MainActivity extends ActionBarActivity {
         Bundle args = new Bundle();
         args.putInt(getString(R.string.transaction_id_tag), ID);
         fragment.setArguments(args);
-        replaceFragmentWithBackstack(fragment);
+        replaceFragmentPushBackstack(fragment);
     }
 
     public void selectCategory(int ID) {
-        // switch to TransactionListFragment, change title and refresh options menu
+        // switch to CategoryFragment, change title and refresh options menu
         Fragment fragment = new CategoryFragment();
         Bundle args = new Bundle();
         args.putInt(getString(R.string.category_id_tag), ID);
         fragment.setArguments(args);
-        replaceFragmentWithBackstack(fragment);
+        replaceFragmentPushBackstack(fragment);
     }
 
     /** Swaps fragments in the main content view */
@@ -224,7 +225,7 @@ public class MainActivity extends ActionBarActivity {
             tag = AnalyticsFragment.class.getName();
         }
 
-        replaceFragment(fragment, tag);
+        replaceFragmentClearBackstack(fragment, tag);
 
         // Highlight the selected item, update the title, and close the drawer
         mNavDrawerList.setItemChecked(position, true);
@@ -236,7 +237,7 @@ public class MainActivity extends ActionBarActivity {
         args.putBoolean(getString(R.string.transaction_is_new_tag), true);
         Fragment fragment = new AddOrEditTransactionFragment();
         fragment.setArguments(args);
-        replaceFragmentWithBackstack(fragment, AddOrEditTransactionFragment.class.getName());
+        replaceFragmentPushBackstack(fragment, AddOrEditTransactionFragment.class.getName());
     }
 
     public void editTransaction(int ID) {
@@ -245,7 +246,7 @@ public class MainActivity extends ActionBarActivity {
         args.putInt(getString(R.string.transaction_id_tag), ID);
         Fragment fragment = new AddOrEditTransactionFragment();
         fragment.setArguments(args);
-        replaceFragmentWithBackstack(fragment, AddOrEditTransactionFragment.class.getName());
+        replaceFragmentPushBackstack(fragment, AddOrEditTransactionFragment.class.getName());
     }
 
     public void replaceFragment(Fragment fragment) {
@@ -262,7 +263,7 @@ public class MainActivity extends ActionBarActivity {
                 .commit();
     }
 
-    public void replaceFragmentWithBackstack(Fragment fragment) {
+    public void replaceFragmentPushBackstack(Fragment fragment) {
         // Insert the fragment by replacing any existing fragment, and add to backstack
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
@@ -270,12 +271,18 @@ public class MainActivity extends ActionBarActivity {
                 .commit();
     }
 
-    public void replaceFragmentWithBackstack(Fragment fragment, String tag) {
+    public void replaceFragmentPushBackstack(Fragment fragment, String tag) {
         // Insert the fragment by replacing any existing fragment, and add to backstack
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment, tag)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public void replaceFragmentClearBackstack(Fragment fragment, String tag) {
+        // Insert the fragment by replacing any existing fragment, and pop backstack
+        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        replaceFragment(fragment, tag);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
