@@ -1,4 +1,4 @@
-package com.shamik.budget.app;
+package com.shamik.budget.app.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +9,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import java.sql.BatchUpdateException;
+import com.shamik.budget.app.util.BaseFullscreenFragment;
+import com.shamik.budget.app.data.BudgetDatabase;
+import com.shamik.budget.app.MainActivity;
+import com.shamik.budget.app.R;
+import com.shamik.budget.app.types.Transaction;
+import com.shamik.budget.app.adapters.TransactionAdapter;
+
 import java.util.ArrayList;
 
 /**
@@ -47,7 +53,7 @@ public class CategoryFragment extends BaseFullscreenFragment {
             return;
         }
         View itemView = mTransactionListView.getAdapter()
-                .getView(0, null, (ViewGroup)mTransactionListView);
+                .getView(0, null, (ViewGroup) mTransactionListView);
         itemView.measure(0, 0);
         ViewGroup.LayoutParams layoutParams = mTransactionListView.getLayoutParams();
         layoutParams.height = itemView.getMeasuredHeight() * mTransactionList.size();

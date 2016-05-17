@@ -1,4 +1,4 @@
-package com.shamik.budget.app;
+package com.shamik.budget.app.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +11,14 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.shamik.budget.app.util.BaseCategorySelectFragment;
+import com.shamik.budget.app.data.BudgetDatabase;
+import com.shamik.budget.app.types.Category;
+import com.shamik.budget.app.MainActivity;
+import com.shamik.budget.app.R;
+import com.shamik.budget.app.util.TextValidator;
+import com.shamik.budget.app.types.Transaction;
 
 /**
  * Created by Shamik on 5/5/2016.

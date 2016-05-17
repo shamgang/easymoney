@@ -1,4 +1,4 @@
-package com.shamik.budget.app;
+package com.shamik.budget.app.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +20,13 @@ import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
+import com.shamik.budget.app.util.BaseCategorySelectFragment;
+import com.shamik.budget.app.data.BudgetDatabase;
+import com.shamik.budget.app.types.Category;
+import com.shamik.budget.app.MainActivity;
+import com.shamik.budget.app.R;
+import com.shamik.budget.app.types.Transaction;
+import com.shamik.budget.app.adapters.TransactionAdapter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

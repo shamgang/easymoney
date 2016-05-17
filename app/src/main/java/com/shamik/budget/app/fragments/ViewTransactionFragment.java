@@ -1,12 +1,17 @@
-package com.shamik.budget.app;
+package com.shamik.budget.app.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.shamik.budget.app.util.BaseFullscreenFragment;
+import com.shamik.budget.app.data.BudgetDatabase;
+import com.shamik.budget.app.MainActivity;
+import com.shamik.budget.app.R;
+import com.shamik.budget.app.types.Transaction;
 
 /**
  * Created by Shamik on 5/6/2016.

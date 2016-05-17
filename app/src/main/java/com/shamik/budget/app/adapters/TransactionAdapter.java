@@ -1,4 +1,4 @@
-package com.shamik.budget.app;
+package com.shamik.budget.app.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
+import com.shamik.budget.app.R;
+import com.shamik.budget.app.types.Transaction;
+
 import java.util.ArrayList;
 
 /**

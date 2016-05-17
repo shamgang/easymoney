@@ -1,4 +1,6 @@
-package com.shamik.budget.app;
+package com.shamik.budget.app.types;
+
+import com.shamik.budget.app.data.BudgetDatabase;
 
 import java.util.ArrayList;
 

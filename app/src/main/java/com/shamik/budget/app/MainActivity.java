@@ -6,8 +6,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,8 +13,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
+import com.shamik.budget.app.data.BudgetDatabase;
+import com.shamik.budget.app.fragments.AddCategoryDialogFragment;
+import com.shamik.budget.app.fragments.AddOrEditTransactionFragment;
+import com.shamik.budget.app.fragments.AnalyticsFragment;
+import com.shamik.budget.app.fragments.CategoryFragment;
+import com.shamik.budget.app.fragments.CategoryListFragment;
+import com.shamik.budget.app.fragments.TransactionListFragment;
+import com.shamik.budget.app.fragments.ViewTransactionFragment;
 
 public class MainActivity extends ActionBarActivity {
 

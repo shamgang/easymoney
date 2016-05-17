@@ -1,4 +1,4 @@
-package com.shamik.budget.app;
+package com.shamik.budget.app.data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,14 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.lang.reflect.Array;
+import com.shamik.budget.app.types.Category;
+import com.shamik.budget.app.types.Transaction;
+
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Shamik on 5/9/2016.

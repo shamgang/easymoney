@@ -1,6 +1,7 @@
-package com.shamik.budget.app;
+package com.shamik.budget.app.types;
 
-import java.util.Date;
+import com.shamik.budget.app.data.BudgetDatabase;
+import com.shamik.budget.app.types.Category;
 
 /**
  * Created by Shamik on 5/7/2016.
