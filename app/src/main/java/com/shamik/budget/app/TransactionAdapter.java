@@ -24,16 +24,22 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
         Transaction transaction = getItem(position);
         // inflate view unless one is being reused
         if(convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_transaction, parent, false);
+            convertView = LayoutInflater.from(getContext())
+                    .inflate(R.layout.item_transaction, parent, false);
         }
         // populate the correct views
-        TextView transactionAmountWhole = (TextView)convertView.findViewById(R.id.transaction_item_amount_whole);
-        TextView transactionAmountDecimal = (TextView)convertView.findViewById(R.id.transaction_item_amount_decimal);
-        TextView transactionDescription = (TextView)convertView.findViewById(R.id.transaction_item_description);
-        TextView transactionCategory = (TextView)convertView.findViewById(R.id.transaction_item_category);
+        TextView transactionAmountWhole = (TextView)convertView
+                .findViewById(R.id.transaction_item_amount_whole);
+        TextView transactionAmountDecimal = (TextView)convertView
+                .findViewById(R.id.transaction_item_amount_decimal);
+        TextView transactionDescription = (TextView)convertView
+                .findViewById(R.id.transaction_item_description);
+        TextView transactionCategory = (TextView)convertView
+                .findViewById(R.id.transaction_item_category);
         transactionAmountWhole.setText(transaction.getAmountDollars().toString());
         // Pad cents with zero if necessary
-        transactionAmountDecimal.setText((transaction.getAmountCents().toString() + "0").substring(0, 2));
+        transactionAmountDecimal.setText(
+                (transaction.getAmountCents().toString() + "0").substring(0, 2));
         transactionDescription.setText(transaction.getDescription());
         transactionCategory.setText(transaction.getCategory().getName());
         return convertView;

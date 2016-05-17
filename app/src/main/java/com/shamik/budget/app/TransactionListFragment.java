@@ -20,7 +20,8 @@ public class TransactionListFragment extends BaseFullscreenFragment implements O
     private ListView mTransactionListView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
 
         // fill list from database

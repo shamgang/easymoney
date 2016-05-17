@@ -16,7 +16,8 @@ import java.util.ArrayList;
 /**
  * Created by Shamik on 5/11/2016.
  */
-public class SelectCategoryDialogFragment extends DialogFragment implements AdapterView.OnItemClickListener {
+public class SelectCategoryDialogFragment extends DialogFragment
+        implements AdapterView.OnItemClickListener {
     private ArrayList<Category> mCategoryList;
     private ListView mCategoryListView;
 

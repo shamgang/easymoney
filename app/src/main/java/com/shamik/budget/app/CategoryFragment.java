@@ -46,7 +46,8 @@ public class CategoryFragment extends BaseFullscreenFragment {
         if(mTransactionListView.getAdapter().isEmpty()) {
             return;
         }
-        View itemView = mTransactionListView.getAdapter().getView(0, null, (ViewGroup)mTransactionListView);
+        View itemView = mTransactionListView.getAdapter()
+                .getView(0, null, (ViewGroup)mTransactionListView);
         itemView.measure(0, 0);
         ViewGroup.LayoutParams layoutParams = mTransactionListView.getLayoutParams();
         layoutParams.height = itemView.getMeasuredHeight() * mTransactionList.size();
@@ -55,7 +56,8 @@ public class CategoryFragment extends BaseFullscreenFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_category, container, false);
     }
 

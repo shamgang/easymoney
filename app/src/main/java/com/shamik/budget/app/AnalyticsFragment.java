@@ -86,7 +86,8 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_analytics, container, false);
 
         // style plot
@@ -186,7 +187,8 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                 for(Map.Entry<String, DataPoint> entry : mDataArray) {
                     try {
                         // convert from SQL date to epoch time to integer date
-                        mPlotX.add(Integer.valueOf(sIntDate.format(sSqlDate.parse(entry.getKey()).getTime())));
+                        mPlotX.add(Integer.valueOf(
+                                sIntDate.format(sSqlDate.parse(entry.getKey()).getTime())));
                         mPlotY.add(entry.getValue().getValue());
                         if(entry.getValue().getValue() > max) {
                             max = entry.getValue().getValue();
@@ -276,7 +278,8 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         mSelectedTransactionsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ((MainActivity)getActivity()).selectTransaction(mSelectedTransactions.get(i).getID());
+                ((MainActivity)getActivity())
+                        .selectTransaction(mSelectedTransactions.get(i).getID());
             }
         });
 
@@ -352,13 +355,15 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                 sumTransactions(mDataArray.get(mSelectedIndex).getValue().getTransactions())));
 
         mSelectedTransactions = mDataArray.get(mSelectedIndex).getValue().getTransactions();
-        mSelectedTransactionsView.setAdapter(new TransactionAdapter(getActivity(), mSelectedTransactions));
+        mSelectedTransactionsView.setAdapter(
+                new TransactionAdapter(getActivity(), mSelectedTransactions));
 
         // TODO: duplicated from CategoryFragment
         // set list height to cover all items
         if(!mSelectedTransactionsView.getAdapter().isEmpty()) {
             Log.d(AnalyticsFragment.class.getName(), "isn't empty");
-            View itemView = mSelectedTransactionsView.getAdapter().getView(0, null, (ViewGroup)mSelectedTransactionsView);
+            View itemView = mSelectedTransactionsView.getAdapter()
+                    .getView(0, null, (ViewGroup)mSelectedTransactionsView);
             itemView.measure(0, 0);
             ViewGroup.LayoutParams layoutParams = mSelectedTransactionsView.getLayoutParams();
             layoutParams.height = itemView.getMeasuredHeight() * mSelectedTransactions.size();

@@ -35,7 +35,8 @@ public class AddCategoryDialogFragment extends DialogFragment {
                     return;
                 }
                 // hide keyboard
-                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager)getActivity()
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
                 // close dialog
                 dismiss();
@@ -58,7 +59,8 @@ public class AddCategoryDialogFragment extends DialogFragment {
         String addCategoryName = addCategoryNameView.getText().toString();
 
         if(BudgetDatabase.getInstance().hasCategoryName(addCategoryName)) {
-            throw new DuplicateCategoryException("Category '" + addCategoryName + "' already exists");
+            throw new DuplicateCategoryException(
+                    "Category '" + addCategoryName + "' already exists");
         }
 
         BudgetDatabase.getInstance().createCategory(

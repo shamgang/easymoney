@@ -44,7 +44,8 @@ public class MainActivity extends ActionBarActivity {
         // populate the nav drawer and set an item click listener
         mNavDrawerList = (ListView)findViewById(R.id.nav_drawer);
         String[] osArray = { "Transactions", "Categories", "Analytics" };
-        mNavDrawerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+        mNavDrawerAdapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_list_item_1, osArray);
         mNavDrawerList.setAdapter(mNavDrawerAdapter);
         mNavDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
