@@ -43,7 +43,10 @@ public class MainActivity extends ActionBarActivity {
 
         // populate the nav drawer and set an item click listener
         mNavDrawerList = (ListView)findViewById(R.id.nav_drawer);
-        String[] osArray = { "Transactions", "Categories", "Analytics" };
+        String[] osArray = {
+                getString(R.string.nav_transaction_list),
+                getString(R.string.nav_category_list),
+                getString(R.string.nav_analytics) };
         mNavDrawerAdapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_list_item_1, osArray);
         mNavDrawerList.setAdapter(mNavDrawerAdapter);
@@ -226,7 +229,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void addTransaction() {
         Bundle args = new Bundle();
-        args.putBoolean("isNew", true);
+        args.putBoolean(getString(R.string.transaction_is_new_tag), true);
         Fragment fragment = new AddOrEditTransactionFragment();
         fragment.setArguments(args);
         replaceFragmentWithBackstack(fragment, AddOrEditTransactionFragment.class.getName());
@@ -234,7 +237,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void editTransaction(int ID) {
         Bundle args = new Bundle();
-        args.putBoolean("isNew", false);
+        args.putBoolean(getString(R.string.transaction_is_new_tag), false);
         args.putInt(getString(R.string.transaction_id_tag), ID);
         Fragment fragment = new AddOrEditTransactionFragment();
         fragment.setArguments(args);

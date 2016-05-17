@@ -33,7 +33,7 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
         Button categorizeButton = (Button)mView.findViewById(R.id.transaction_categorize_button);
 
         // if editing, fill default values
-        isNew = getArguments().getBoolean("isNew");
+        isNew = getArguments().getBoolean(getActivity().getString(R.string.transaction_is_new_tag));
         if(!isNew) {
             // get current transaction from database
             mTransactionID = getArguments()
@@ -71,7 +71,7 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
                 SelectCategoryDialogFragment selectCategoryDialogFragment
                         = new SelectCategoryDialogFragment();
                 Bundle args = new Bundle();
-                args.putString("parent", getTag());
+                args.putString(getActivity().getString(R.string.parent_fragment_tag_tag), getTag());
                 selectCategoryDialogFragment.setArguments(args);
                 selectCategoryDialogFragment.show(getActivity().getSupportFragmentManager(),
                         getActivity().getString(R.string.select_category_dialog_fragment_title));

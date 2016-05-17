@@ -24,6 +24,7 @@ import com.androidplot.xy.XYSeries;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -49,9 +50,6 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
 
     private static SimpleDateFormat sSqlDate = new SimpleDateFormat("yyyy-MM-dd");
     private static SimpleDateFormat sIntDate = new SimpleDateFormat("yyyyMMdd");
-
-    private static final String AVERAGE_DAILY = "Daily";
-    private static final String AVERAGE_MONTHLY = "Monthly";
 
     private class DataPoint {
         private double mValue;
@@ -105,9 +103,8 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
 
         // spinner
         final Spinner averageSpinner = (Spinner)mView.findViewById(R.id.average_spinner);
-        List<String> averages = new ArrayList<String>();
-        averages.add(AVERAGE_DAILY);
-        averages.add(AVERAGE_MONTHLY);
+        final List<String> averages = Arrays.asList(getActivity().getResources()
+                .getStringArray(R.array.averages));
         ArrayAdapter<String> averagesAdapter =
                 new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, averages);
         averageSpinner.setAdapter(averagesAdapter);
@@ -131,7 +128,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                 SelectCategoryDialogFragment selectCategoryDialogFragment
                         = new SelectCategoryDialogFragment();
                 Bundle args = new Bundle();
-                args.putString("parent", getTag());
+                args.putString(getActivity().getString(R.string.parent_fragment_tag_tag), getTag());
                 selectCategoryDialogFragment.setArguments(args);
                 selectCategoryDialogFragment.show(getActivity().getSupportFragmentManager(),
                         getActivity().getString(R.string.select_category_dialog_fragment_title));
@@ -208,9 +205,11 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                         = Integer.valueOf(sIntDate.format(toDate.getCalendarView().getDate()));
                 int numDays = toDateInt - fromDateInt + 1;
                 double avg;
-                if(averageSpinner.getSelectedItem().equals(AVERAGE_DAILY)) {
+                if(averageSpinner.getSelectedItem().equals(averages.get(0))) {
+                    // Daily
                     avg = sum / (double)numDays;
                 } else {
+                    // Monthly
                     avg = sum / (numDays / 30.);
                 }
 
@@ -363,7 +362,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         if(!mSelectedTransactionsView.getAdapter().isEmpty()) {
             Log.d(AnalyticsFragment.class.getName(), "isn't empty");
             View itemView = mSelectedTransactionsView.getAdapter()
-                    .getView(0, null, (ViewGroup)mSelectedTransactionsView);
+                    .getView(0, null, (ViewGroup) mSelectedTransactionsView);
             itemView.measure(0, 0);
             ViewGroup.LayoutParams layoutParams = mSelectedTransactionsView.getLayoutParams();
             layoutParams.height = itemView.getMeasuredHeight() * mSelectedTransactions.size();

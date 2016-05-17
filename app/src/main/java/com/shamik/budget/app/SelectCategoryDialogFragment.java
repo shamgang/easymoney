@@ -43,7 +43,8 @@ public class SelectCategoryDialogFragment extends DialogFragment
             // call back to addOrEditTransactionFragment, which must exist
             BaseCategorySelectFragment parentFragment =
                     (BaseCategorySelectFragment)getActivity().getSupportFragmentManager()
-                    .findFragmentByTag(getArguments().getString("parent"));
+                    .findFragmentByTag(getArguments().getString(getActivity()
+                            .getString(R.string.parent_fragment_tag_tag)));
             parentFragment.setCategory(mCategoryList.get(position));
             dismiss();
         } else {

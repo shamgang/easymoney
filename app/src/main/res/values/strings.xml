@@ -3,6 +3,9 @@
 
     <!-- MainActivity -->
     <string name="app_name">Budget</string>
+    <string name="nav_transaction_list">Transactions</string>
+    <string name="nav_category_list">Categories</string>
+    <string name="nav_analytics">Analytics</string>
     <string name="action_search">Search</string>
     <string name="action_add">Add Transaction</string>
     <string name="action_settings">Settings</string>
@@ -11,6 +14,8 @@
     <string name="drawer_title">Menu</string>
     <string name="transaction_id_tag">transaction_id</string>
     <string name="category_id_tag">category_id</string>
+    <string name="transaction_is_new_tag">transaction_is_new</string>
+    <string name="parent_fragment_tag_tag">parent_fragment_tag</string>
 
     <!-- TransactionListFragment -->
     <string name="transaction_list_fragment_title">Transactions</string>
