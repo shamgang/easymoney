@@ -42,13 +42,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dollar"
-                android:textSize="16pt"/>
+                android:textSize="32sp"/>
 
             <TextView
                 android:id="@+id/view_transaction_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16pt" />
+                android:textSize="32sp" />
 
         </LinearLayout>
 
@@ -61,7 +61,7 @@
             android:paddingTop="10dp"
             android:paddingRight="10dp"
             android:paddingBottom="20dp"
-            android:textSize="10pt"
+            android:textSize="20sp"
             android:gravity="center_horizontal" />
 
         <!-- category -->
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/light_blue_background"
             android:padding="10dp"
-            android:textSize="10pt"
+            android:textSize="20sp"
             android:gravity="center"
             android:layout_marginBottom="20dp" />
 
@@ -85,7 +85,7 @@
                 android:id="@+id/view_transaction_is_income"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10pt"
+                android:textSize="20sp"
                 android:padding="10dp"
                 android:background="@drawable/blue_border"/>
 

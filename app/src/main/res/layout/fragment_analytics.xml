@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/choose_category_button"
-            android:textSize="10pt"
+            android:textSize="20sp"
             android:gravity="left"
             android:padding="20dp"
             android:background="@drawable/light_blue_background"
@@ -75,77 +75,60 @@
             android:layout_height="wrap_content"
             android:background="@drawable/blue_background"
             android:gravity="center"
-            android:textSize="10pt"
+            android:textSize="20sp"
             android:padding="10dp"
             android:layout_margin="20dp"
             android:text="@string/analyze_button"/>
 
         <!-- average -->
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight=".5"
-                android:layout_height="wrap_content"
-                android:padding="10dp">
-
-                <Spinner
-                    android:id="@+id/average_spinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/averages">
-                </Spinner>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="10pt"
-                    android:padding="10dp"
-                    android:text="@string/average_label" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/analytics_avg"
-                android:layout_width="0dp"
-                android:layout_weight=".5"
-                android:layout_height="wrap_content"
-                android:background="@drawable/green_background"
-                android:textSize="16pt"
-                android:padding="10dp"
-                android:gravity="center"/>
-
-        </LinearLayout>
-
-        <!-- total -->
-        <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:padding="10dp"
+            android:gravity="center">
+
+            <Spinner
+                android:id="@+id/average_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/averages">
+            </Spinner>
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight=".5"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10pt"
+                android:textSize="20sp"
                 android:padding="10dp"
-                android:text="@string/sum_label" />
-
-            <TextView
-                android:id="@+id/analytics_sum"
-                android:layout_width="0dp"
-                android:layout_weight=".5"
-                android:layout_height="wrap_content"
-                android:background="@drawable/green_background"
-                android:textSize="16pt"
-                android:padding="10dp"
-                android:gravity="center"/>
+                android:text="@string/average_label" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/analytics_avg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/green_background"
+            android:textSize="32sp"
+            android:padding="10dp"
+            android:gravity="center"/>
+
+        <!-- total -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:gravity="center"
+            android:text="@string/sum_label" />
+
+        <TextView
+            android:id="@+id/analytics_sum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/green_background"
+            android:textSize="32sp"
+            android:padding="10dp"
+            android:gravity="center"/>
 
         <!-- plot -->
         <com.androidplot.xy.XYPlot
@@ -191,7 +174,7 @@
             android:id="@+id/selected_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="12pt"
+            android:textSize="24sp"
             android:padding="10dp"
             android:gravity="center"/>
 
@@ -201,7 +184,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/green_background"
-            android:textSize="16pt"
+            android:textSize="32sp"
             android:padding="10dp"
             android:gravity="center"/>
 

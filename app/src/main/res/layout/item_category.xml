@@ -10,6 +10,6 @@
         android:id="@+id/category_item_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16pt" />
+        android:textSize="24sp" />
 
 </LinearLayout>
