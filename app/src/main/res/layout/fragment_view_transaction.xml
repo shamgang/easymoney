@@ -2,7 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <!-- footer -->
     <LinearLayout
@@ -11,14 +11,14 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_margin="0dp"
-        android:background="@drawable/blue_border" >
+        android:background="@drawable/blue_border">
 
         <Button
             android:id="@+id/transaction_edit_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             style="?android:attr/borderlessButtonStyle"
-            android:text="Edit" />
+            android:text="Edit"/>
 
     </LinearLayout>
 
@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_above="@id/view_transaction_footer" >
+        android:layout_above="@id/view_transaction_footer">
 
         <!-- amount -->
         <LinearLayout
@@ -48,7 +48,7 @@
                 android:id="@+id/view_transaction_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="32sp" />
+                android:textSize="32sp"/>
 
         </LinearLayout>
 
@@ -62,7 +62,7 @@
             android:paddingRight="10dp"
             android:paddingBottom="20dp"
             android:textSize="20sp"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"/>
 
         <!-- category -->
         <TextView
@@ -73,7 +73,7 @@
             android:padding="10dp"
             android:textSize="20sp"
             android:gravity="center"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginBottom="20dp"/>
 
         <!-- expense/income switch -->
         <LinearLayout

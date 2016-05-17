@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp" >
+    android:padding="20dp">
 
     <TextView
         android:id="@+id/transaction_item_description"
@@ -27,25 +27,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true" >
+        android:layout_centerVertical="true">
 
         <TextView
             android:id="@+id/transaction_item_amount_whole"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="24sp" />
+            android:textSize="24sp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="24sp"
-            android:text="@string/decimal" />
+            android:text="@string/decimal"/>
 
         <TextView
             android:id="@+id/transaction_item_amount_decimal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="24sp" />
+            android:textSize="24sp"/>
 
     </LinearLayout>
 

@@ -58,7 +58,6 @@
     <string name="back_label">back</string>
     <string name="forward_label">forward</string>
 
-
     <!-- ViewTransactionFragment -->
     <string name="view_transaction_fragment_title">View Transaction</string>
     <string name="transaction_category_label">Category:</string>

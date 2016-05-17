@@ -10,7 +10,7 @@
         android:layout_weight=".7"
         android:maxLength="20"
         android:inputType="textFilter"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/add_category_button"
