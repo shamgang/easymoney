@@ -16,10 +16,10 @@
             android:padding="10dp"
             android:layout_marginTop="20dp"
             android:textSize="20sp"
-            android:text="@string/category_children_label"/>
+            android:text="@string/uncategorized_transactions_label"/>
 
         <ListView
-            android:id="@+id/category_children_list"
+            android:id="@+id/uncategorized_transactions_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
@@ -37,10 +37,10 @@
             android:gravity="center"
             android:padding="10dp"
             android:textSize="20sp"
-            android:text="@string/category_transaction_label"/>
+            android:text="@string/transactions_label"/>
 
         <ListView
-            android:id="@+id/category_transaction_list"
+            android:id="@+id/transactions_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">

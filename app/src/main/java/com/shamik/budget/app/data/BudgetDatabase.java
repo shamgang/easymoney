@@ -125,8 +125,12 @@ public class BudgetDatabase extends SQLiteOpenHelper {
                 "_id=" + ID, null);
     }
 
-    public ArrayList<Transaction> getAllTransactions() {
-        return getTransactionsWhere(null);
+    public ArrayList<Transaction> getUncategorizedTransactions() {
+        return getTransactionsByCategoryID(-1);
+    }
+
+    public ArrayList<Transaction> getCategorizedTransactions() {
+        return getTransactionsWhere(COLUMN_CATEGORY_ID + "<>-1");
     }
 
     public ArrayList<Transaction> getTransactionsByCategoryID(int ID) {

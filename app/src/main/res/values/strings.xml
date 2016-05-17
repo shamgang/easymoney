@@ -20,6 +20,8 @@
     <!-- TransactionListFragment -->
     <string name="transaction_list_fragment_title">Transactions</string>
     <string name="decimal">.</string>
+    <string name="uncategorized_transactions_label">Uncategorized</string>
+    <string name="transactions_label">Transactions</string>
 
     <!-- CategoryListFragment -->
     <string name="category_list_fragment_title">Categories</string>
