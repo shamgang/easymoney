@@ -15,6 +15,7 @@ import com.shamik.budget.app.MainActivity;
 import com.shamik.budget.app.R;
 import com.shamik.budget.app.types.Transaction;
 import com.shamik.budget.app.adapters.TransactionAdapter;
+import com.shamik.budget.app.util.TransactionListHelper;
 
 import java.util.ArrayList;
 
@@ -30,35 +31,15 @@ public class CategoryFragment extends BaseFullscreenFragment {
     @Override
     public void onStart() {
         int id = getArguments().getInt(getActivity().getString(R.string.category_id_tag));
-        mTitle = BudgetDatabase.getInstance()
-                .getCategoryByID(id)
-                .getName();
+        mTitle = BudgetDatabase.getInstance().getCategoryByID(id).getName();
         Log.d(CategoryFragment.class.getName(), mTitle);
         super.onStart();
 
+        // list view
         mTransactionList = BudgetDatabase.getInstance().getTransactionsByCategoryID(id);
-
-        // set adapter and click listener
         mTransactionListView = (ListView)getView().findViewById(R.id.category_transaction_list);
-        mTransactionListView.setAdapter(new TransactionAdapter(getActivity(), mTransactionList));
-        mTransactionListView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ((MainActivity)getActivity()).selectTransaction(mTransactionList.get(i).getID());
-            }
-        });
-
-        // set list height to cover all items
-        if(mTransactionListView.getAdapter().isEmpty()) {
-            return;
-        }
-        View itemView = mTransactionListView.getAdapter()
-                .getView(0, null, (ViewGroup) mTransactionListView);
-        itemView.measure(0, 0);
-        ViewGroup.LayoutParams layoutParams = mTransactionListView.getLayoutParams();
-        layoutParams.height = itemView.getMeasuredHeight() * mTransactionList.size();
-        mTransactionListView.setLayoutParams(layoutParams);
-        mTransactionListView.requestLayout();
+        TransactionListHelper.fillAndResizeTransactionList((MainActivity)getActivity(),
+                mTransactionList, mTransactionListView);
     }
 
     @Override

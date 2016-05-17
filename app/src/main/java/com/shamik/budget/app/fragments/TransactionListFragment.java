@@ -14,6 +14,7 @@ import com.shamik.budget.app.MainActivity;
 import com.shamik.budget.app.R;
 import com.shamik.budget.app.types.Transaction;
 import com.shamik.budget.app.adapters.TransactionAdapter;
+import com.shamik.budget.app.util.TransactionListHelper;
 
 import java.util.ArrayList;
 
@@ -35,56 +36,18 @@ public class TransactionListFragment extends BaseFullscreenFragment {
         // fill lists from database
         // TODO: paginate
 
+        // uncategorized list
         mUncategorizedTransactionList = BudgetDatabase.getInstance().getUncategorizedTransactions();
-
-        // set adapter and listener on list view
         mUncategorizedTransactionListView = (ListView)view
                 .findViewById(R.id.uncategorized_transactions_list);
-        mUncategorizedTransactionListView.setAdapter(
-                new TransactionAdapter(getActivity(), mUncategorizedTransactionList));
-        mUncategorizedTransactionListView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ((MainActivity)getActivity())
-                        .selectTransaction(mUncategorizedTransactionList.get(i).getID());
-            }
-        });
+        TransactionListHelper.fillAndResizeTransactionList((MainActivity)getActivity(),
+                mUncategorizedTransactionList, mUncategorizedTransactionListView);
 
-        // set list height to cover all items
-        if(!mUncategorizedTransactionListView.getAdapter().isEmpty()) {
-            View itemView = mUncategorizedTransactionListView.getAdapter()
-                    .getView(0, null, (ViewGroup) mUncategorizedTransactionListView);
-            itemView.measure(0, 0);
-            ViewGroup.LayoutParams layoutParams
-                    = mUncategorizedTransactionListView.getLayoutParams();
-            layoutParams.height
-                    = itemView.getMeasuredHeight() * mUncategorizedTransactionList.size();
-            mUncategorizedTransactionListView.setLayoutParams(layoutParams);
-            mUncategorizedTransactionListView.requestLayout();
-        }
-
+        // categorized list
         mTransactionList = BudgetDatabase.getInstance().getCategorizedTransactions();
-
-        // set adapter and listener on list view
         mTransactionListView = (ListView)view.findViewById(R.id.transactions_list);
-        mTransactionListView.setAdapter(new TransactionAdapter(getActivity(), mTransactionList));
-        mTransactionListView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ((MainActivity)getActivity()).selectTransaction(mTransactionList.get(i).getID());
-            }
-        });
-
-        // set list height to cover all items
-        if(!mTransactionListView.getAdapter().isEmpty()) {
-            View itemView = mTransactionListView.getAdapter()
-                    .getView(0, null, (ViewGroup) mTransactionListView);
-            itemView.measure(0, 0);
-            ViewGroup.LayoutParams layoutParams = mTransactionListView.getLayoutParams();
-            layoutParams.height = itemView.getMeasuredHeight() * mTransactionList.size();
-            mTransactionListView.setLayoutParams(layoutParams);
-            mTransactionListView.requestLayout();
-        }
+        TransactionListHelper.fillAndResizeTransactionList((MainActivity)getActivity(),
+                mTransactionList, mTransactionListView);
 
         return view;
     }

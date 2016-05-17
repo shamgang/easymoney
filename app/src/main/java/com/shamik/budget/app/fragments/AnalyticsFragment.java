@@ -27,6 +27,7 @@ import com.shamik.budget.app.MainActivity;
 import com.shamik.budget.app.R;
 import com.shamik.budget.app.types.Transaction;
 import com.shamik.budget.app.adapters.TransactionAdapter;
+import com.shamik.budget.app.util.TransactionListHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -364,17 +365,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         mSelectedTransactionsView.setAdapter(
                 new TransactionAdapter(getActivity(), mSelectedTransactions));
 
-        // TODO: duplicated from CategoryFragment
-        // set list height to cover all items
-        if(!mSelectedTransactionsView.getAdapter().isEmpty()) {
-            Log.d(AnalyticsFragment.class.getName(), "isn't empty");
-            View itemView = mSelectedTransactionsView.getAdapter()
-                    .getView(0, null, (ViewGroup) mSelectedTransactionsView);
-            itemView.measure(0, 0);
-            ViewGroup.LayoutParams layoutParams = mSelectedTransactionsView.getLayoutParams();
-            layoutParams.height = itemView.getMeasuredHeight() * mSelectedTransactions.size();
-            mSelectedTransactionsView.setLayoutParams(layoutParams);
-            mSelectedTransactionsView.requestLayout();
-        }
+        TransactionListHelper.resizeTransactionList(mSelectedTransactions,
+                mSelectedTransactionsView);
     }
 }
