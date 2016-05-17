@@ -48,6 +48,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
     private ArrayList<Map.Entry<String, DataPoint>> mDataArray;
     private ArrayList<Number> mPlotX;
     private ArrayList<Number> mPlotY;
+    private XYSeries mPlotSeries;
     private XYSeries mSelectedPoint;
     private int mSelectedIndex;
     private TextView mSelectedDateView;
@@ -228,11 +229,14 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
                 transactionSum.setText("$" + String.format("%.2f", sum));
 
                 // plot data
-                XYSeries series = new SimpleXYSeries(mPlotX, mPlotY, "Transactions");
+                if(mPlotSeries != null) {
+                    mPlot.removeSeries(mPlotSeries);
+                }
+                mPlotSeries = new SimpleXYSeries(mPlotX, mPlotY, "Transactions");
                 LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
                 seriesFormat.configure(getActivity().getApplicationContext(),
                         R.xml.line_point_formatter);
-                mPlot.addSeries(series, seriesFormat);
+                mPlot.addSeries(mPlotSeries, seriesFormat);
                 // set graph boundaries
                 mPlot.setDomainBoundaries(fromDateInt - 1, toDateInt + 1, BoundaryMode.FIXED);
                 mPlot.setRangeBoundaries(0, max + 1, BoundaryMode.FIXED);
