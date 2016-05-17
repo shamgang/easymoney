@@ -47,7 +47,7 @@ public class BudgetDatabase extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_TRANSACTIONS =
             "create table " + TABLE_TRANSACTIONS + "("
                     + COLUMN_ID + " integer primary key autoincrement, "
-                    + COLUMN_DATE + " date default current_date, "
+                    + COLUMN_DATE + " date default (date(current_date, 'localtime')), "
                     + COLUMN_AMOUNT_DOLLARS + " int, "
                     + COLUMN_AMOUNT_CENTS + " int, "
                     + COLUMN_DESCRIPTION + " varchar(100), "
