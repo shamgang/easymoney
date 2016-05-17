@@ -153,8 +153,7 @@ public class MainActivity extends ActionBarActivity {
             if(mTitle.equals(this.getString(R.string.transaction_list_fragment_title))) {
                 // We are on the transaction list, so the plus button will add an item
                 addTransaction();
-            }
-            else if(mTitle.equals(this.getString(R.string.category_list_fragment_title))) {
+            } else if(mTitle.equals(this.getString(R.string.category_list_fragment_title))) {
                 // We are on the category list, so the plus button will open a text entry modal
 
                 new AddCategoryDialogFragment().show(getSupportFragmentManager(),
@@ -167,8 +166,7 @@ public class MainActivity extends ActionBarActivity {
             // toggle search drawer
             if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
                 mDrawerLayout.closeDrawer(Gravity.RIGHT);
-            }
-            else {
+            } else {
                 mDrawerLayout.openDrawer(Gravity.RIGHT);
             }
             return true;
@@ -210,12 +208,10 @@ public class MainActivity extends ActionBarActivity {
         if(position == 0) {
             fragment = new TransactionListFragment();
             tag = TransactionListFragment.class.getName();
-        }
-        else if(position == 1) {
+        } else if(position == 1) {
             fragment = new CategoryListFragment();
             tag = CategoryListFragment.class.getName();
-        }
-        else {
+        } else {
             fragment = new AnalyticsFragment();
             tag = AnalyticsFragment.class.getName();
         }

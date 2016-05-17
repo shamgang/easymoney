@@ -59,8 +59,7 @@ public class Transaction {
     public Category getCategory() {
         if(mCategoryID == -1) {
             return new Category("blank", -1);
-        }
-        else {
+        } else {
             return BudgetDatabase.getInstance().getCategoryByID(mCategoryID);
         }
     }
