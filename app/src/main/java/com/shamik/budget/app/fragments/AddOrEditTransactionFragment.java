@@ -70,6 +70,7 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
                 }
             }
         });
+
         // categorize button behavior
         categorizeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +85,7 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
                         getActivity().getString(R.string.select_category_dialog_fragment_title));
             }
         });
+
         // save button behavior
         Button saveButton = (Button)mView.findViewById(R.id.transaction_save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +107,7 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
+
         // cancel button behavior
         Button cancelButton = (Button)mView.findViewById(R.id.transaction_cancel_button);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +117,7 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
+
         return mView;
     }
 

@@ -43,7 +43,6 @@ import java.util.TreeMap;
  */
 public class AnalyticsFragment extends BaseCategorySelectFragment {
     private View mView;
-    private Category mCategory;
     private DatePicker mFromDate;
     private DatePicker mToDate;
     private Spinner mAverageSpinner;
@@ -63,6 +62,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
 
     // UI state
     private static Bundle sUIState;
+    private static Category sCategory;
     // data state
     private static Bundle sDataState;
     private static ArrayList<Map.Entry<String, DataPoint>> sDataArray;
@@ -210,8 +210,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         // if resuming, restore state
         if(sUIState != null) {
             // set category
-            setCategory(BudgetDatabase.getInstance()
-                    .getCategoryByID(sUIState.getInt(CATEGORY_ID_TAG)));
+            setCategory(sCategory);
             // set datepickers
             mFromDate.getCalendarView().setDate(sUIState.getLong(FROM_DATE_TAG));
             mToDate.getCalendarView().setDate(sUIState.getLong(TO_DATE_TAG));
@@ -238,7 +237,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         // save UI state
         sUIState = new Bundle();
         // category
-        sUIState.putInt(CATEGORY_ID_TAG, mCategory.getID());
+        sUIState.putInt(CATEGORY_ID_TAG, sCategory.getID());
         // datepickers
         sUIState.putLong(FROM_DATE_TAG, mFromDate.getCalendarView().getDate());
         sUIState.putLong(TO_DATE_TAG, mToDate.getCalendarView().getDate());
@@ -251,10 +250,10 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
 
     @Override
     public void setCategory(Category category) {
-        mCategory = category;
+        sCategory = category;
 
         Button categorizeButton = (Button)mView.findViewById(R.id.analytics_categorize_button);
-        categorizeButton.setText(mCategory.getName());
+        categorizeButton.setText(sCategory.getName());
     }
 
     @Override
@@ -264,7 +263,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
 
     private void analyze() {
         // validate fields
-        if(mCategory == null) {
+        if(sCategory == null) {
             Toast toast = Toast.makeText(getActivity(), "Please choose a category", 2000);
             toast.show();
             return;
@@ -272,7 +271,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
 
         // format epoch dates as SQL and query database for transactions
         ArrayList<Transaction> transactionList = BudgetDatabase.getInstance()
-                .getTransactionsByCategoryIDAndDateRange(mCategory.getID(),
+                .getTransactionsByCategoryIDAndDateRange(sCategory.getID(),
                         sSqlDate.format(mFromDate.getCalendarView().getDate()),
                         sSqlDate.format(mToDate.getCalendarView().getDate()));
 
