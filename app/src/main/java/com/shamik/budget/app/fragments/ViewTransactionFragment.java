@@ -20,8 +20,7 @@ public class ViewTransactionFragment extends BaseFullscreenFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final int transactionID = getArguments()
-                .getInt(getActivity().getString(R.string.transaction_id_tag));
+        final int transactionID = getArguments().getInt(MainActivity.TRANSACTION_ID_TAG);
         Transaction transaction = BudgetDatabase.getInstance()
                 .getTransactionByID(transactionID);
         View view = inflater.inflate(R.layout.fragment_view_transaction, container, false);

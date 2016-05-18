@@ -30,9 +30,8 @@ public class CategoryFragment extends BaseFullscreenFragment {
 
     @Override
     public void onStart() {
-        int id = getArguments().getInt(getActivity().getString(R.string.category_id_tag));
+        int id = getArguments().getInt(MainActivity.CATEGORY_ID_TAG);
         mTitle = BudgetDatabase.getInstance().getCategoryByID(id).getName();
-        Log.d(CategoryFragment.class.getName(), mTitle);
         super.onStart();
 
         // list view

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.shamik.budget.app.MainActivity;
 import com.shamik.budget.app.util.BaseCategorySelectFragment;
 import com.shamik.budget.app.data.BudgetDatabase;
 import com.shamik.budget.app.types.Category;
@@ -48,8 +49,8 @@ public class SelectCategoryDialogFragment extends DialogFragment
             // call back to addOrEditTransactionFragment, which must exist
             BaseCategorySelectFragment parentFragment =
                     (BaseCategorySelectFragment)getActivity().getSupportFragmentManager()
-                    .findFragmentByTag(getArguments().getString(getActivity()
-                            .getString(R.string.parent_fragment_tag_tag)));
+                    .findFragmentByTag(
+                            getArguments().getString(MainActivity.PARENT_FRAGMENT_TAG_TAG));
             parentFragment.setCategory(mCategoryList.get(position));
             dismiss();
         } else {

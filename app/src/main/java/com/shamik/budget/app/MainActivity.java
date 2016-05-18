@@ -33,7 +33,11 @@ public class MainActivity extends ActionBarActivity {
     private String mDrawerTitle;
 
     public String mCurrentFragment;
-    public BudgetDatabase mBudgetDatabase;
+
+    public static final String TRANSACTION_ID_TAG = "transaction_id";
+    public static final String CATEGORY_ID_TAG = "category_id";
+    public static final String TRANSACTION_IS_NEW_TAG = "transaction_is_new";
+    public static final String PARENT_FRAGMENT_TAG_TAG = "parent_fragment_tag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +135,7 @@ public class MainActivity extends ActionBarActivity {
             menu.findItem(R.id.action_add).setVisible(false);
         }
         /*
+        // TODO: switch this to class names
         // Hide the search button on the analytics, add, view, and category list pages
         if(mTitle.equals(this.getString(R.string.analytics_fragment_title))
                 || mTitle.equals(this.getString(R.string.add_transaction_fragment_title))
@@ -198,7 +203,7 @@ public class MainActivity extends ActionBarActivity {
         // switch to ViewTransactionFragment, change title and refresh options menu
         Fragment fragment = new ViewTransactionFragment();
         Bundle args = new Bundle();
-        args.putInt(getString(R.string.transaction_id_tag), ID);
+        args.putInt(TRANSACTION_ID_TAG, ID);
         fragment.setArguments(args);
         replaceFragmentPushBackstack(fragment);
     }
@@ -207,7 +212,7 @@ public class MainActivity extends ActionBarActivity {
         // switch to CategoryFragment, change title and refresh options menu
         Fragment fragment = new CategoryFragment();
         Bundle args = new Bundle();
-        args.putInt(getString(R.string.category_id_tag), ID);
+        args.putInt(CATEGORY_ID_TAG, ID);
         fragment.setArguments(args);
         replaceFragmentPushBackstack(fragment);
     }
@@ -238,7 +243,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void addTransaction() {
         Bundle args = new Bundle();
-        args.putBoolean(getString(R.string.transaction_is_new_tag), true);
+        args.putBoolean(TRANSACTION_IS_NEW_TAG, true);
         Fragment fragment = new AddOrEditTransactionFragment();
         fragment.setArguments(args);
         replaceFragmentPushBackstack(fragment, AddOrEditTransactionFragment.class.getName());
@@ -246,8 +251,8 @@ public class MainActivity extends ActionBarActivity {
 
     public void editTransaction(int ID) {
         Bundle args = new Bundle();
-        args.putBoolean(getString(R.string.transaction_is_new_tag), false);
-        args.putInt(getString(R.string.transaction_id_tag), ID);
+        args.putBoolean(TRANSACTION_IS_NEW_TAG, false);
+        args.putInt(TRANSACTION_ID_TAG, ID);
         Fragment fragment = new AddOrEditTransactionFragment();
         fragment.setArguments(args);
         replaceFragmentPushBackstack(fragment, AddOrEditTransactionFragment.class.getName());
