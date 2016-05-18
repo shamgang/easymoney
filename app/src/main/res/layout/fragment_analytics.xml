@@ -20,8 +20,10 @@
             android:padding="20dp"
             android:background="@drawable/light_blue_background"
             android:layout_marginBottom="20dp"
-            android:drawableRight="@drawable/ic_right_arrow"/>
+            android:drawableRight="@drawable/ic_right_arrow"
+            android:freezesText="true"/>
 
+        <!-- dates -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,6 +71,7 @@
 
         </LinearLayout>
 
+        <!-- Analyze -->
         <Button
             android:id="@+id/analyze_button"
             android:layout_width="match_parent"
@@ -110,7 +113,8 @@
             android:background="@drawable/green_background"
             android:textSize="32sp"
             android:padding="10dp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:freezesText="true"/>
 
         <!-- total -->
         <TextView
@@ -128,7 +132,8 @@
             android:background="@drawable/green_background"
             android:textSize="32sp"
             android:padding="10dp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:freezesText="true"/>
 
         <!-- plot -->
         <com.androidplot.xy.XYPlot
@@ -176,7 +181,8 @@
             android:layout_height="wrap_content"
             android:textSize="24sp"
             android:padding="10dp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:freezesText="true"/>
 
         <!-- amount -->
         <TextView
@@ -186,7 +192,8 @@
             android:background="@drawable/green_background"
             android:textSize="32sp"
             android:padding="10dp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:freezesText="true"/>
 
         <!-- transaction list -->
         <ListView

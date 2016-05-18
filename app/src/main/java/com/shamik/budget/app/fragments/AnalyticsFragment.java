@@ -1,7 +1,5 @@
 package com.shamik.budget.app.fragments;
 
-import android.app.Activity;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,12 +43,21 @@ import java.util.TreeMap;
  */
 public class AnalyticsFragment extends BaseCategorySelectFragment {
     private View mView;
+    private Category mCategory;
     private DatePicker mFromDate;
     private DatePicker mToDate;
     private Spinner mAverageSpinner;
     private List<String> mAverages;
     private XYPlot mPlot;
+    private ArrayList<Map.Entry<String, DataPoint>> mDataArray;
+    private boolean hasPlotted;
+    private ArrayList<Number> mPlotX;
+    private ArrayList<Number> mPlotY;
     private XYSeries mPlotSeries;
+    private int mFromDateInt;
+    private int mToDateInt;
+    private double mDailyMin;
+    private double mDailyMax;
     private XYSeries mSelectedPoint;
     private int mSelectedIndex;
     private TextView mSelectedDateView;
@@ -61,29 +68,6 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
 
     private static SimpleDateFormat sSqlDate = new SimpleDateFormat("yyyy-MM-dd");
     private static SimpleDateFormat sIntDate = new SimpleDateFormat("yyyyMMdd");
-
-    // UI state
-    private static Bundle sUIState;
-    private static Category sCategory;
-    // data state
-    private static Bundle sDataState;
-    private static ArrayList<Map.Entry<String, DataPoint>> sDataArray;
-    private static ArrayList<Number> sPlotX;
-    private static ArrayList<Number> sPlotY;
-    // UI state tags
-    private static final String CATEGORY_ID_TAG = "category_id";
-    private static final String FROM_DATE_TAG = "from_date";
-    private static final String TO_DATE_TAG = "to_date";
-    private static final String AVERAGE_TYPE_TAG = "average_type";
-    private static final String SELECTED_POINT_TAG = "selected_point";
-    // data state tags
-    private static final String AVERAGE_TAG = "average";
-    private static final String SUM_TAG = "sum";
-    private static final String FROM_DATE_INT_TAG = "from_date_int";
-    private static final String TO_DATE_INT_TAG = "to_date_int";
-    private static final String MIN_TAG = "min";
-    private static final String MAX_TAG = "max";
-
 
     private class DataPoint {
         private double mValue;
@@ -117,77 +101,16 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         }
     }
 
-    // TEST
-    public AnalyticsFragment() {
-        super();
-        Log.d(AnalyticsFragment.class.getName(), "constructor");
-    }
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        Log.d(AnalyticsFragment.class.getName(), "onAttach");
-    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        Log.d(AnalyticsFragment.class.getName(), "onCreate");
-    }
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.d(AnalyticsFragment.class.getName(), "onActivityCreated");
-    }
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        Log.d(AnalyticsFragment.class.getName(), "onViewStateRestored");
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(AnalyticsFragment.class.getName(), "onStart");
-    }
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(AnalyticsFragment.class.getName(), "onResume");
-    }
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        Log.d(AnalyticsFragment.class.getName(), "onResume");
-        super.onSaveInstanceState(outState);
-    }
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        Log.d(AnalyticsFragment.class.getName(), "onConfigurationChanged");
-    }
-    @Override
-    public void onPause() {
-        Log.d(AnalyticsFragment.class.getName(), "onPause");
-        super.onPause();
-    }
-    @Override
-    public void onStop() {
-        Log.d(AnalyticsFragment.class.getName(), "onStop");
-        super.onStop();
-    }
-    @Override
-    public void onDestroy() {
-        Log.d(AnalyticsFragment.class.getName(), "onDestroy");
-        super.onDestroy();
-    }
-    @Override
-    public void onDetach() {
-        Log.d(AnalyticsFragment.class.getName(), "onDetach");
-        super.onDetach();
+        hasPlotted = false;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(AnalyticsFragment.class.getName(), "onCreateView");
         mView = inflater.inflate(R.layout.fragment_analytics, container, false);
 
         Button categorizeButton = (Button)mView.findViewById(R.id.analytics_categorize_button);
@@ -277,58 +200,21 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
             }
         });
 
-        // if resuming, restore state
-        if(sUIState != null) {
-            // set category
-            if(sCategory != null) {
-                setCategory(sCategory);
-            }
-            // set datepickers
-            mFromDate.getCalendarView().setDate(sUIState.getLong(FROM_DATE_TAG));
-            mToDate.getCalendarView().setDate(sUIState.getLong(TO_DATE_TAG));
-            // set spinner selection
-            mAverageSpinner.setSelection(sUIState.getInt(AVERAGE_TYPE_TAG));
-
-            if(sDataState != null) {
-                // analysis has been performed, complete display
-                displayData(sDataState.getDouble(AVERAGE_TAG),
-                        sDataState.getDouble(SUM_TAG),
-                        sDataState.getInt(FROM_DATE_INT_TAG),
-                        sDataState.getInt(TO_DATE_INT_TAG),
-                        sDataState.getDouble(MIN_TAG),
-                        sDataState.getDouble(MAX_TAG));
-                selectPoint(sUIState.getInt(SELECTED_POINT_TAG));
-            }
+        if(hasPlotted) {
+            // Resuming, plot needs to be recreated
+            plotData();
+            selectPoint(mSelectedIndex);
         }
 
         return mView;
     }
 
     @Override
-    public void onDestroyView() {
-        Log.d(AnalyticsFragment.class.getName(), "onDestroyView");
-        // save UI state
-        sUIState = new Bundle();
-        // category
-        if(sCategory != null) {
-            sUIState.putInt(CATEGORY_ID_TAG, sCategory.getID());
-        }
-        // datepickers
-        sUIState.putLong(FROM_DATE_TAG, mFromDate.getCalendarView().getDate());
-        sUIState.putLong(TO_DATE_TAG, mToDate.getCalendarView().getDate());
-        // average spinner
-        sUIState.putInt(AVERAGE_TYPE_TAG, mAverageSpinner.getSelectedItemPosition());
-        // selected point
-        sUIState.putInt(SELECTED_POINT_TAG, mSelectedIndex);
-        super.onDestroyView();
-    }
-
-    @Override
     public void setCategory(Category category) {
-        sCategory = category;
+        mCategory = category;
 
         Button categorizeButton = (Button)mView.findViewById(R.id.analytics_categorize_button);
-        categorizeButton.setText(sCategory.getName());
+        categorizeButton.setText(mCategory.getName());
     }
 
     @Override
@@ -338,7 +224,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
 
     private void analyze() {
         // validate fields
-        if(sCategory == null) {
+        if(mCategory == null) {
             Toast toast = Toast.makeText(getActivity(), "Please choose a category", 2000);
             toast.show();
             return;
@@ -346,7 +232,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
 
         // format epoch dates as SQL and query database for transactions
         ArrayList<Transaction> transactionList = BudgetDatabase.getInstance()
-                .getTransactionsByCategoryIDAndDateRange(sCategory.getID(),
+                .getTransactionsByCategoryIDAndDateRange(mCategory.getID(),
                         sSqlDate.format(mFromDate.getCalendarView().getDate()),
                         sSqlDate.format(mToDate.getCalendarView().getDate()));
 
@@ -369,24 +255,24 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         }
 
         // construct plot data by iterating in date order
-        sPlotX = new ArrayList<Number>();
-        sPlotY = new ArrayList<Number>();
-        sDataArray = new ArrayList<Map.Entry<String, DataPoint>>(dateToData.entrySet());
+        mPlotX = new ArrayList<Number>();
+        mPlotY = new ArrayList<Number>();
+        mDataArray = new ArrayList<Map.Entry<String, DataPoint>>(dateToData.entrySet());
         // format date as a monotonically increasing integer as x coordinate
         // keep track of maximum data point for graph boundary
-        double max = 0;
-        double min = 0;
-        for(Map.Entry<String, DataPoint> entry : sDataArray) {
+        mDailyMax = 0;
+        mDailyMin = 0;
+        for(Map.Entry<String, DataPoint> entry : mDataArray) {
             try {
                 // convert from SQL date to epoch time to integer date
-                sPlotX.add(Integer.valueOf(
+                mPlotX.add(Integer.valueOf(
                         sIntDate.format(sSqlDate.parse(entry.getKey()).getTime())));
-                sPlotY.add(entry.getValue().getValue());
-                if(entry.getValue().getValue() > max) {
-                    max = entry.getValue().getValue();
+                mPlotY.add(entry.getValue().getValue());
+                if(entry.getValue().getValue() > mDailyMax) {
+                    mDailyMax = entry.getValue().getValue();
                 }
-                if(entry.getValue().getValue() < min) {
-                    min = entry.getValue().getValue();
+                if(entry.getValue().getValue() < mDailyMin) {
+                    mDailyMin = entry.getValue().getValue();
                 }
             } catch(ParseException e) {
                 Log.e(AnalyticsFragment.class.getName(), e.getMessage());
@@ -394,11 +280,11 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         }
 
         // calculate average by converting range from epoch time to integer date
-        int fromDateInt
+        mFromDateInt
                 = Integer.valueOf(sIntDate.format(mFromDate.getCalendarView().getDate()));
-        int toDateInt
+        mToDateInt
                 = Integer.valueOf(sIntDate.format(mToDate.getCalendarView().getDate()));
-        int numDays = toDateInt - fromDateInt + 1;
+        int numDays = mToDateInt - mFromDateInt + 1;
         double avg;
         if(mAverageSpinner.getSelectedItem().equals(mAverages.get(0))) {
             // Daily
@@ -408,41 +294,13 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
             avg = sum / (numDays / 30.);
         }
 
-        storeData(avg, sum, fromDateInt, toDateInt, min, max);
-        displayData(avg, sum, fromDateInt, toDateInt, min, max);
-    }
-
-    private void storeData(double avg, double sum, int fromDateInt, int toDateInt,
-                           double min, double max) {
-        sDataState = new Bundle();
-        sDataState.putDouble(AVERAGE_TAG, avg);
-        sDataState.putDouble(SUM_TAG, sum);
-        sDataState.putInt(FROM_DATE_INT_TAG, fromDateInt);
-        sDataState.putInt(TO_DATE_INT_TAG, toDateInt);
-        sDataState.putDouble(MIN_TAG, min);
-        sDataState.putDouble(MAX_TAG, max);
-    }
-
-    private void displayData(double avg, double sum, int fromDateInt, int toDateInt,
-                             double min, double max) {
         // set text for sum and average
         TextView transactionAvg = (TextView)mView.findViewById(R.id.analytics_avg);
         TextView transactionSum = (TextView)mView.findViewById(R.id.analytics_sum);
         transactionAvg.setText("$" + String.format("%.2f", avg));
         transactionSum.setText("$" + String.format("%.2f", sum));
 
-        // plot data
-        if(mPlotSeries != null) {
-            mPlot.removeSeries(mPlotSeries);
-        }
-        mPlotSeries = new SimpleXYSeries(sPlotX, sPlotY, "Transactions");
-        LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
-        seriesFormat.configure(getActivity().getApplicationContext(),
-                R.xml.line_point_formatter);
-        mPlot.addSeries(mPlotSeries, seriesFormat);
-        // set graph boundaries
-        mPlot.setDomainBoundaries(fromDateInt - 1, toDateInt + 1, BoundaryMode.FIXED);
-        mPlot.setRangeBoundaries(min, max + 1, BoundaryMode.FIXED);
+        plotData();
 
         // TODO: what if no data or one date?
 
@@ -465,6 +323,24 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
 
         // select first point
         selectPoint(0);
+
+        // all necessary data to re-plot onCreateView exists in class
+        hasPlotted = true;
+    }
+
+    private void plotData() {
+        if(mPlotSeries != null) {
+            mPlot.removeSeries(mPlotSeries);
+        }
+        mPlotSeries = new SimpleXYSeries(mPlotX, mPlotY, "Transactions");
+        LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
+        seriesFormat.configure(getActivity().getApplicationContext(),
+                R.xml.line_point_formatter);
+        mPlot.addSeries(mPlotSeries, seriesFormat);
+        // set graph boundaries
+        mPlot.setDomainBoundaries(mFromDateInt - 1, mToDateInt + 1, BoundaryMode.FIXED);
+        mPlot.setRangeBoundaries(mDailyMin, mDailyMax + 1, BoundaryMode.FIXED);
+        mPlot.redraw();
     }
 
     private double sumTransactions(ArrayList<Transaction> transactions) {
@@ -489,7 +365,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
 
     private void selectPoint(int index) {
         // bounds check with silent fail
-        if(index < 0 || index >= sDataArray.size()) {
+        if(index < 0 || index >= mDataArray.size()) {
             return;
         }
 
@@ -498,8 +374,8 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         // draw selected data point
         ArrayList<Number> selectedX = new ArrayList<Number>();
         ArrayList<Number> selectedY = new ArrayList<Number>();
-        selectedX.add(sPlotX.get(mSelectedIndex));
-        selectedY.add(sPlotY.get(mSelectedIndex));
+        selectedX.add(mPlotX.get(mSelectedIndex));
+        selectedY.add(mPlotY.get(mSelectedIndex));
         if(mSelectedPoint != null) {
             mPlot.removeSeries(mSelectedPoint);
         }
@@ -511,7 +387,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         // make date human-readable
         Date selectedDate;
         try {
-            selectedDate = sSqlDate.parse(sDataArray.get(mSelectedIndex).getKey());
+            selectedDate = sSqlDate.parse(mDataArray.get(mSelectedIndex).getKey());
         } catch(ParseException e) {
             Log.e(AnalyticsFragment.class.getName(), e.getMessage());
             selectedDate = null;
@@ -520,9 +396,9 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         mSelectedDateView.setText(readableDate.format(selectedDate));
         // sum all transaction amounts for this date
         mSelectedAmountView.setText("$" + String.format("%.2f",
-                sumTransactions(sDataArray.get(mSelectedIndex).getValue().getTransactions())));
+                sumTransactions(mDataArray.get(mSelectedIndex).getValue().getTransactions())));
 
-        mSelectedTransactions = sDataArray.get(mSelectedIndex).getValue().getTransactions();
+        mSelectedTransactions = mDataArray.get(mSelectedIndex).getValue().getTransactions();
         mSelectedTransactionsView.setAdapter(
                 new TransactionAdapter(getActivity(), mSelectedTransactions));
 
