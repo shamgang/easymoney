@@ -1,5 +1,7 @@
 package com.shamik.budget.app.fragments;
 
+import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -115,9 +117,77 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         }
     }
 
+    // TEST
+    public AnalyticsFragment() {
+        super();
+        Log.d(AnalyticsFragment.class.getName(), "constructor");
+    }
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Log.d(AnalyticsFragment.class.getName(), "onAttach");
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        Log.d(AnalyticsFragment.class.getName(), "onCreate");
+    }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d(AnalyticsFragment.class.getName(), "onActivityCreated");
+    }
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        Log.d(AnalyticsFragment.class.getName(), "onViewStateRestored");
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(AnalyticsFragment.class.getName(), "onStart");
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(AnalyticsFragment.class.getName(), "onResume");
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Log.d(AnalyticsFragment.class.getName(), "onResume");
+        super.onSaveInstanceState(outState);
+    }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.d(AnalyticsFragment.class.getName(), "onConfigurationChanged");
+    }
+    @Override
+    public void onPause() {
+        Log.d(AnalyticsFragment.class.getName(), "onPause");
+        super.onPause();
+    }
+    @Override
+    public void onStop() {
+        Log.d(AnalyticsFragment.class.getName(), "onStop");
+        super.onStop();
+    }
+    @Override
+    public void onDestroy() {
+        Log.d(AnalyticsFragment.class.getName(), "onDestroy");
+        super.onDestroy();
+    }
+    @Override
+    public void onDetach() {
+        Log.d(AnalyticsFragment.class.getName(), "onDetach");
+        super.onDetach();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(AnalyticsFragment.class.getName(), "onCreateView");
         mView = inflater.inflate(R.layout.fragment_analytics, container, false);
 
         Button categorizeButton = (Button)mView.findViewById(R.id.analytics_categorize_button);
@@ -210,7 +280,9 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         // if resuming, restore state
         if(sUIState != null) {
             // set category
-            setCategory(sCategory);
+            if(sCategory != null) {
+                setCategory(sCategory);
+            }
             // set datepickers
             mFromDate.getCalendarView().setDate(sUIState.getLong(FROM_DATE_TAG));
             mToDate.getCalendarView().setDate(sUIState.getLong(TO_DATE_TAG));
@@ -234,10 +306,13 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
 
     @Override
     public void onDestroyView() {
+        Log.d(AnalyticsFragment.class.getName(), "onDestroyView");
         // save UI state
         sUIState = new Bundle();
         // category
-        sUIState.putInt(CATEGORY_ID_TAG, sCategory.getID());
+        if(sCategory != null) {
+            sUIState.putInt(CATEGORY_ID_TAG, sCategory.getID());
+        }
         // datepickers
         sUIState.putLong(FROM_DATE_TAG, mFromDate.getCalendarView().getDate());
         sUIState.putLong(TO_DATE_TAG, mToDate.getCalendarView().getDate());
