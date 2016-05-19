@@ -2,7 +2,7 @@
 <resources>
 
     <!-- MainActivity -->
-    <string name="app_name">Budget</string>
+    <string name="app_name">EasyMoney</string>
     <string name="nav_transaction_list">Transactions</string>
     <string name="nav_category_list">Categories</string>
     <string name="nav_analytics">Analytics</string>
