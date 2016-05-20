@@ -37,12 +37,16 @@ public class TransactionListFragment extends BaseFullscreenFragment {
         // TODO: paginate
 
         // uncategorized list
-        // TODO: empty behavior
         mUncategorizedTransactionList = BudgetDatabase.getInstance().getUncategorizedTransactions();
-        mUncategorizedTransactionListView = (ListView)view
-                .findViewById(R.id.uncategorized_transactions_list);
-        TransactionListHelper.fillAndResizeTransactionList((MainActivity)getActivity(),
-                mUncategorizedTransactionList, mUncategorizedTransactionListView);
+        if(mUncategorizedTransactionList.isEmpty()) {
+            // remove if empty
+            view.findViewById(R.id.uncategorized_wrapper).setVisibility(View.GONE);
+        } else {
+            mUncategorizedTransactionListView = (ListView)view
+                    .findViewById(R.id.uncategorized_transactions_list);
+            TransactionListHelper.fillAndResizeTransactionList((MainActivity) getActivity(),
+                    mUncategorizedTransactionList, mUncategorizedTransactionListView);
+        }
 
         // categorized list
         mTransactionList = BudgetDatabase.getInstance().getCategorizedTransactions();

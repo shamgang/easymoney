@@ -44,6 +44,19 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
                 (transaction.getAmountCents().toString() + "0").substring(0, 2));
         transactionDescription.setText(transaction.getDescription());
         transactionCategory.setText(transaction.getCategory().getName());
+
+        /*
+        TODO: requires api minimum 14->16, still supporting 14
+        // set item color based on expense/income
+        if(transaction.isIncome()) {
+            convertView.setBackground(getContext().getResources()
+                    .getDrawable(R.drawable.green_background));
+        } else {
+            convertView.setBackground(getContext().getResources()
+                    .getDrawable(R.drawable.light_blue_background));
+        }
+        */
+
         return convertView;
     }
 }

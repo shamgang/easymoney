@@ -10,39 +10,47 @@
         android:layout_height="wrap_content"
         android:paddingBottom="20dp">
 
-        <!-- uncategorized label -->
-        <TextView
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/uncategorized_wrapper"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="10dp"
-            android:layout_marginTop="20dp"
-            android:textSize="20sp"
-            android:text="@string/uncategorized_transactions_label"/>
+            android:layout_height="wrap_content">
 
-        <!-- uncategorized list -->
-        <ListView
-            android:id="@+id/uncategorized_transactions_list"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-        </ListView>
+            <!-- uncategorized label -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:textSize="20sp"
+                android:text="@string/uncategorized_transactions_label"/>
 
-        <!-- horizontal line -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="20dp"
-            android:background="@color/horizontal_rule_color"/>
+            <!-- uncategorized list -->
+            <ListView
+                android:id="@+id/uncategorized_transactions_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+            </ListView>
 
-        <!-- transactions label -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="10dp"
-            android:textSize="20sp"
-            android:text="@string/transactions_label"/>
+            <!-- horizontal line -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="20dp"
+                android:background="@color/horizontal_rule_color"/>
+
+            <!-- transactions label -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textSize="20sp"
+                android:text="@string/transactions_label"/>
+
+        </LinearLayout>
 
         <!-- transactions list -->
         <ListView
