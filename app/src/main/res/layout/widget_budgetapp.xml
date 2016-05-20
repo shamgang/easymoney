@@ -4,20 +4,28 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
+    <ImageButton
+        android:id="@+id/widget_quickadd_button"
         android:layout_width="0dp"
         android:layout_weight=".7"
         android:layout_height="match_parent"
         android:text="@string/widget_quickadd_button"
-        android:id="@+id/widget_quickadd_button"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ic_add"
+        android:scaleType="fitCenter"
+        android:background="@drawable/dark_green_background"
+        style="?android:attr/borderlessButtonStyle"/>
 
-    <Button
+    <ImageButton
+        android:id="@+id/widget_open_button"
         android:layout_width="0dp"
         android:layout_weight=".3"
         android:layout_height="match_parent"
         android:text="@string/widget_expand_button"
-        android:id="@+id/widget_expand_button"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ic_product"
+        android:scaleType="fitCenter"
+        android:background="@color/ap_charcoal"
+        style="?android:attr/borderlessButtonStyle"/>
 
 </LinearLayout>

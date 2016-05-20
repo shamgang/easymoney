@@ -34,6 +34,7 @@ public class MainActivity extends ActionBarActivity {
 
     public String mCurrentFragment;
 
+    public static final String QUICKADD_CLICKED = "quickadd_clicked";
     public static final String TRANSACTION_ID_TAG = "transaction_id";
     public static final String CATEGORY_ID_TAG = "category_id";
     public static final String TRANSACTION_IS_NEW_TAG = "transaction_is_new";
@@ -107,6 +108,11 @@ public class MainActivity extends ActionBarActivity {
         // Add the fragment to the 'fragment_container' FrameLayout
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, transactionListFragment).commit();
+
+        if(getIntent().getAction() != null && getIntent().getAction().equals(QUICKADD_CLICKED)) {
+            // if this intent comes from the widget, go to the add transaction page
+            addTransaction();
+        }
     }
 
     @Override
