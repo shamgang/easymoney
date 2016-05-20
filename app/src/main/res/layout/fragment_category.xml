@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="20dp">
 
+        <!-- Sub-categories label -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,6 +20,7 @@
             android:textSize="20sp"
             android:text="@string/category_children_label"/>
 
+        <!-- subcategory list -->
         <ListView
             android:id="@+id/category_children_list"
             android:layout_width="match_parent"
@@ -26,12 +28,14 @@
             android:layout_weight="1">
         </ListView>
 
+        <!-- horizontal line -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="20dp"
             android:background="@color/horizontal_rule_color"/>
 
+        <!-- transactions label -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,6 +44,7 @@
             android:textSize="20sp"
             android:text="@string/category_transaction_label"/>
 
+        <!-- transactions list -->
         <ListView
             android:id="@+id/category_transaction_list"
             android:layout_width="match_parent"

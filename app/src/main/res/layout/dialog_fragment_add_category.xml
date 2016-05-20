@@ -4,6 +4,7 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!-- text input -->
     <EditText
         android:id="@+id/add_category_name"
         android:layout_width="0dp"
@@ -12,6 +13,7 @@
         android:inputType="textFilter"
         android:layout_height="wrap_content"/>
 
+    <!-- add button -->
     <Button
         android:id="@+id/add_category_button"
         android:layout_width="0dp"

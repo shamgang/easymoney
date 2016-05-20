@@ -37,6 +37,7 @@ public class TransactionListFragment extends BaseFullscreenFragment {
         // TODO: paginate
 
         // uncategorized list
+        // TODO: empty behavior
         mUncategorizedTransactionList = BudgetDatabase.getInstance().getUncategorizedTransactions();
         mUncategorizedTransactionListView = (ListView)view
                 .findViewById(R.id.uncategorized_transactions_list);

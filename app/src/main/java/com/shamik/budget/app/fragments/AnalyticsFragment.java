@@ -104,7 +104,10 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // prevents object from being destroyed and recreated on orientation change
+        // and presumably whenever else the activity is destroyed. also prevents onCreate, onDestroy
         setRetainInstance(true);
+        // boolean to track whether the plot has been initialized through rotations, navigation
         hasPlotted = false;
     }
 
@@ -143,13 +146,14 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
             }
-
+                // TODO: make selection perform computation
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
 
+        // analyze button behavior
         Button analyzeButton = (Button)mView.findViewById(R.id.analyze_button);
         analyzeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,7 +162,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
             }
         });
 
-        // style plot
+        // style plot - remove all extra ink
         mPlot = (XYPlot)mView.findViewById(R.id.plot);
         mPlot.getLegendWidget().setVisible(false);
         mPlot.getGraphWidget().setDomainGridLinePaint(null);
@@ -212,8 +216,8 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
     @Override
     public void setCategory(Category category) {
         mCategory = category;
-
         Button categorizeButton = (Button)mView.findViewById(R.id.analytics_categorize_button);
+        // fill category text view
         categorizeButton.setText(mCategory.getName());
     }
 
@@ -240,7 +244,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         TreeMap<String, DataPoint> dateToData = new TreeMap<String, DataPoint>();
         double sum = 0;
         for(Transaction transaction : transactionList) {
-            // add transaction amount to running sum and check running max
+            // add transaction amount to running sum
             if(transaction.isIncome()) {
                 sum -= transaction.getAmount();
             } else {
@@ -254,12 +258,12 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
             }
         }
 
-        // construct plot data by iterating in date order
+        // construct numeric plot data by iterating in date order
         mPlotX = new ArrayList<Number>();
         mPlotY = new ArrayList<Number>();
         mDataArray = new ArrayList<Map.Entry<String, DataPoint>>(dateToData.entrySet());
-        // format date as a monotonically increasing integer as x coordinate
-        // keep track of maximum data point for graph boundary
+        // format date as a monotonically increasing integer for x axis
+        // keep track of max/min data point for graph boundaries
         mDailyMax = 0;
         mDailyMin = 0;
         for(Map.Entry<String, DataPoint> entry : mDataArray) {
@@ -300,15 +304,17 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         transactionAvg.setText("$" + String.format("%.2f", avg));
         transactionSum.setText("$" + String.format("%.2f", sum));
 
+        // fill graph
         plotData();
 
-        // TODO: what if no data or one date?
+        // TODO: design: what if no data or one date?
 
         // prepare formatter for selected point
         mSelectedFormat = new LineAndPointFormatter();
         mSelectedFormat.configure(getActivity().getApplicationContext(),
                 R.xml.selected_point_formatter);
 
+        // if new data is empty, make sure old graph and selection is cleared
         // empty selected data
         mSelectedDateView.setText("");
         mSelectedAmountView.setText("");
@@ -325,13 +331,16 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         selectPoint(0);
 
         // all necessary data to re-plot onCreateView exists in class
+        // need to know for orientation change / back navigation
         hasPlotted = true;
     }
 
     private void plotData() {
+        // remove old data
         if(mPlotSeries != null) {
             mPlot.removeSeries(mPlotSeries);
         }
+        // add new data
         mPlotSeries = new SimpleXYSeries(mPlotX, mPlotY, "Transactions");
         LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
         seriesFormat.configure(getActivity().getApplicationContext(),
@@ -344,6 +353,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
     }
 
     private double sumTransactions(ArrayList<Transaction> transactions) {
+        // sum expenses and subtract income
         double sum = 0;
         for(Transaction transaction : transactions) {
             if(transaction.isIncome()){
@@ -398,6 +408,8 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         mSelectedAmountView.setText("$" + String.format("%.2f",
                 sumTransactions(mDataArray.get(mSelectedIndex).getValue().getTransactions())));
 
+        // fill transaction list for this date
+        // TODO: paginate
         mSelectedTransactions = mDataArray.get(mSelectedIndex).getValue().getTransactions();
         mSelectedTransactionsView.setAdapter(
                 new TransactionAdapter(getActivity(), mSelectedTransactions));

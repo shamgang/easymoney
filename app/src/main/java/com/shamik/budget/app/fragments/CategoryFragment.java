@@ -30,11 +30,16 @@ public class CategoryFragment extends BaseFullscreenFragment {
 
     @Override
     public void onStart() {
+        // get current category
+        // must set title before calling to super because super.onStart() calls getTitle()
         int id = getArguments().getInt(MainActivity.CATEGORY_ID_TAG);
         mTitle = BudgetDatabase.getInstance().getCategoryByID(id).getName();
         super.onStart();
 
-        // list view
+        // TODO: subcategories
+
+        // transaction list view
+        // TODO: paginate
         mTransactionList = BudgetDatabase.getInstance().getTransactionsByCategoryID(id);
         mTransactionListView = (ListView)getView().findViewById(R.id.category_transaction_list);
         TransactionListHelper.fillAndResizeTransactionList((MainActivity)getActivity(),

@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:padding="20dp">
 
+    <!-- description with ellipsis if necessary -->
     <TextView
         android:id="@+id/transaction_item_description"
         android:layout_width="wrap_content"
@@ -15,6 +16,7 @@
         android:ellipsize="end"
         android:textSize="24sp"/>
 
+    <!-- category, smaller, below -->
     <TextView
         android:id="@+id/transaction_item_category"
         android:layout_width="wrap_content"
@@ -22,6 +24,7 @@
         android:layout_below="@id/transaction_item_description"
         android:textSize="15sp"/>
 
+    <!-- amount, right aligned -->
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
@@ -29,20 +32,23 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true">
 
+        <!-- dollar -->
         <TextView
-            android:id="@+id/transaction_item_amount_whole"
+            android:id="@+id/transaction_item_amount_dollar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="24sp"/>
 
+        <!-- . -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="24sp"
             android:text="@string/decimal"/>
 
+        <!-- cents -->
         <TextView
-            android:id="@+id/transaction_item_amount_decimal"
+            android:id="@+id/transaction_item_amount_cents"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="24sp"/>

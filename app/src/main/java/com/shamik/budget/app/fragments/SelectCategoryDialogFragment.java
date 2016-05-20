@@ -29,6 +29,7 @@ public class SelectCategoryDialogFragment extends DialogFragment
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // list all categories
         // TODO: paginate
         mCategoryList = BudgetDatabase.getInstance().getAllCategories();
 
@@ -44,6 +45,7 @@ public class SelectCategoryDialogFragment extends DialogFragment
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // TODO: right now there are no children, because nesting isn't implemented
         if(!mCategoryList.get(position).hasChildren()) {
             // no children, we've selected a category
             // call back to addOrEditTransactionFragment, which must exist

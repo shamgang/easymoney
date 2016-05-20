@@ -13,6 +13,7 @@
         android:layout_margin="0dp"
         android:background="@drawable/blue_border">
 
+        <!-- Edit button -->
         <Button
             android:id="@+id/transaction_edit_button"
             android:layout_width="match_parent"
@@ -38,12 +39,14 @@
             android:gravity="center"
             android:background="@drawable/green_background">
 
+            <!-- $ -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dollar"
                 android:textSize="32sp"/>
 
+            <!-- amount -->
             <TextView
                 android:id="@+id/view_transaction_amount"
                 android:layout_width="wrap_content"

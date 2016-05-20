@@ -31,9 +31,9 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
         }
         // populate the correct views
         TextView transactionAmountWhole = (TextView)convertView
-                .findViewById(R.id.transaction_item_amount_whole);
+                .findViewById(R.id.transaction_item_amount_dollar);
         TextView transactionAmountDecimal = (TextView)convertView
-                .findViewById(R.id.transaction_item_amount_decimal);
+                .findViewById(R.id.transaction_item_amount_cents);
         TextView transactionDescription = (TextView)convertView
                 .findViewById(R.id.transaction_item_description);
         TextView transactionCategory = (TextView)convertView

@@ -20,9 +20,11 @@ public class ViewTransactionFragment extends BaseFullscreenFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // get current transaction
         final int transactionID = getArguments().getInt(MainActivity.TRANSACTION_ID_TAG);
         Transaction transaction = BudgetDatabase.getInstance()
                 .getTransactionByID(transactionID);
+
         View view = inflater.inflate(R.layout.fragment_view_transaction, container, false);
         TextView viewTransactionAmount = (TextView)view
                 .findViewById(R.id.view_transaction_amount);
@@ -32,11 +34,16 @@ public class ViewTransactionFragment extends BaseFullscreenFragment {
                 .findViewById(R.id.view_transaction_category);
         TextView viewTransactionIsIncome = (TextView)view
                 .findViewById(R.id.view_transaction_is_income);
+
+        // amount
         // pad cents with 0 if necessary
         viewTransactionAmount.setText(transaction.getAmountDollars().toString() + "."
                 + (transaction.getAmountCents().toString() + "0").substring(0, 2));
+        // description
         viewTransactionDescription.setText(transaction.getDescription());
+        // category
         viewTransactionCategory.setText(transaction.getCategory().getName());
+        // expense/income
         viewTransactionIsIncome.setText(transaction.isIncome() ? "Income" : "Expense");
         // save button behavior
         Button editButton = (Button)view.findViewById(R.id.transaction_edit_button);

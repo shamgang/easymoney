@@ -53,12 +53,13 @@
                 android:background="@drawable/green_background"
                 android:padding="10dp">
 
+                <!-- $ -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/dollar"
                     android:textSize="32sp"/>
-
+                <!-- amount entry -->
                 <EditText
                     android:id="@+id/add_transaction_amount"
                     android:layout_width="match_parent"

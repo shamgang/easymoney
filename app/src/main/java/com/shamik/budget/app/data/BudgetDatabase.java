@@ -40,7 +40,7 @@ public class BudgetDatabase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "budget.db";
     private static final int DATABASE_VERSION = 1;
 
-    // Database creation SQL statement
+    // Database creation SQL statements
     private static final String CREATE_TABLE_TRANSACTIONS =
             "create table " + TABLE_TRANSACTIONS + "("
                     + COLUMN_ID + " integer primary key autoincrement, "
@@ -122,14 +122,16 @@ public class BudgetDatabase extends SQLiteOpenHelper {
 
     public void updateTransactionByID(int ID, Transaction transaction) {
         mDatabase.update(BudgetDatabase.TABLE_TRANSACTIONS, transactionToValues(transaction),
-                "_id=" + ID, null);
+                COLUMN_ID + "=" + ID, null);
     }
 
     public ArrayList<Transaction> getUncategorizedTransactions() {
+        // if no category, categoryID should be -1
         return getTransactionsByCategoryID(-1);
     }
 
     public ArrayList<Transaction> getCategorizedTransactions() {
+        // if no category, categoryID should be -1
         return getTransactionsWhere(COLUMN_CATEGORY_ID + "<>-1");
     }
 
@@ -150,6 +152,8 @@ public class BudgetDatabase extends SQLiteOpenHelper {
         Cursor cursor = mDatabase.query(BudgetDatabase.TABLE_TRANSACTIONS,
                 TRANSACTION_COLUMNS, where, null, null, null, null);
 
+        // populate array in reverse order
+        // TODO: use order by created datetime descending
         cursor.moveToLast();
         while(!cursor.isBeforeFirst()) {
             Transaction transaction = cursorToTransaction(cursor);
@@ -182,6 +186,7 @@ public class BudgetDatabase extends SQLiteOpenHelper {
     }
 
     public ArrayList<Category> getCategoriesByParentID(int ID) {
+        // TODO: test this once nesting is implemented
         return getCategoriesWhere(COLUMN_PARENT_ID + "=" + ID);
     }
 
@@ -191,6 +196,8 @@ public class BudgetDatabase extends SQLiteOpenHelper {
         Cursor cursor = mDatabase.query(BudgetDatabase.TABLE_CATEGORIES,
                 CATEGORY_COLUMNS, where, null, null, null, null);
 
+        // populate array in reverse order
+        // TODO: order by created datetime descending
         cursor.moveToLast();
         while(!cursor.isBeforeFirst()) {
             Category category = cursorToCategory(cursor);
@@ -234,6 +241,7 @@ public class BudgetDatabase extends SQLiteOpenHelper {
     }
 
     private Transaction cursorToTransaction(Cursor cursor) {
+        // TODO: convert datetime to date here instead of storing date only
         return new Transaction(cursor.getInt(0), cursor.getString(1), cursor.getInt(2),
                 cursor.getInt(3), cursor.getString(4), cursor.getInt(5), cursor.getInt(6) > 0);
     }

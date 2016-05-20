@@ -4,6 +4,7 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- quick add button -->
     <ImageButton
         android:id="@+id/widget_quickadd_button"
         android:layout_width="0dp"
@@ -16,6 +17,7 @@
         android:background="@drawable/dark_green_background"
         style="?android:attr/borderlessButtonStyle"/>
 
+    <!-- app icon to open -->
     <ImageButton
         android:id="@+id/widget_open_button"
         android:layout_width="0dp"

@@ -12,6 +12,8 @@ public abstract class BaseFullscreenFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        // set action bar title using subclass's title
         MainActivity mainActivity = (MainActivity)getActivity();
         mainActivity.updateActionBar(getTitle());
         mainActivity.mCurrentFragment = getClass().getName();

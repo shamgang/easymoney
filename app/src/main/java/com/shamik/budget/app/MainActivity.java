@@ -141,6 +141,7 @@ public class MainActivity extends ActionBarActivity {
             menu.findItem(R.id.action_add).setVisible(false);
         }
         /*
+        // TODO: implement search
         // TODO: switch this to class names
         // Hide the search button on the analytics, add, view, and category list pages
         if(mTitle.equals(this.getString(R.string.analytics_fragment_title))
@@ -186,6 +187,7 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         /*
+        // TODO: implement search
         if(id == R.id.action_search) {
             // toggle search drawer
             if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
@@ -202,11 +204,12 @@ public class MainActivity extends ActionBarActivity {
     public void updateActionBar(String fragmentTitle) {
         mTitle = fragmentTitle;
         getActionBar().setTitle(mTitle);
+        // refresh action bar options
         invalidateOptionsMenu();
     }
 
     public void selectTransaction(int ID) {
-        // switch to ViewTransactionFragment, change title and refresh options menu
+        // switch to ViewTransactionFragment
         Fragment fragment = new ViewTransactionFragment();
         Bundle args = new Bundle();
         args.putInt(TRANSACTION_ID_TAG, ID);
@@ -215,7 +218,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void selectCategory(int ID) {
-        // switch to CategoryFragment, change title and refresh options menu
+        // switch to CategoryFragment
         Fragment fragment = new CategoryFragment();
         Bundle args = new Bundle();
         args.putInt(CATEGORY_ID_TAG, ID);
@@ -242,12 +245,13 @@ public class MainActivity extends ActionBarActivity {
 
         replaceFragmentClearBackstack(fragment, tag);
 
-        // Highlight the selected item, update the title, and close the drawer
+        // Highlight the selected item and close the drawer
         mNavDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mNavDrawerList);
     }
 
     public void addTransaction() {
+        // switch to add/edit transaction fragment tagged as new
         Bundle args = new Bundle();
         args.putBoolean(TRANSACTION_IS_NEW_TAG, true);
         Fragment fragment = new AddOrEditTransactionFragment();
@@ -256,6 +260,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void editTransaction(int ID) {
+        // switch to add transaction fragment tagged as old
         Bundle args = new Bundle();
         args.putBoolean(TRANSACTION_IS_NEW_TAG, false);
         args.putInt(TRANSACTION_ID_TAG, ID);
@@ -272,7 +277,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void replaceFragment(Fragment fragment, String tag) {
-        // Insert the fragment by replacing any existing fragment
+        // Insert the fragment with tag by replacing any existing fragment
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment, tag)
                 .commit();
@@ -287,7 +292,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void replaceFragmentPushBackstack(Fragment fragment, String tag) {
-        // Insert the fragment by replacing any existing fragment, and add to backstack
+        // Insert the fragment with tag by replacing any existing fragment, and add to backstack
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment, tag)
                 .addToBackStack(null)
@@ -295,7 +300,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void replaceFragmentClearBackstack(Fragment fragment, String tag) {
-        // Insert the fragment by replacing any existing fragment, and pop backstack
+        // Insert the fragment by replacing any existing fragment, and pop the whole backstack
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         replaceFragment(fragment, tag);
     }

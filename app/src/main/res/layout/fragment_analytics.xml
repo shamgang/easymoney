@@ -90,6 +90,7 @@
             android:padding="10dp"
             android:gravity="center">
 
+            <!-- average type -->
             <Spinner
                 android:id="@+id/average_spinner"
                 android:layout_width="wrap_content"
@@ -97,6 +98,7 @@
                 android:entries="@array/averages">
             </Spinner>
 
+            <!-- "average" -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -106,6 +108,7 @@
 
         </LinearLayout>
 
+        <!-- average -->
         <TextView
             android:id="@+id/analytics_avg"
             android:layout_width="match_parent"
@@ -116,7 +119,7 @@
             android:gravity="center"
             android:freezesText="true"/>
 
-        <!-- total -->
+        <!-- "Total" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -125,6 +128,7 @@
             android:gravity="center"
             android:text="@string/sum_label"/>
 
+        <!-- total -->
         <TextView
             android:id="@+id/analytics_sum"
             android:layout_width="match_parent"
@@ -142,6 +146,7 @@
             android:layout_width="fill_parent"
             android:layout_height="300dp"/>
 
+        <!-- graph selection buttons -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"

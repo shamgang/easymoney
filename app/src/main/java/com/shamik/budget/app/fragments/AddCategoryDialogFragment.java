@@ -28,14 +28,16 @@ public class AddCategoryDialogFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         mView = inflater.inflate(R.layout.dialog_fragment_add_category, null);
+        // add button behavior
         Button addButton = (Button)mView.findViewById(R.id.add_category_button);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // add category or show toast if it already exists
                 try {
                     addCategory();
                 } catch(DuplicateCategoryException e) {
-                    Toast toast = Toast.makeText(getActivity(), e.getMessage(), 2000);
+                    Toast toast = Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG);
                     toast.show();
                     return;
                 }
@@ -63,11 +65,14 @@ public class AddCategoryDialogFragment extends DialogFragment {
         TextView addCategoryNameView = (TextView)mView.findViewById(R.id.add_category_name);
         String addCategoryName = addCategoryNameView.getText().toString();
 
+        // check database for existence and throw if exists
         if(BudgetDatabase.getInstance().hasCategoryName(addCategoryName)) {
             throw new DuplicateCategoryException(
                     "Category '" + addCategoryName + "' already exists");
         }
 
+        // create category in database
+        // TODO: currently assumes no parent because nesting isn't implemented
         BudgetDatabase.getInstance().createCategory(
                 new Category(addCategoryNameView.getText().toString(), -1));
     }

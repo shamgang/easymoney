@@ -91,11 +91,12 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // make a new transaction or show toast for parse error
                 try {
                     addOrUpdateTransaction();
                 } catch(NumberFormatException e) {
-                    Toast toast =
-                            Toast.makeText(getActivity(), "Please enter a valid amount.", 2000);
+                    Toast toast = Toast.makeText(getActivity(),
+                            "Please enter a valid amount.", Toast.LENGTH_LONG);
                     toast.show();
                     return;
                 }
@@ -124,6 +125,7 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
     public void setCategory(Category category) {
         Button categorizeButton = (Button)mView.findViewById(R.id.transaction_categorize_button);
         mCategory = category;
+        // fill category text view
         categorizeButton.setText(mCategory.getName());
     }
 
