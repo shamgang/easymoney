@@ -5,4 +5,8 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="switch_text">
+        <item name="android:textSize">20sp</item>
+    </style>
+
 </resources>

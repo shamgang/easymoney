@@ -25,6 +25,9 @@ import com.shamik.budget.app.types.Transaction;
  */
 public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
     private View mView;
+    private EditText mAddTransactionAmount;
+    private EditText mAddTransactionDescription;
+    private Switch mAddTransactionIsIncome;
     private boolean isNew;
     private int mTransactionID;
     private Category mCategory;
@@ -34,11 +37,10 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_add_or_edit_transaction, container, false);
 
-        final EditText addTransactionAmount =
-                (EditText)mView.findViewById(R.id.add_transaction_amount);
-        final EditText addTransactionDescription =
-                (EditText)mView.findViewById(R.id.add_transaction_description);
+        mAddTransactionAmount = (EditText)mView.findViewById(R.id.add_transaction_amount);
+        mAddTransactionDescription = (EditText)mView.findViewById(R.id.add_transaction_description);
         Button categorizeButton = (Button)mView.findViewById(R.id.transaction_categorize_button);
+        mAddTransactionIsIncome = (Switch)mView.findViewById(R.id.add_transaction_is_income);
 
         // if editing, fill default values
         isNew = getArguments().getBoolean(MainActivity.TRANSACTION_IS_NEW_TAG);
@@ -49,24 +51,24 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
                     .getTransactionByID(mTransactionID);
             mCategory = transaction.getCategory();
             // pad cents with 0 if necessary
-            addTransactionAmount.setText(transaction.getAmountDollars().toString() + "."
+            mAddTransactionAmount.setText(transaction.getAmountDollars().toString() + "."
                     + (transaction.getAmountCents().toString() + "0").substring(0, 2));
-            addTransactionDescription.setText(transaction.getDescription());
+            mAddTransactionDescription.setText(transaction.getDescription());
             categorizeButton.setText(mCategory.getName());
         }
 
         // validate amount input
-        addTransactionAmount.addTextChangedListener(new TextValidator(addTransactionAmount) {
+        mAddTransactionAmount.addTextChangedListener(new TextValidator(mAddTransactionAmount) {
             @Override
             public void validate(TextView textView, String text) {
                 int decPos = text.lastIndexOf('.');
                 if(decPos != -1 && text.length() - decPos == 3) {
                     // if decimal has been entered and two digits after, prevent entry and advance
-                    addTransactionDescription.requestFocus();
+                    mAddTransactionDescription.requestFocus();
                 } else if(decPos != -1 && text.length() - decPos > 3) {
                     // if more digits are entered, remove them and advance
-                    addTransactionAmount.setText(text.substring(0, text.length()-1));
-                    addTransactionDescription.requestFocus();
+                    mAddTransactionAmount.setText(text.substring(0, text.length()-1));
+                    mAddTransactionDescription.requestFocus();
                 }
             }
         });
@@ -85,6 +87,25 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
                         getActivity().getString(R.string.select_category_dialog_fragment_title));
             }
         });
+
+        /*
+        // TODO: requires mimimum api level 14->16, still supporting for now
+        // set switch colors on click
+        mAddTransactionIsIncome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mAddTransactionIsIncome.isChecked()) {
+                    // green on income
+                    mAddTransactionIsIncome.setThumbDrawable(getResources()
+                            .getDrawable(R.drawable.green_background));
+                } else {
+                    // blue on expense
+                    mAddTransactionIsIncome.setThumbDrawable(getResources()
+                            .getDrawable(R.drawable.light_blue_background));
+                }
+            }
+        });
+        */
 
         // save button behavior
         Button saveButton = (Button)mView.findViewById(R.id.transaction_save_button);
@@ -135,15 +156,8 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
     }
 
     private void addOrUpdateTransaction() throws NumberFormatException {
-        TextView addTransactionAmount =
-                (TextView)getView().findViewById(R.id.add_transaction_amount);
-        TextView addTransactionDescription =
-                (TextView)getView().findViewById(R.id.add_transaction_description);
-        Switch addTransactionIsIncome =
-                (Switch)getView().findViewById(R.id.add_transaction_is_income);
-
         // parse amount
-        String amountText = addTransactionAmount.getText().toString();
+        String amountText = mAddTransactionAmount.getText().toString();
         int decPos = amountText.lastIndexOf('.');
         int amountDollars, amountCents;
         if(decPos == -1) {
@@ -168,9 +182,9 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
         Transaction newTransaction = new Transaction(
                 amountDollars,
                 amountCents,
-                addTransactionDescription.getText().toString(),
+                mAddTransactionDescription.getText().toString(),
                 (mCategory == null) ? -1 : mCategory.getID(),
-                addTransactionIsIncome.isChecked()
+                mAddTransactionIsIncome.isChecked()
         );
         // Add or update an entry
         if(isNew) {
