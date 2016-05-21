@@ -37,7 +37,7 @@ public class BudgetDatabase extends SQLiteOpenHelper {
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_PARENT_ID = "parent";
 
-    private static final String DATABASE_NAME = "budget.db";
+    private static final String DATABASE_NAME = "test.db";
     private static final int DATABASE_VERSION = 1;
 
     // Database creation SQL statements
@@ -252,39 +252,69 @@ public class BudgetDatabase extends SQLiteOpenHelper {
 
     // TODO: remove stub functions
     private void prePopulate(SQLiteDatabase database) {
-        createTransaction(new Transaction(-1, "2016-05-13", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-13", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-13", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-13", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-13", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-14", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-14", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-14", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-14", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-16", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-16", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-16", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-16", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-17", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-12", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-18", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-20", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-21", 34, 55, "New purchase", 1, false), database);
-        createTransaction(new Transaction(-1, "2016-05-20", 34, 55, "New purchase", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-01", 7, 0, "omelette", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-02", 2, 50, "protein bar", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-02", 5, 25, "subway", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-02", 10, 30, "cardamom", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-05", 95, 22, "groceries", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-10", 2, 50, "milkshake", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-11", 7, 0, "omelette", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-12", 8, 55, "salmon", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-13", 34, 55, "team lunch", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-14", 7, 0, "omelette", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-14", 2, 50, "protein shake", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-14", 5, 30, "fried chicken", 1, false), database);
+        createTransaction(new Transaction(-1, "2016-05-14", 50, 34, "groceries", 1, false), database);
 
-        createCategory(new Category("acatagory", -1), database);
-        createCategory(new Category("acatagory1", -1), database);
-        createCategory(new Category("acatagory2", -1), database);
-        createCategory(new Category("acatagory3", -1), database);
-        createCategory(new Category("acatagory4", -1), database);
-        createCategory(new Category("acatagory5", -1), database);
-        createCategory(new Category("acatagory6", -1), database);
-        createCategory(new Category("acatagory7", -1), database);
-        createCategory(new Category("acatagory8", -1), database);
-        createCategory(new Category("acatagory9", -1), database);
-        createCategory(new Category("acatagory10", -1), database);
-        createCategory(new Category("acatagory11", -1), database);
-        createCategory(new Category("acatagory12", -1), database);
+        createTransaction(new Transaction(-1, "2016-05-02", 6, 73, "uber to studio", 2, false), database);
+        createTransaction(new Transaction(-1, "2016-05-05", 4, 50, "caltrain", 2, false), database);
+        createTransaction(new Transaction(-1, "2016-05-05", 4, 23, "uber to work", 2, false), database);
+        createTransaction(new Transaction(-1, "2016-05-15", 2, 10, "bart", 2, false), database);
+        createTransaction(new Transaction(-1, "2016-05-16", 4, 11, "cab to bar", 2, false), database);
+        createTransaction(new Transaction(-1, "2016-05-18", 4, 50, "caltrain", 2, false), database);
+
+        createTransaction(new Transaction(-1, "2016-05-02", 8, 70, "new xmen movie", 3, false), database);
+        createTransaction(new Transaction(-1, "2016-05-05", 44, 50, "mcgreavies", 3, false), database);
+        createTransaction(new Transaction(-1, "2016-05-05", 10, 0, "pinball petes", 3, false), database);
+        createTransaction(new Transaction(-1, "2016-05-15", 9, 75, "blep", 3, false), database);
+        createTransaction(new Transaction(-1, "2016-05-16", 30, 0, "exploratorium", 3, false), database);
+        createTransaction(new Transaction(-1, "2016-05-18", 50, 25, "giants", 3, false), database);
+
+        createTransaction(new Transaction(-1, "2016-04-01", 30, 0, "rent april", 4, false), database);
+        createTransaction(new Transaction(-1, "2016-05-01", 50, 25, "rent may", 4, false), database);
+        createTransaction(new Transaction(-1, "2016-05-05", 50, 25, "may utilities", 4, false), database);
+
+        createTransaction(new Transaction(-1, "2016-05-01", 30, 0, "tennis league", 5, false), database);
+        createTransaction(new Transaction(-1, "2016-05-01", 20, 50, "restring racquet", 5, false), database);
+        createTransaction(new Transaction(-1, "2016-05-05", 10, 10, "soccer team", 5, false), database);
+
+        createTransaction(new Transaction(-1, "2016-05-02", 15, 0, "towels", 6, false), database);
+        createTransaction(new Transaction(-1, "2016-05-03", 6, 50, "tp", 6, false), database);
+        createTransaction(new Transaction(-1, "2016-05-17", 10, 10, "spices", 6, false), database);
+
+        createTransaction(new Transaction(-1, "2016-05-01", 2250, 0, "paycheck 05-01", 7, true), database);
+        createTransaction(new Transaction(-1, "2016-05-15", 2250, 0, "paycheck 05-15", 7, true), database);
+        createTransaction(new Transaction(-1, "2016-05-15", 250, 30, "seattle reimbursement", 7, true), database);
+
+        createTransaction(new Transaction(-1, "2016-05-10", 210, 45, "macys", 8, true), database);
+        createTransaction(new Transaction(-1, "2016-05-15", 95, 60, "kohls", 8, true), database);
+
+        createTransaction(new Transaction(-1, "2016-05-01", 210, 0, "boston trip", 9, true), database);
+        createTransaction(new Transaction(-1, "2016-05-20", 365, 0, "new york trip", 9, true), database);
+
+        createTransaction(new Transaction(-1, "2016-05-20", 125, 0, "new phone", 10, true), database);
+
+        createCategory(new Category("Food", -1), database);
+        createCategory(new Category("Transportation", -1), database);
+        createCategory(new Category("Entertainment", -1), database);
+        createCategory(new Category("Rent", -1), database);
+        createCategory(new Category("Sports", -1), database);
+        createCategory(new Category("Household", -1), database);
+        createCategory(new Category("Income", -1), database);
+        createCategory(new Category("Clothes", -1), database);
+        createCategory(new Category("Travel", -1), database);
+        createCategory(new Category("Electronics", -1), database);
+        createCategory(new Category("Instruments", -1), database);
     }
 
     private void createTransaction(Transaction transaction, SQLiteDatabase database) {
