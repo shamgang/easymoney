@@ -1,4 +1,4 @@
-package com.shamik.budget.app;
+package com.shamik.easymoney.app;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -14,14 +14,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.shamik.budget.app.data.BudgetDatabase;
-import com.shamik.budget.app.fragments.AddCategoryDialogFragment;
-import com.shamik.budget.app.fragments.AddOrEditTransactionFragment;
-import com.shamik.budget.app.fragments.AnalyticsFragment;
-import com.shamik.budget.app.fragments.CategoryFragment;
-import com.shamik.budget.app.fragments.CategoryListFragment;
-import com.shamik.budget.app.fragments.TransactionListFragment;
-import com.shamik.budget.app.fragments.ViewTransactionFragment;
+import com.shamik.easymoney.app.data.BudgetDatabase;
+import com.shamik.easymoney.app.fragments.AddCategoryDialogFragment;
+import com.shamik.easymoney.app.fragments.AddOrEditTransactionFragment;
+import com.shamik.easymoney.app.fragments.AnalyticsFragment;
+import com.shamik.easymoney.app.fragments.CategoryFragment;
+import com.shamik.easymoney.app.fragments.CategoryListFragment;
+import com.shamik.easymoney.app.fragments.TransactionListFragment;
+import com.shamik.easymoney.app.fragments.ViewTransactionFragment;
 
 public class MainActivity extends ActionBarActivity {
 

@@ -1,4 +1,4 @@
-package com.shamik.budget.app.data;
+package com.shamik.easymoney.app.data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.shamik.budget.app.types.Category;
-import com.shamik.budget.app.types.Transaction;
+import com.shamik.easymoney.app.types.Category;
+import com.shamik.easymoney.app.types.Transaction;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

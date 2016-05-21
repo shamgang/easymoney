@@ -1,4 +1,4 @@
-package com.shamik.budget.app.fragments;
+package com.shamik.easymoney.app.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,12 +10,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.shamik.budget.app.MainActivity;
-import com.shamik.budget.app.util.BaseCategorySelectFragment;
-import com.shamik.budget.app.data.BudgetDatabase;
-import com.shamik.budget.app.types.Category;
-import com.shamik.budget.app.R;
-import com.shamik.budget.app.adapters.CategoryAdapter;
+import com.shamik.easymoney.app.MainActivity;
+import com.shamik.easymoney.app.R;
+import com.shamik.easymoney.app.util.BaseCategorySelectFragment;
+import com.shamik.easymoney.app.data.BudgetDatabase;
+import com.shamik.easymoney.app.types.Category;
+import com.shamik.easymoney.app.adapters.CategoryAdapter;
 
 import java.util.ArrayList;
 

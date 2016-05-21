@@ -1,4 +1,4 @@
-package com.shamik.budget.app;
+package com.shamik.easymoney.app;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;

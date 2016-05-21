@@ -1,4 +1,4 @@
-package com.shamik.budget.app.util;
+package com.shamik.easymoney.app.util;
 
 import android.text.Editable;
 import android.text.TextWatcher;

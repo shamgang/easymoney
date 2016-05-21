@@ -1,4 +1,4 @@
-package com.shamik.budget.app.fragments;
+package com.shamik.easymoney.app.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.shamik.budget.app.util.BaseFullscreenFragment;
-import com.shamik.budget.app.data.BudgetDatabase;
-import com.shamik.budget.app.MainActivity;
-import com.shamik.budget.app.R;
-import com.shamik.budget.app.types.Transaction;
+import com.shamik.easymoney.app.R;
+import com.shamik.easymoney.app.util.BaseFullscreenFragment;
+import com.shamik.easymoney.app.data.BudgetDatabase;
+import com.shamik.easymoney.app.MainActivity;
+import com.shamik.easymoney.app.types.Transaction;
 
 /**
  * Created by Shamik on 5/6/2016.

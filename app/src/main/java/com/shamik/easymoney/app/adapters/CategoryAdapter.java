@@ -1,4 +1,4 @@
-package com.shamik.budget.app.adapters;
+package com.shamik.easymoney.app.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.shamik.budget.app.types.Category;
-import com.shamik.budget.app.R;
+import com.shamik.easymoney.app.R;
+import com.shamik.easymoney.app.types.Category;
 
 import java.util.ArrayList;
 

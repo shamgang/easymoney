@@ -1,7 +1,6 @@
-package com.shamik.budget.app.util;
+package com.shamik.easymoney.app.util;
 
-import com.shamik.budget.app.types.Category;
-import com.shamik.budget.app.util.BaseFullscreenFragment;
+import com.shamik.easymoney.app.types.Category;
 
 /**
  * Created by Shamik on 5/11/2016.

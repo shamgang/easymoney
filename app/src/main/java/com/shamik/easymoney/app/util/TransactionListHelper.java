@@ -1,16 +1,15 @@
-package com.shamik.budget.app.util;
+package com.shamik.easymoney.app.util;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.shamik.budget.app.MainActivity;
-import com.shamik.budget.app.adapters.TransactionAdapter;
-import com.shamik.budget.app.types.Transaction;
+import com.shamik.easymoney.app.MainActivity;
+import com.shamik.easymoney.app.adapters.TransactionAdapter;
+import com.shamik.easymoney.app.types.Transaction;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Shamik on 5/17/2016.

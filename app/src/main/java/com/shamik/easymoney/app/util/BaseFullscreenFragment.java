@@ -1,8 +1,8 @@
-package com.shamik.budget.app.util;
+package com.shamik.easymoney.app.util;
 
 import android.support.v4.app.Fragment;
 
-import com.shamik.budget.app.MainActivity;
+import com.shamik.easymoney.app.MainActivity;
 
 /**
  * Created by Shamik on 5/6/2016.

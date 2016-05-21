@@ -1,4 +1,4 @@
-package com.shamik.budget.app.fragments;
+package com.shamik.easymoney.app.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,13 +12,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.shamik.budget.app.util.BaseCategorySelectFragment;
-import com.shamik.budget.app.data.BudgetDatabase;
-import com.shamik.budget.app.types.Category;
-import com.shamik.budget.app.MainActivity;
-import com.shamik.budget.app.R;
-import com.shamik.budget.app.util.TextValidator;
-import com.shamik.budget.app.types.Transaction;
+import com.shamik.easymoney.app.R;
+import com.shamik.easymoney.app.util.BaseCategorySelectFragment;
+import com.shamik.easymoney.app.data.BudgetDatabase;
+import com.shamik.easymoney.app.types.Category;
+import com.shamik.easymoney.app.MainActivity;
+import com.shamik.easymoney.app.util.TextValidator;
+import com.shamik.easymoney.app.types.Transaction;
 
 /**
  * Created by Shamik on 5/5/2016.
