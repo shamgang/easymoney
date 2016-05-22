@@ -27,7 +27,7 @@ public class BudgetDatabase extends SQLiteOpenHelper {
     public static final String TABLE_CATEGORIES = "categories";
 
     public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_DATE = "date";
+    public static final String COLUMN_TIME = "time";
     public static final String COLUMN_AMOUNT_DOLLARS = "amount_dollars";
     public static final String COLUMN_AMOUNT_CENTS = "amount_cents";
     public static final String COLUMN_DESCRIPTION = "description";
@@ -44,7 +44,7 @@ public class BudgetDatabase extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_TRANSACTIONS =
             "create table " + TABLE_TRANSACTIONS + "("
                     + COLUMN_ID + " integer primary key autoincrement, "
-                    + COLUMN_DATE + " date default (date(current_date, 'localtime')), "
+                    + COLUMN_TIME + " datetime default (datetime(current_timestamp, 'localtime')), "
                     + COLUMN_AMOUNT_DOLLARS + " int, "
                     + COLUMN_AMOUNT_CENTS + " int, "
                     + COLUMN_DESCRIPTION + " varchar(100), "
@@ -58,7 +58,7 @@ public class BudgetDatabase extends SQLiteOpenHelper {
     
     private static final String[] TRANSACTION_COLUMNS = {
             COLUMN_ID,
-            COLUMN_DATE,
+            COLUMN_TIME,
             COLUMN_AMOUNT_DOLLARS,
             COLUMN_AMOUNT_CENTS,
             COLUMN_DESCRIPTION,
@@ -141,23 +141,22 @@ public class BudgetDatabase extends SQLiteOpenHelper {
     // expects date in SQL format (YYYY-MM-DD)
     public ArrayList<Transaction> getTransactionsByCategoryIDAndDateRange(int ID, String fromDate,
                                                                           String toDate) {
-        return getTransactionsWhere("(" + COLUMN_DATE + " between '" + fromDate + "' and '" + toDate
+        return getTransactionsWhere("(" + COLUMN_TIME + " between '" + fromDate + "' and '" + toDate
                 + "') and (" + COLUMN_CATEGORY_ID + "=" + ID + ")");
     }
 
     private ArrayList<Transaction> getTransactionsWhere(String where) {
         ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 
+        // reverse chronological order
         Cursor cursor = mDatabase.query(BudgetDatabase.TABLE_TRANSACTIONS,
-                TRANSACTION_COLUMNS, where, null, null, null, null);
+                TRANSACTION_COLUMNS, where, null, null, null, COLUMN_TIME + " desc", null);
 
-        // populate array in reverse order
-        // TODO: use order by created datetime descending
-        cursor.moveToLast();
-        while(!cursor.isBeforeFirst()) {
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()) {
             Transaction transaction = cursorToTransaction(cursor);
             transactions.add(transaction);
-            cursor.moveToPrevious();
+            cursor.moveToNext();
         }
         cursor.close();
         return transactions;
@@ -240,8 +239,8 @@ public class BudgetDatabase extends SQLiteOpenHelper {
     }
 
     private Transaction cursorToTransaction(Cursor cursor) {
-        // TODO: convert datetime to date here instead of storing date only
-        return new Transaction(cursor.getInt(0), cursor.getString(1), cursor.getInt(2),
+        // get date as first ten characters of datetime
+        return new Transaction(cursor.getInt(0), cursor.getString(1).substring(0, 10), cursor.getInt(2),
                 cursor.getInt(3), cursor.getString(4), cursor.getInt(5), cursor.getInt(6) > 0);
     }
 
