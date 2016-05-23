@@ -6,7 +6,7 @@
 
     <!-- category selection list -->
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/category_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </ListView>

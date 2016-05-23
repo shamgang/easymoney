@@ -38,6 +38,8 @@ public class CategoryFragment extends BaseFullscreenFragment {
         // TODO: paginate
         mTransactionList = BudgetDatabase.getInstance().getTransactionsByCategoryID(id);
         mTransactionListView = (ListView)getView().findViewById(R.id.category_transaction_list);
+        mTransactionListView.setEmptyView(
+                getView().findViewById(R.id.empty_category_transaction_list));
         TransactionListHelper.fillAndResizeTransactionList((MainActivity)getActivity(),
                 mTransactionList, mTransactionListView);
     }

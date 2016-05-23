@@ -411,6 +411,8 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         // fill transaction list for this date
         // TODO: paginate
         mSelectedTransactions = mDataArray.get(mSelectedIndex).getValue().getTransactions();
+        mSelectedTransactionsView.setEmptyView(
+                mView.findViewById(R.id.empty_selected_transaction_list));
         mSelectedTransactionsView.setAdapter(
                 new TransactionAdapter(getActivity(), mSelectedTransactions));
 

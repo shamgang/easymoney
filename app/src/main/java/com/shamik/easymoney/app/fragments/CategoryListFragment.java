@@ -27,14 +27,15 @@ public class CategoryListFragment extends BaseFullscreenFragment implements OnIt
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_category_list, container, false);
 
         // populate list from database
         // TODO: paginate
         mCategoryList = BudgetDatabase.getInstance().getAllCategories();
 
         // set list view adapter and click listener
-        mCategoryListView = (ListView)view.findViewById(R.id.list);
+        mCategoryListView = (ListView)view.findViewById(R.id.category_list);
+        mCategoryListView.setEmptyView(view.findViewById(R.id.empty_category_list));
         mCategoryListView.setAdapter(new CategoryAdapter(getActivity(), mCategoryList));
         mCategoryListView.setOnItemClickListener(this);
 
