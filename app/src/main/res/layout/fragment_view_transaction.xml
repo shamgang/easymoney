@@ -23,77 +23,85 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <!-- main entry body -->
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_above="@id/view_transaction_footer">
 
-        <!-- amount -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:background="@drawable/green_background">
-
-            <!-- $ -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dollar"
-                android:textSize="32sp"/>
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
 
             <!-- amount -->
-            <TextView
-                android:id="@+id/view_transaction_amount"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="32sp"/>
-
-        </LinearLayout>
-
-        <!-- description -->
-        <TextView
-            android:id="@+id/view_transaction_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="20dp"
-            android:textSize="20sp"
-            android:gravity="center_horizontal"/>
-
-        <!-- category -->
-        <TextView
-            android:id="@+id/view_transaction_category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/light_blue_background"
-            android:padding="10dp"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:layout_marginBottom="20dp"/>
-
-        <!-- expense/income switch -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/view_transaction_is_income"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:orientation="horizontal"
                 android:padding="10dp"
-                android:background="@drawable/blue_border"/>
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:background="@drawable/green_background">
+
+                <!-- $ -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dollar"
+                    android:textSize="32sp"/>
+
+                <!-- amount -->
+                <TextView
+                    android:id="@+id/view_transaction_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="32sp"/>
+
+            </LinearLayout>
+
+            <!-- description -->
+            <TextView
+                android:id="@+id/view_transaction_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="20dp"
+                android:textSize="20sp"
+                android:gravity="center_horizontal"/>
+
+            <!-- category -->
+            <TextView
+                android:id="@+id/view_transaction_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/light_blue_background"
+                android:padding="10dp"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- expense/income switch -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/view_transaction_is_income"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:padding="10dp"
+                    android:background="@drawable/blue_border"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
