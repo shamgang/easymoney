@@ -48,6 +48,9 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
     private DatePicker mToDate;
     private Spinner mAverageSpinner;
     private List<String> mAverages;
+    private double mDailyAverage;
+    private double mMonthlyAverage;
+    private TextView mAverageView;
     private XYPlot mPlot;
     private ArrayList<Map.Entry<String, DataPoint>> mDataArray;
     private boolean hasPlotted;
@@ -145,8 +148,16 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         mAverageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(mAverageView != null) {
+                    if (i == 0) {
+                        // Daily
+                        mAverageView.setText("$" + String.format("%.2f", mDailyAverage));
+                    } else {
+                        // Monthly
+                        mAverageView.setText("$" + String.format("%.2f", mMonthlyAverage));
+                    }
+                }
             }
-                // TODO: make selection perform computation
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -258,6 +269,10 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
             }
         }
 
+        // set sum text
+        TextView transactionSum = (TextView)mView.findViewById(R.id.analytics_sum);
+        transactionSum.setText("$" + String.format("%.2f", sum));
+
         // construct numeric plot data by iterating in date order
         mPlotX = new ArrayList<Number>();
         mPlotY = new ArrayList<Number>();
@@ -289,20 +304,16 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         mToDateInt
                 = Integer.valueOf(sIntDate.format(mToDate.getCalendarView().getDate()));
         int numDays = mToDateInt - mFromDateInt + 1;
-        double avg;
+        mAverageView = (TextView)mView.findViewById(R.id.analytics_avg);
+        mDailyAverage = sum / (double)numDays;
+        mMonthlyAverage = sum / (numDays / 30.);
         if(mAverageSpinner.getSelectedItem().equals(mAverages.get(0))) {
             // Daily
-            avg = sum / (double)numDays;
+            mAverageView.setText("$" + String.format("%.2f", mDailyAverage));
         } else {
             // Monthly
-            avg = sum / (numDays / 30.);
+            mAverageView.setText("$" + String.format("%.2f", mMonthlyAverage));
         }
-
-        // set text for sum and average
-        TextView transactionAvg = (TextView)mView.findViewById(R.id.analytics_avg);
-        TextView transactionSum = (TextView)mView.findViewById(R.id.analytics_sum);
-        transactionAvg.setText("$" + String.format("%.2f", avg));
-        transactionSum.setText("$" + String.format("%.2f", sum));
 
         // fill graph
         plotData();

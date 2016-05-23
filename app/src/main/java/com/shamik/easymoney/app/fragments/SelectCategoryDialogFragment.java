@@ -37,6 +37,7 @@ public class SelectCategoryDialogFragment extends DialogFragment
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = inflater.inflate(R.layout.fragment_category_list, null);
         mCategoryListView = (ListView)view.findViewById(R.id.category_list);
+        mCategoryListView.setEmptyView(view.findViewById(R.id.empty_category_list));
         mCategoryListView.setAdapter(new CategoryAdapter(getActivity(), mCategoryList));
         mCategoryListView.setOnItemClickListener(this);
         builder.setView(view);
