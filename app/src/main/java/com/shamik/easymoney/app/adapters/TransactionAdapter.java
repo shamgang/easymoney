@@ -30,17 +30,21 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
                     .inflate(R.layout.item_transaction, parent, false);
         }
         // populate the correct views
-        TextView transactionAmountWhole = (TextView)convertView
+        TextView transactionAmountDollar = (TextView)convertView
                 .findViewById(R.id.transaction_item_amount_dollar);
-        TextView transactionAmountDecimal = (TextView)convertView
+        TextView transactionAmountCents = (TextView)convertView
                 .findViewById(R.id.transaction_item_amount_cents);
         TextView transactionDescription = (TextView)convertView
                 .findViewById(R.id.transaction_item_description);
         TextView transactionCategory = (TextView)convertView
                 .findViewById(R.id.transaction_item_category);
-        transactionAmountWhole.setText(transaction.getAmountDollars().toString());
+        String dollarText = transaction.getAmountDollars().toString();
+        if(transaction.isIncome()) {
+            dollarText = "-" + dollarText;
+        }
+        transactionAmountDollar.setText(dollarText);
         // Pad cents with zero if necessary
-        transactionAmountDecimal.setText(
+        transactionAmountCents.setText(
                 (transaction.getAmountCents().toString() + "0").substring(0, 2));
         transactionDescription.setText(transaction.getDescription());
         transactionCategory.setText(transaction.getCategory().getName());

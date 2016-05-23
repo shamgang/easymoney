@@ -177,10 +177,10 @@ public class AnalyticsFragment extends BaseCategorySelectFragment implements Dat
                 if(mAverageView != null) {
                     if (i == 0) {
                         // Daily
-                        mAverageView.setText("$" + String.format("%.2f", mDailyAverage));
+                        mAverageView.setText(String.format("%.2f", mDailyAverage));
                     } else {
                         // Monthly
-                        mAverageView.setText("$" + String.format("%.2f", mMonthlyAverage));
+                        mAverageView.setText(String.format("%.2f", mMonthlyAverage));
                     }
                 }
             }
@@ -305,7 +305,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment implements Dat
 
         // set sum text
         TextView transactionSum = (TextView)mView.findViewById(R.id.analytics_sum);
-        transactionSum.setText("$" + String.format("%.2f", sum));
+        transactionSum.setText(String.format("%.2f", sum));
 
         // construct numeric plot data by iterating in date order
         mPlotX = new ArrayList<Number>();
@@ -343,10 +343,10 @@ public class AnalyticsFragment extends BaseCategorySelectFragment implements Dat
         mMonthlyAverage = sum / (numDays / 30.);
         if(mAverageSpinner.getSelectedItem().equals(mAverages.get(0))) {
             // Daily
-            mAverageView.setText("$" + String.format("%.2f", mDailyAverage));
+            mAverageView.setText(String.format("%.2f", mDailyAverage));
         } else {
             // Monthly
-            mAverageView.setText("$" + String.format("%.2f", mMonthlyAverage));
+            mAverageView.setText(String.format("%.2f", mMonthlyAverage));
         }
 
         // fill graph
@@ -450,7 +450,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment implements Dat
 
         mSelectedDateView.setText(sReadableDate.format(selectedDate));
         // sum all transaction amounts for this date
-        mSelectedAmountView.setText("$" + String.format("%.2f",
+        mSelectedAmountView.setText(String.format("%.2f",
                 sumTransactions(mDataArray.get(mSelectedIndex).getValue().getTransactions())));
 
         // fill transaction list for this date
