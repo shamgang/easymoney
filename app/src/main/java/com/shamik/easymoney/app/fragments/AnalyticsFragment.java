@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -27,6 +26,7 @@ import com.shamik.easymoney.app.types.Category;
 import com.shamik.easymoney.app.MainActivity;
 import com.shamik.easymoney.app.types.Transaction;
 import com.shamik.easymoney.app.adapters.TransactionAdapter;
+import com.shamik.easymoney.app.util.DateSelector;
 import com.shamik.easymoney.app.util.TransactionListHelper;
 
 import java.text.ParseException;
@@ -42,11 +42,13 @@ import java.util.TreeMap;
 /**
  * Created by Shamik on 5/5/2016.
  */
-public class AnalyticsFragment extends BaseCategorySelectFragment {
+public class AnalyticsFragment extends BaseCategorySelectFragment implements DateSelector {
     private View mView;
     private Category mCategory;
-    private DatePicker mFromDate;
-    private DatePicker mToDate;
+    private Button mFromDateButton;
+    private Button mToDateButton;
+    private long mFromDate;
+    private long mToDate;
     private Spinner mAverageSpinner;
     private List<String> mAverages;
     private double mDailyAverage;
@@ -72,6 +74,10 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
 
     private static SimpleDateFormat sSqlDate = new SimpleDateFormat("yyyy-MM-dd");
     private static SimpleDateFormat sIntDate = new SimpleDateFormat("yyyyMMdd");
+    private static SimpleDateFormat sReadableDate = new SimpleDateFormat("MMMM dd, yyyy");
+
+    private static final String FROM_DATE_ID = "from_date";
+    private static final String TO_DATE_ID = "to_date";
 
     private class DataPoint {
         private double mValue;
@@ -136,24 +142,26 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
             }
         });
 
-        // datepickers
-        mFromDate = (DatePicker)mView.findViewById(R.id.from_date);
-        mToDate = (DatePicker)mView.findViewById(R.id.to_date);
-        Calendar now = Calendar.getInstance();
-        // set from date to one month ago
-        mFromDate.init(now.get(Calendar.YEAR), now.get(Calendar.MONTH) - 1,
-                now.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
+        // datepicker buttons
+        mFromDateButton = (Button)mView.findViewById(R.id.from_date_button);
+        mToDateButton = (Button)mView.findViewById(R.id.to_date_button);
+        final AnalyticsFragment thisFragment = this;
+        mFromDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDateChanged(DatePicker datePicker, int i, int i2, int i3) {
-                analyze();
+            public void onClick(View view) {
+                SelectDateDialogFragment selectDateDialogFragment = new SelectDateDialogFragment(
+                        Calendar.getInstance(), thisFragment, FROM_DATE_ID);
+                selectDateDialogFragment.show(getActivity().getSupportFragmentManager(),
+                        getActivity().getString(R.string.select_date_dialog_fragment_title));
             }
         });
-        // set to date to now
-        mToDate.init(now.get(Calendar.YEAR), now.get(Calendar.MONTH),
-                now.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
+        mToDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDateChanged(DatePicker datePicker, int i, int i2, int i3) {
-                analyze();
+            public void onClick(View view) {
+                SelectDateDialogFragment selectDateDialogFragment = new SelectDateDialogFragment(
+                        Calendar.getInstance(), thisFragment, TO_DATE_ID);
+                selectDateDialogFragment.show(getActivity().getSupportFragmentManager(),
+                        getActivity().getString(R.string.select_date_dialog_fragment_title));
             }
         });
 
@@ -251,6 +259,19 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         analyze();
     }
 
+    public void setDate(String ID, long date) {
+        if(ID.equals(FROM_DATE_ID)) {
+            // From
+            mFromDate = date;
+            mFromDateButton.setText(sReadableDate.format(mFromDate));
+        } else {
+            // To
+            mToDate = date;
+            mToDateButton.setText(sReadableDate.format(mToDate));
+        }
+        analyze();
+    }
+
     @Override
     protected String getTitle() {
         return this.getString(R.string.analytics_fragment_title);
@@ -263,12 +284,16 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
             toast.show();
             return;
         }
+        if(mFromDate == 0 || mToDate == 0) {
+            // Date not yet selected
+            return;
+        }
 
         // format epoch dates as SQL and query database for transactions
         ArrayList<Transaction> transactionList = BudgetDatabase.getInstance()
                 .getTransactionsByCategoryIDAndDateRange(mCategory.getID(),
-                        sSqlDate.format(mFromDate.getCalendarView().getDate()),
-                        sSqlDate.format(mToDate.getCalendarView().getDate()));
+                        sSqlDate.format(mFromDate),
+                        sSqlDate.format(mToDate));
 
         // construct a data point object for each date, containing transactions
         TreeMap<String, DataPoint> dateToData = new TreeMap<String, DataPoint>();
@@ -319,9 +344,9 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
 
         // calculate average by converting range from epoch time to integer date
         mFromDateInt
-                = Integer.valueOf(sIntDate.format(mFromDate.getCalendarView().getDate()));
+                = Integer.valueOf(sIntDate.format(mFromDate));
         mToDateInt
-                = Integer.valueOf(sIntDate.format(mToDate.getCalendarView().getDate()));
+                = Integer.valueOf(sIntDate.format(mToDate));
         int numDays = mToDateInt - mFromDateInt + 1;
         mAverageView = (TextView)mView.findViewById(R.id.analytics_avg);
         mDailyAverage = sum / (double)numDays;
@@ -432,8 +457,8 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
             Log.e(AnalyticsFragment.class.getName(), e.getMessage());
             selectedDate = null;
         }
-        SimpleDateFormat readableDate = new SimpleDateFormat("MMMM dd, yyyy");
-        mSelectedDateView.setText(readableDate.format(selectedDate));
+
+        mSelectedDateView.setText(sReadableDate.format(selectedDate));
         // sum all transaction amounts for this date
         mSelectedAmountView.setText("$" + String.format("%.2f",
                 sumTransactions(mDataArray.get(mSelectedIndex).getValue().getTransactions())));
