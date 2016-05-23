@@ -47,11 +47,9 @@
     <!-- AnalyticsFragment -->
     <string name="analytics_fragment_title">Analytics</string>
     <string name="choose_category_button">Select category</string>
-    <string name="from_date_label">From:</string>
-    <string name="to_date_label">To:</string>
     <string name="from_date_button">Select</string>
+    <string name="date_range_separator">to</string>
     <string name="to_date_button">Select</string>
-    <string name="analyze_button">Analyze</string>
     <string-array name="averages">
         <item>Daily</item>
         <item>Monthly</item>

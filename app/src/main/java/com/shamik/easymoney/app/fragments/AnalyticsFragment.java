@@ -190,15 +190,6 @@ public class AnalyticsFragment extends BaseCategorySelectFragment implements Dat
             }
         });
 
-        // analyze button behavior
-        Button analyzeButton = (Button)mView.findViewById(R.id.analyze_button);
-        analyzeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                analyze();
-            }
-        });
-
         // style plot - remove all extra ink
         mPlot = (XYPlot)mView.findViewById(R.id.plot);
         mPlot.getLegendWidget().setVisible(false);
@@ -280,8 +271,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment implements Dat
     private void analyze() {
         // validate fields
         if(mCategory == null) {
-            Toast toast = Toast.makeText(getActivity(), "Please choose a category", 2000);
-            toast.show();
+            // Category not yet selected
             return;
         }
         if(mFromDate == 0 || mToDate == 0) {
