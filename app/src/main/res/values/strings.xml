@@ -22,7 +22,7 @@
 
     <!-- CategoryListFragment -->
     <string name="category_list_fragment_title">Categories</string>
-    <string name="empty_category_list">Press + to add category</string>
+    <string name="empty_category_list">No categories</string>
 
     <!-- CategoryFragment -->
     <string name="category_children_label">Sub-categories</string>

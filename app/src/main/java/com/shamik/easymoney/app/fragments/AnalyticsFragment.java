@@ -33,6 +33,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -138,6 +139,23 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         // datepickers
         mFromDate = (DatePicker)mView.findViewById(R.id.from_date);
         mToDate = (DatePicker)mView.findViewById(R.id.to_date);
+        Calendar now = Calendar.getInstance();
+        // set from date to one month ago
+        mFromDate.init(now.get(Calendar.YEAR), now.get(Calendar.MONTH) - 1,
+                now.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker datePicker, int i, int i2, int i3) {
+                analyze();
+            }
+        });
+        // set to date to now
+        mToDate.init(now.get(Calendar.YEAR), now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker datePicker, int i, int i2, int i3) {
+                analyze();
+            }
+        });
 
         // spinner
         mAverageSpinner = (Spinner)mView.findViewById(R.id.average_spinner);
@@ -230,6 +248,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment {
         Button categorizeButton = (Button)mView.findViewById(R.id.analytics_categorize_button);
         // fill category text view
         categorizeButton.setText(mCategory.getName());
+        analyze();
     }
 
     @Override
