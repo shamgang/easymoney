@@ -141,7 +141,11 @@ public class BudgetDatabase extends SQLiteOpenHelper {
     // expects date in SQL format (YYYY-MM-DD)
     public ArrayList<Transaction> getTransactionsByCategoryIDAndDateRange(int ID, String fromDate,
                                                                           String toDate) {
-        return getTransactionsWhere("(" + COLUMN_TIME + " between '" + fromDate + "' and '" + toDate
+        // beginning of day
+        String fromTime = fromDate + " 00:00:00";
+        // end of day
+        String toTime = toDate + " 23:59:59.997";
+        return getTransactionsWhere("(" + COLUMN_TIME + " between '" + fromTime + "' and '" + toTime
                 + "') and (" + COLUMN_CATEGORY_ID + "=" + ID + ")");
     }
 
