@@ -12,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.LineAndPointFormatter;
@@ -47,6 +46,10 @@ public class AnalyticsFragment extends BaseCategorySelectFragment implements Dat
     private Category mCategory;
     private Button mFromDateButton;
     private Button mToDateButton;
+    private Calendar mFromDefault;
+    private Calendar mToDefault;
+    private long mFromMax;
+    private long mToMin;
     private long mFromDate;
     private long mToDate;
     private Spinner mAverageSpinner;
@@ -145,12 +148,25 @@ public class AnalyticsFragment extends BaseCategorySelectFragment implements Dat
         // datepicker buttons
         mFromDateButton = (Button)mView.findViewById(R.id.from_date_button);
         mToDateButton = (Button)mView.findViewById(R.id.to_date_button);
+        // initialize "from" to one month ago
+        mFromDefault = Calendar.getInstance();
+        mFromDefault.set(Calendar.MONTH, mFromDefault.get(Calendar.MONTH) - 1);
+        mFromDate = mFromDefault.getTimeInMillis();
+        mFromDateButton.setText(sReadableDate.format(mFromDate));
+        // initialize "to" to today
+        mToDefault = Calendar.getInstance();
+        mToDate = mToDefault.getTimeInMillis();
+        mToDateButton.setText(sReadableDate.format(mToDate));
+        // datepicker limits
+        mFromMax = mToDate;
+        mToMin = mFromDate;
+        // set dialog listeners
         final AnalyticsFragment thisFragment = this;
         mFromDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SelectDateDialogFragment selectDateDialogFragment = new SelectDateDialogFragment(
-                        Calendar.getInstance(), thisFragment, FROM_DATE_ID);
+                        mFromDefault, 0, mFromMax, thisFragment, FROM_DATE_ID);
                 selectDateDialogFragment.show(getActivity().getSupportFragmentManager(),
                         getActivity().getString(R.string.select_date_dialog_fragment_title));
             }
@@ -159,7 +175,7 @@ public class AnalyticsFragment extends BaseCategorySelectFragment implements Dat
             @Override
             public void onClick(View view) {
                 SelectDateDialogFragment selectDateDialogFragment = new SelectDateDialogFragment(
-                        Calendar.getInstance(), thisFragment, TO_DATE_ID);
+                        mToDefault, mToMin, 0, thisFragment, TO_DATE_ID);
                 selectDateDialogFragment.show(getActivity().getSupportFragmentManager(),
                         getActivity().getString(R.string.select_date_dialog_fragment_title));
             }
@@ -255,10 +271,18 @@ public class AnalyticsFragment extends BaseCategorySelectFragment implements Dat
             // From
             mFromDate = date;
             mFromDateButton.setText(sReadableDate.format(mFromDate));
+            // set datepicker default to selected date
+            mFromDefault.setTime(new Date(mFromDate));
+            // set "to" datepicker minimum
+            mToMin = mFromDate;
         } else {
             // To
             mToDate = date;
             mToDateButton.setText(sReadableDate.format(mToDate));
+            // set datepicker default to selected date
+            mToDefault.setTime(new Date(mToDate));
+            // set "from" datepicker maximum
+            mFromMax = mToDate;
         }
         analyze();
     }
