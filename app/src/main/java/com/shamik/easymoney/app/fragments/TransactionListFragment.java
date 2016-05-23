@@ -47,8 +47,10 @@ public class TransactionListFragment extends BaseFullscreenFragment {
 
         // categorized list
         mTransactionList = BudgetDatabase.getInstance().getCategorizedTransactions();
-        mTransactionListView = (ListView)view.findViewById(R.id.transactions_list);
-        TransactionListHelper.fillAndResizeTransactionList((MainActivity)getActivity(),
+        mTransactionListView = (ListView) view.findViewById(R.id.transactions_list);
+        View emptyView = view.findViewById(R.id.empty_transactions_list);
+        mTransactionListView.setEmptyView(emptyView);
+        TransactionListHelper.fillAndResizeTransactionList((MainActivity) getActivity(),
                 mTransactionList, mTransactionListView);
 
         return view;

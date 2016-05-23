@@ -18,6 +18,7 @@
     <string name="decimal">.</string>
     <string name="uncategorized_transactions_label">Uncategorized</string>
     <string name="transactions_label">Transactions</string>
+    <string name="empty_transaction_list">No transactions to show</string>
 
     <!-- CategoryListFragment -->
     <string name="category_list_fragment_title">Categories</string>
