@@ -196,10 +196,21 @@ public class BudgetDatabase extends SQLiteOpenHelper {
         return getCategoriesWhere(COLUMN_PARENT_ID + "=" + ID);
     }
 
+    public void deleteCategory(int ID) {
+        // decategorize all transactions with this category
+        ContentValues values = new ContentValues();
+        // no category
+        values.put(COLUMN_CATEGORY_ID, -1);
+        mDatabase.update(TABLE_TRANSACTIONS, values, COLUMN_CATEGORY_ID + "=" + ID, null);
+
+        // delete category
+        mDatabase.delete(TABLE_CATEGORIES, COLUMN_ID + "=" + ID, null);
+    }
+
     private ArrayList<Category> getCategoriesWhere(String where) {
         ArrayList<Category> categories = new ArrayList<Category>();
 
-        Cursor cursor = mDatabase.query(BudgetDatabase.TABLE_CATEGORIES,
+        Cursor cursor = mDatabase.query(TABLE_CATEGORIES,
                 CATEGORY_COLUMNS, where, null, null, null, null);
 
         // populate array in reverse order
