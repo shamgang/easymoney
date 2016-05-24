@@ -36,6 +36,8 @@
     <string name="dollar">$</string>
     <string name="transaction_description_label">Description:</string>
     <string name="categorize_button">Categorize</string>
+    <string name="delete_menu_item">Delete</string>
+    <string name="delete_dialog_text">Are you sure?</string>
 
     <!-- SelectCategoryDialogFragment -->
     <string name="select_category_dialog_fragment_title">Select Category</string>

@@ -149,11 +149,15 @@ public class BudgetDatabase extends SQLiteOpenHelper {
                 + "') and (" + COLUMN_CATEGORY_ID + "=" + ID + ")");
     }
 
+    public void deleteTransaction(int ID) {
+        mDatabase.delete(TABLE_TRANSACTIONS, COLUMN_ID + "=" + ID, null);
+    }
+
     private ArrayList<Transaction> getTransactionsWhere(String where) {
         ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 
         // reverse chronological order
-        Cursor cursor = mDatabase.query(BudgetDatabase.TABLE_TRANSACTIONS,
+        Cursor cursor = mDatabase.query(TABLE_TRANSACTIONS,
                 TRANSACTION_COLUMNS, where, null, null, null, COLUMN_TIME + " desc", null);
 
         cursor.moveToFirst();
