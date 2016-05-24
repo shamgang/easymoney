@@ -14,6 +14,8 @@ public class Transaction {
     private Integer mCategoryID;
     private boolean mIsIncome;
 
+    private static final String BLANK_CATEGORY = "Uncategorized";
+
     // pre-database
     // categoryID should be -1 if no category
     public Transaction(int amountDollars, int amountCents, String description,
@@ -58,7 +60,7 @@ public class Transaction {
 
     public Category getCategory() {
         if(mCategoryID == -1) {
-            return new Category("blank", -1);
+            return new Category(BLANK_CATEGORY, -1);
         } else {
             return BudgetDatabase.getInstance().getCategoryByID(mCategoryID);
         }
@@ -96,7 +98,7 @@ public class Transaction {
     }
 
     private void setDescription(String description) {
-        mDescription = (description == null) ? "Test" : description;
+        mDescription = (description == null) ? "" : description;
     }
 
     private void setCategoryID(int categoryID) {
