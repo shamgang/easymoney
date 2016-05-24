@@ -37,8 +37,13 @@ public class ViewTransactionFragment extends BaseFullscreenFragment {
 
         // amount
         // pad cents with 0 if necessary
+        String amountCents = transaction.getAmountCents().toString();
+        if(amountCents.length() == 1) {
+            // single digit, add leading zero
+            amountCents = "0" + amountCents;
+        }
         viewTransactionAmount.setText(transaction.getAmountDollars().toString() + "."
-                + (transaction.getAmountCents().toString() + "0").substring(0, 2));
+                + amountCents);
         // description
         viewTransactionDescription.setText(transaction.getDescription());
         // category

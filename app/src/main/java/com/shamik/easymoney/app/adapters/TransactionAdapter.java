@@ -44,8 +44,12 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
         }
         transactionAmountDollar.setText(dollarText);
         // Pad cents with zero if necessary
-        transactionAmountCents.setText(
-                (transaction.getAmountCents().toString() + "0").substring(0, 2));
+        String amountCents = transaction.getAmountCents().toString();
+        if(amountCents.length() == 1) {
+            // single digit, add leading zero
+            amountCents = "0" + amountCents;
+        }
+        transactionAmountCents.setText(amountCents);
         transactionDescription.setText(transaction.getDescription());
         transactionCategory.setText(transaction.getCategory().getName());
 

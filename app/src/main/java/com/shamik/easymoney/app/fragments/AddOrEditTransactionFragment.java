@@ -51,8 +51,13 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
                     .getTransactionByID(mTransactionID);
             mCategory = transaction.getCategory();
             // pad cents with 0 if necessary
+            String amountCents = transaction.getAmountCents().toString();
+            if(amountCents.length() == 1) {
+                // single digit, add leading zero
+                amountCents = "0" + amountCents;
+            }
             mAddTransactionAmount.setText(transaction.getAmountDollars().toString() + "."
-                    + (transaction.getAmountCents().toString() + "0").substring(0, 2));
+                    + amountCents);
             mAddTransactionDescription.setText(transaction.getDescription());
             categorizeButton.setText(mCategory.getName());
         }
