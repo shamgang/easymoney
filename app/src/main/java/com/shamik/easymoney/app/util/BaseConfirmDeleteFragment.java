@@ -3,13 +3,16 @@ package com.shamik.easymoney.app.util;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.shamik.easymoney.app.MainActivity;
 import com.shamik.easymoney.app.R;
 import com.shamik.easymoney.app.data.BudgetDatabase;
+import com.shamik.easymoney.app.fragments.TransactionListFragment;
 
 /**
  * Created by Shamik on 5/24/2016.
@@ -41,8 +44,11 @@ public abstract class BaseConfirmDeleteFragment extends BaseFullscreenFragment {
                                     public void onClick(DialogInterface dialog, int which) {
                                         // delete
                                         onDeleteConfirmed();
-                                        // return to previous fragment
-                                        getActivity().getSupportFragmentManager().popBackStack();
+                                        // clear backstack and return to transaction list, in case
+                                        // any references to this ID remain in created fragments
+                                        ((MainActivity)getActivity()).replaceFragmentClearBackstack(
+                                                new TransactionListFragment(),
+                                                TransactionListFragment.class.getName());
                                     }
                                 })
                         .setNegativeButton(R.string.cancel_button,
