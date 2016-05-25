@@ -75,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:padding="10dp"
-                android:inputType="textMultiLine|textNoSuggestions"
+                android:inputType="textMultiLine|textNoSuggestions|textCapSentences"
                 android:gravity="top"
                 android:background="@android:color/transparent"
                 android:hint="@string/transaction_description_label"/>

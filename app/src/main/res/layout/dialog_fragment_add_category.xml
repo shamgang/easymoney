@@ -10,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_weight=".7"
         android:maxLength="20"
-        android:inputType="textFilter"
+        android:inputType="textFilter|textCapSentences"
         android:layout_height="wrap_content"/>
 
     <!-- add button -->

@@ -60,6 +60,7 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
                     + amountCents);
             mAddTransactionDescription.setText(transaction.getDescription());
             categorizeButton.setText(mCategory.getName());
+            mAddTransactionIsIncome.setChecked(transaction.isIncome());
         }
 
         // validate amount input
