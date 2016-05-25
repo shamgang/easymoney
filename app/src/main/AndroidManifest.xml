@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="com.shamik.easymoney.app.EasyMoneyWidgetProvider" >
+        <receiver android:name="com.shamik.easymoney.app.EasyMoneyWidgetProvider"
+            android:label="EasyMoney add new">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
