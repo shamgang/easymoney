@@ -176,10 +176,22 @@ public class AddOrEditTransactionFragment extends BaseCategorySelectFragment {
             amountCents = 0;
         } else if(decPos == 0) {
             // leading decimal, remove and save cent amount
+
+            // if single digit cent, zero pad
+            if(decPos == amountText.length() - 2) {
+                amountText += "0";
+            }
+
             amountDollars = 0;
             amountCents = Integer.parseInt(amountText.substring(1));
         } else {
             // parse substrings around decimal
+
+            // if single digit cent, zero pad
+            if(decPos == amountText.length() - 2) {
+                amountText += "0";
+            }
+
             amountDollars = Integer.parseInt(amountText.substring(0, decPos));
             amountCents = Integer.parseInt(amountText.substring(decPos + 1, amountText.length()));
         }
