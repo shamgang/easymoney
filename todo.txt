@@ -1,0 +1,65 @@
+BUGS:
+
+DEVELOPMENT STORIES:
+cloud backup
+    already fine with android auto-backup?
+implement subcategories
+make categories unique in DB
+implement pagination
+implement sorting
+add created date and other columns for sorting
+make average spinner trigger recalc
+tests
+show date
+make date editable
+check for updates
+delete category: delete or uncategorize transactions?
+
+UI STORIES:
+Drawer behavior - make only one open at a time?
+    drawer should close when action bar is clicked
+validation design
+expense/income background colors
+grey button background
+really need nested categories?
+what if want to select a supercategory?
+analyze button in category fragment
+    will need to change the way resume is handled - category field
+refine empty list design
+empty plot design
+create category in category list
+auto save on exit
+ellipsize transaction amount?
+make widget look better
+single list item no border
+monthly average seems weird when looking at small date range
+make it easier to add a category to an uncategorized transaction?
+is it weird to go back to view page after edit?
+should do something other than clear backstack on delete?
+
+BEST PRACTICES / CLEANUP:
+Watch out for support library stuff - e.g. using both FragmentManager and getSupportFragmentManager
+action buttons hide/show - check for string title okay?
+move hardcoded font sizes and other dimensions to dimens.xml
+list fragments onclick may be too general - need to make sure it's a list item
+protect nullptr exceptions?
+too much work on UI thread?
+Move database stuff to AsyncTask
+should functions be in MainActivity or fragments?
+duplicated code between edit and view transaction?
+redundancy between categorylistfragment and selectcategorydialogfragment?
+confirm that Category.getChildren is not doing a copy
+bad practice to use getFragmentById, esp. without null check? selectCategoryDialogFragment
+unify member variable order
+    order of appearance in code?
+    UI order?
+    separate views / data?
+locale problems with String.format?
+null checks on BudgetDatabase.getInstance?
+BudgetDatabase Log.e instead of throw enough?
+updateTransactionByID or updateTransaction with required ID in Transaction?
+database migrations
+are correct files included vs gitignored?
+make sure code is happening in correct lifecycle methods to avoid redundancy
+all functions should error check inputs?
+duplicated zero-padding code for amounts, possible other display amount logic
