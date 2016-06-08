@@ -1,4 +1,6 @@
 BUGS:
+widget may not open to correct page if app is already open
+backstack behavior between widget and app launcher
 
 DEVELOPMENT STORIES:
 cloud backup
@@ -16,6 +18,7 @@ check for updates
 delete category: delete or uncategorize transactions?
 
 UI STORIES:
+play store banner looks high
 Drawer behavior - make only one open at a time?
     drawer should close when action bar is clicked
 validation design
